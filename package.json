@@ -1,0 +1,23 @@
+{
+  "name": "mammonbank-webapp",
+  "version": "0.0.1",
+  "description": "Modern web-based application which simulates real banking operations",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mammonbank/webapp.git"
+  },
+  "author": "nulliam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mammonbank/webapp/issues"
+  },
+  "homepage": "https://github.com/mammonbank/webapp#readme",
+  "dependencies": {
+    "express": "^4.13.3",
+    "shelljs": "^0.5.3"
+  },
+  "scripts": {
+    "start": "NODE_PATH=core node main.js"
+  }
+}
