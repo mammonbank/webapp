@@ -15,6 +15,7 @@
   "homepage": "https://github.com/mammonbank/webapp#readme",
   "dependencies": {
     "express": "^4.13.3",
+    "jade": "^1.11.0",
     "shelljs": "^0.5.3"
   },
   "scripts": {
