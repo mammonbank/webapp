@@ -8,4 +8,7 @@ Modern web-based application which simulates real banking operations
 * `sudo npm i pm2 -g`
 * `npm start`
 
+For Windows users: after `npm i` command you must open `client.bat` and `admin.bat` to launch servers
+
+
 Visit `http://localhost:3000` and `http://localhost:3001` to check that all works
