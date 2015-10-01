@@ -5,6 +5,10 @@ Modern web-based application which simulates real banking operations
 * `git clone https://github.com/mammonbank/webapp.git`
 * `cd webapp`
 * `npm i`
+* `sudo npm i pm2 -g`
 * `npm start`
+
+For Windows users: after `npm i` command you must open `client.bat` and `admin.bat` to launch servers
+
 
 Visit `http://localhost:3000` and `http://localhost:3001` to check that all works
