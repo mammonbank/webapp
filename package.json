@@ -17,6 +17,9 @@
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "jade": "^1.11.0",
+    "pg": "^4.4.2",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.11.0",
     "shelljs": "^0.5.3"
   },
   "scripts": {
