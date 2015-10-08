@@ -24,6 +24,16 @@
     "shelljs": "^0.5.3"
   },
   "scripts": {
-    "start": "NODE_PATH=core node main.js"
+    "start": "NODE_PATH=core node main.js",
+    "lint": "jshint . || true",
+    "validate": "npm ls"
+  },
+  "pre-commit": [
+    "lint",
+    "validate",
+    "test"
+  ],
+  "devDependencies": {
+    "precommit-hook": "^3.0.0"
   }
 }
