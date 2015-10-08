@@ -1,17 +1,22 @@
 'use strict';
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('Client', {
+    var Client = sequelize.define('Client', {
         firstName: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            field: 'first_name'
         },
         lastName: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            field: 'last_name'
         }
     }, {
-        tableName: 'clients'
+        classMethods: {
+            
+        }
     });
-};
 
+    return Client;
+};
