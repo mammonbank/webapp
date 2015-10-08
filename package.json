@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "NODE_PATH=core node main.js",
-    "lint": "jshint . || true",
+    "lint": "jshint .",
     "validate": "npm ls"
   },
   "pre-commit": [

@@ -10,4 +10,4 @@ app.set('view engine', 'jade');
 
 app.use(require('./controllers'));
 
-var server = app.listen(config.server.adminPort);
+app.listen(config.server.adminPort);
