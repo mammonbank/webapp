@@ -1,9 +1,9 @@
 'use strict';
 
-var app = require('../app');
-var debug = require('debug')('mammonbank:admin');
-var models = require('models');
-var config = require('config');
+var app = require('../app'),
+    debug = require('debug')('mammonbank:admin'),
+    models = require('models'),
+    config = require('config');
 
 app.set('port', config.server.adminPort);
 
