@@ -15,6 +15,7 @@
   "homepage": "https://github.com/mammonbank/webapp#readme",
   "dependencies": {
     "body-parser": "^1.14.1",
+    "debug": "^2.2.0",
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "jade": "^1.11.0",
@@ -25,6 +26,8 @@
   },
   "scripts": {
     "start": "NODE_PATH=core node main.js",
+    "start-client": "NODE_PATH=core DEBUG=mammonbank:client node client/bin/www",
+    "start-admin": "NODE_PATH=core DEBUG=mammonbank:admin node admin/bin/www",
     "lint": "jshint .",
     "validate": "npm ls"
   },

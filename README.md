@@ -26,3 +26,11 @@ For Windows users: after `npm i` command you must open `client.bat` and `admin.b
 
 To launch particular server instance with logging enabled run
 `npm run-script start-client` or `npm run-script start-admin`
+=======
+For Windows users: after `npm i` command you must open `client.bat` and `admin.bat` to launch servers
+
+## Additional
+`npm start` command will start both servers (client and admin) without logging.
+
+To launch particular server instance with logging enabled run
+`npm run-script start-client` or `npm run-script start-admin`
