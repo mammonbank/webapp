@@ -2,6 +2,7 @@
 
 var fs         = require('fs');
 var path       = require('path');
+var debug      = require('debug')('mammonbank:client');
 var Sequelize  = require('sequelize');
 var config     = require('config');
 var sequelize  = new Sequelize(
@@ -14,6 +15,9 @@ var sequelize  = new Sequelize(
             max: config.db.pool.max,
             min: config.db.pool.min,
             idle: config.db.pool.idle
+        },
+        logging: function(message) {
+            debug(message);
         }
     }
 );
