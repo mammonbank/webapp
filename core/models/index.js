@@ -2,7 +2,7 @@
 
 var fs         = require('fs');
 var path       = require('path');
-var debug      = require('debug')('mammonbank:client');
+var debug      = require('debug')('mammonbank:client:db');
 var Sequelize  = require('sequelize');
 var config     = require('config');
 var sequelize  = new Sequelize(
@@ -42,7 +42,5 @@ Object.keys(db).forEach(function(modelName) {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-
-sequelize.sync({ force: false });
 
 module.exports = db;

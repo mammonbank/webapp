@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "NODE_PATH=core node main.js",
-    "start-client": "NODE_PATH=core DEBUG=mammonbank:client node client/bin/www",
+    "start-client": "NODE_PATH=core DEBUG=mammonbank:client,mammonbank:client:db,mammonbank:client:error node client/bin/www",
     "start-admin": "NODE_PATH=core DEBUG=mammonbank:admin node admin/bin/www",
     "lint": "jshint .",
     "validate": "npm ls"
