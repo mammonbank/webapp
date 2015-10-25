@@ -12,4 +12,3 @@ if (env === 'production') {
     shelljs.exec('pm2 start client/bin/www -i 1 --name "client" --watch');
     shelljs.exec('pm2 start admin/bin/www -i 1 --name "admin" --watch');
 }
-

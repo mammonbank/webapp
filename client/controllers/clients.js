@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express'),
-	router  = express.Router(),
+    router  = express.Router(),
     Client  = require('models').Client,
     HttpApiError = require('error').HttpApiError;
 
