@@ -21,5 +21,6 @@ module.exports = {
 	},
 	authy: {
 		apiKey: env.AUTHY_API_KEY
-	}
+	},
+    saltWorkFactor: 10
 };
