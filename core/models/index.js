@@ -6,9 +6,9 @@ var debug      = require('debug')('mammonbank:client:db');
 var Sequelize  = require('sequelize');
 var config     = require('config');
 var sequelize  = new Sequelize(
-    config.db.dbname, 
-    config.db.username, 
-    config.db.password, {    
+    config.db.dbname,
+    config.db.username,
+    config.db.password, {
         host: config.db.host,
         dialect: config.db.dialect,
         pool: {
