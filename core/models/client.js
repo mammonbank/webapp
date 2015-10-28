@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
             field: 'first_name',
             validate: {
                 // Lowercase and uppercase letters, special symbols (,.'-):
-                // TODO: add cyrillic letters support 
+                // TODO: add cyrillic letters support
                 is: /^[a-z,.'-]+$/i
             }
         },
@@ -37,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                // Minimum 8 characters at least 1 uppercase letter, 
+                // Minimum 8 characters at least 1 uppercase letter,
                 // 1 lowercase letter and 1 number:
                 is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
             }
@@ -60,11 +60,9 @@ module.exports = function(sequelize, DataTypes) {
         underscored: true,
         timestamps: true,
         paranoid: true,
-        
         classMethods: {
-            
+            // TODO: реализовать методы модели + отношения
         },
-        
         instanceMethods: {
             verifyPassword: function(password, cb) {
                 bcrypt.compare(password, this.password, function(error, isMatch) {

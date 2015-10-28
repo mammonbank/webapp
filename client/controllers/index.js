@@ -6,7 +6,7 @@ var express = require('express'),
 router.use('/api/clients', require('./clients'));
 
 router.get('/', function(req, res) {
-    res.render('index', { message: 'Hello, client!' });
+    res.render('index');
 });
 
 module.exports = router;

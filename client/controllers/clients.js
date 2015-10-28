@@ -8,7 +8,7 @@ var express = require('express'),
 router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
-        
+
     Client
         .findAll({ offset: offset, limit: limit })
         .then(function(clients) {
@@ -26,11 +26,11 @@ router.get('/', function(req, res, next) {
 
 router.get('/:clientId', function(req, res, next) {
     var clientId = +req.params.clientId || -1;
-    
+
     if (clientId === -1) {
         return next(new HttpApiError(400, 'Wrong client id'));
     }
-    
+
     Client
         .findById(clientId)
         .then(function(client) {
@@ -62,11 +62,11 @@ router.post('/', function(req, res, next) {
 
 router.delete('/:clientId', function(req, res, next) {
     var clientId = +req.params.clientId || -1;
-    
+
     if (clientId === -1) {
         return next(new HttpApiError(400, 'Wrong client id'));
     }
-    
+
     Client
         .destroy({
             where: { id: clientId }
