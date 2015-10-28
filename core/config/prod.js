@@ -19,8 +19,8 @@ module.exports = {
 			idle: env.NODE_DB_POOL_IDLE || 5000
 		}
 	},
-	authy: {
-		apiKey: env.AUTHY_API_KEY
-	},
-    saltWorkFactor: 10
+	security: {
+        saltWorkFactor: 10,
+        sessionSecret: 'War is peace. Freedom is slavery. Ignorance is strength.'
+    }
 };
