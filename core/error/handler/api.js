@@ -7,10 +7,10 @@ module.exports = function(error, req, res, next) {
     if (error instanceof HttpApiError) {
         debug(error);
         res.status(error.statusCode);
-        res.end(JSON.stringify({
+        res.json({
             code: error.statusCode,
             message: error.message
-        }));
+        });
     } else {
         next(error);
     }

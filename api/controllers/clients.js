@@ -12,12 +12,12 @@ router.get('/', function(req, res, next) {
     Client
         .findAll({ offset: offset, limit: limit })
         .then(function(clients) {
-            res.end(JSON.stringify({
+            res.json({
                 count: clients.length,
                 offset: offset,
                 limit: limit,
                 clients: clients
-            }));
+            });
         })
         .catch(function(error) {
             next(error);
@@ -34,7 +34,7 @@ router.get('/:clientId', function(req, res, next) {
     Client
         .findById(clientId)
         .then(function(client) {
-            res.end(JSON.stringify(client));
+            res.json(client);
         })
         .catch(function(error) {
             next(error);
@@ -51,9 +51,9 @@ router.post('/', function(req, res, next) {
             phoneNumber: req.body.phoneNumber
         })
         .then(function(client) {
-            res.end(JSON.stringify({
+            res.json({
                 clientId: client.id
-            }));
+            });
         })
         .catch(function(error) {
             next(error);
@@ -72,7 +72,9 @@ router.delete('/:clientId', function(req, res, next) {
             where: { id: clientId }
         })
         .then(function() {
-            res.end(JSON.stringify());
+            res.json({
+                clientId: clientId
+            });
         })
         .catch(function(error) {
             next(error);
