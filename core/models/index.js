@@ -1,28 +1,27 @@
 'use strict';
 
-var fs         = require('fs');
-var path       = require('path');
-var debug      = require('debug')('mammonbank:client:db');
-var Sequelize  = require('sequelize');
-var config     = require('config');
-var sequelize  = new Sequelize(
-    config.db.dbname,
-    config.db.username,
-    config.db.password, {
-        host: config.db.host,
-        dialect: config.db.dialect,
-        pool: {
-            max: config.db.pool.max,
-            min: config.db.pool.min,
-            idle: config.db.pool.idle
-        },
-        logging: function(message) {
-            debug(message);
+var fs         = require('fs'),
+    path       = require('path'),
+    debug      = require('debug')('mammonbank:client:db'),
+    Sequelize  = require('sequelize'),
+    config     = require('config'),
+    sequelize  = new Sequelize(
+        config.db.dbname, 
+        config.db.username, 
+        config.db.password, {    
+            host: config.db.host,
+            dialect: config.db.dialect,
+            pool: {
+                max: config.db.pool.max,
+                min: config.db.pool.min,
+                idle: config.db.pool.idle
+            },
+            logging: function(message) {
+                debug(message);
+            }
         }
-    }
-);
-
-var db = {};
+    ),
+    db = {};
 
 fs
     .readdirSync(__dirname)

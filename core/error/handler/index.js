@@ -6,15 +6,8 @@ module.exports = function(error, req, res, next) {
     res.status(500);
     debug(error);
     
-    if (process.env.NODE_ENV === 'production') {
-        res.render('500', {
-            message: error.message,
-            error: {}
-        });
-    } else {
-        res.render('500', {
-            message: error.message,
-            error: error
-        });
-    }
+    res.render('500', {
+       message: error.message,
+       error: process.env.NODE_ENV === 'production' ? {} : error 
+    });
 };

@@ -4,8 +4,9 @@ var env = process.env;
 
 module.exports = {
 	server: {
-		clientPort: env.NODE_CLIENT_PORT || 3000,
-		adminPort: env.NODE_ADMIN_PORT || 3001
+		clientPort: env.NODE_CLIENT_PORT || 3001,
+		bankPort: env.NODE_BANK_PORT || 3002,
+        apiPort: env.NODE_API_PORT || 3000
 	},
 	db: {
 		dbname: env.NODE_DB_NAME || 'mammonbank',
@@ -19,7 +20,8 @@ module.exports = {
 			idle: env.NODE_DB_POOL_IDLE || 5000
 		}
 	},
-	authy: {
-		apiKey: env.AUTHY_API_KEY
-	}
+	security: {
+        saltWorkFactor: 10,
+        tokenSecret: 'War is peace. Freedom is slavery. Ignorance is strength.'
+    }
 };

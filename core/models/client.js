@@ -1,5 +1,10 @@
 'use strict';
 
+var async = require('async'),
+    bcrypt = require('bcrypt'),
+    config = require('config'),
+    debug = require('debug')('mammonbank:client:db');
+
 module.exports = function(sequelize, DataTypes) {
     var Client = sequelize.define('Client', {
         firstName: {
@@ -59,9 +64,36 @@ module.exports = function(sequelize, DataTypes) {
             // TODO: реализовать методы модели + отношения
         },
         instanceMethods: {
-            // TODO: конкретная модель
+            verifyPassword: function(password, cb) {
+                bcrypt.compare(password, this.password, function(error, isMatch) {
+                    if (error) {
+                        return cb(error);
+                    }
+
+                    cb(null, isMatch);
+                });
+            }
         }
     });
+
+    Client.hook('beforeCreate', function(user, options, fn) {
+        async.waterfall([
+            function(cb) {
+                bcrypt.genSalt(config.saltWorkFactor, cb);
+            },
+            function(salt, cb) {
+                bcrypt.hash(user.password, salt, cb);
+            }],
+            function(error, hashedPassword) {
+                if (error) {
+                    debug(error);
+                    fn(error);
+                }
+
+                user.password = hashedPassword;
+                fn(null, user);
+            });
+        });
 
     return Client;
 };

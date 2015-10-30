@@ -1,11 +1,11 @@
 'use strict';
 
 var app = require('../app'),
-    debug = require('debug')('mammonbank:admin'),
+    debug = require('debug')('mammonbank:api'),
     models = require('models'),
     config = require('config');
 
-app.set('port', config.server.adminPort);
+app.set('port', config.server.apiPort);
 
 models.sequelize.sync().then(function() {
     var server = app.listen(app.get('port'), function() {

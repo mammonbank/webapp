@@ -1,5 +1,5 @@
 # Mammonbank
-Хотим сдать проект про бановские системы. (переведено фаргус)
+Веб-приложение с насыщенным функционалом, симулирующим кредитно-депозитный портфель банка.
 
 ## Установка
 * `git clone https://github.com/mammonbank/webapp.git`
@@ -7,43 +7,20 @@
 * `npm i`
 * `cd client && bower i`
 * Установите PostgreSQL под свою ОС
-* `npm start`
+* Создайте базу с именем mammonbank и пользователя с полными правами на эту базу
+* `NODE_DB_USERNAME=[имя_пользователя] NODE_DB_PASSWORD=[пароль_пользователя] npm start`
 
-Главная: [`3000`](http://localhost:3000)
-Админка: [`3001`](http://localhost:3001)
+API-сервер: [`3000`](http://localhost:3000)
+Главная: [`3001`](http://localhost:3001)
+Админка: [`3002`](http://localhost:3002)
 
-Остановка сервера (демонов)
+Остановка серверов (демонов)
 `pm2 kill`
 
 ## Дополнительно
+Все команды начинать с `NODE_DB_USERNAME=[имя_пользователя] NODE_DB_PASSWORD=[пароль_пользователя]`
 `npm run-script start-client` - запуск клиентской части НЕ в фоне + отладка
-`npm run-script start-admin` - админка + отладка
+`npm run-script start-bank` - админка + отладка
+`npm run-script start-api` - api-сервер + отладка
 
-
-# Mammonbank
-Modern web-based application which simulates real banking operations
-
-## Installing
-* `git clone https://github.com/mammonbank/webapp.git`
-* `cd webapp`
-* `npm i`
-* `sudo npm i pm2 -g`
-* install PostgreSQL
-* run following commands in PostgreSQL prompt
-  * `CREATE DATABASE mammonbank;`
-  * `CREATE USER wiranoid WITH password 'nevergiveup';`
-  * `GRANT ALL privileges ON DATABASE mammonbank TO wiranoid;`
-* exit PostgreSQL prompt
-* `npm start`
-
-Visit `http://localhost:3000` and `http://localhost:3001` to check that all works
-
-To stop servers run
-`pm2 kill`
-
-## Additional
-`npm start` command will start both servers (client and admin) without logging.
-
-To launch particular server instance with logging enabled run
-`npm run-script start-client` or
-`npm run-script start-admin`
+з.ы. будет время, нарисую как эта вся лабуда работает и почему тут аж 3 сервака

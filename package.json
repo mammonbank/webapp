@@ -14,6 +14,8 @@
   },
   "homepage": "https://github.com/mammonbank/webapp#readme",
   "dependencies": {
+    "async": "^1.5.0",
+    "bcrypt": "^0.8.5",
     "body-parser": "^1.14.1",
     "debug": "^2.2.0",
     "express": "^4.13.3",
@@ -27,7 +29,8 @@
   "scripts": {
     "start": "NODE_PATH=core node main.js",
     "start-client": "NODE_PATH=core DEBUG=mammonbank:client,mammonbank:client:db,mammonbank:client:error node client/bin/www",
-    "start-admin": "NODE_PATH=core DEBUG=mammonbank:admin node admin/bin/www",
+    "start-bank": "NODE_PATH=core DEBUG=mammonbank:admin node bank/bin/www",
+    "start-api": "NODE_PATH=core DEBUG=mammonbank:api node api/bin/www",
     "lint": "jshint .",
     "validate": "npm ls"
   },

@@ -1,0 +1,14 @@
+'use strict';
+
+var app = require('../app'),
+    debug = require('debug')('mammonbank:admin'),
+    models = require('models'),
+    config = require('config');
+
+app.set('port', config.server.bankPort);
+
+models.sequelize.sync().then(function() {
+    var server = app.listen(app.get('port'), function() {
+       debug('Express server listening on port ' + server.address().port); 
+    });
+});
