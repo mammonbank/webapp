@@ -2,10 +2,11 @@
 
 var express = require('express'),
     router  = express.Router(),
-    Client  = require('models').Client,
-    HttpApiError = require('error').HttpApiError;
+    authenticateToken = require('../middlewares/authenticateToken'),
+    getClientId = require('../middlewares/getClientId'),
+    Client  = require('models').Client;
 
-router.get('/', function(req, res, next) {
+router.get('/', authenticateToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
@@ -24,16 +25,16 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.get('/:clientId', function(req, res, next) {
-    var clientId = +req.params.clientId || -1;
-
-    if (clientId === -1) {
-        return next(new HttpApiError(400, 'Wrong client id'));
-    }
-
+router.get('/:clientId', getClientId, function(req, res, next) {
     Client
-        .findById(clientId)
+        .findById(req.clientId)
         .then(function(client) {
+            if (!client) {
+                return res.json({
+                    message: 'No client has been found with given id'    
+                });
+            }
+            
             res.json(client);
         })
         .catch(function(error) {
@@ -60,20 +61,14 @@ router.post('/', function(req, res, next) {
         });
 });
 
-router.delete('/:clientId', function(req, res, next) {
-    var clientId = +req.params.clientId || -1;
-
-    if (clientId === -1) {
-        return next(new HttpApiError(400, 'Wrong client id'));
-    }
-
+router.delete('/:clientId', getClientId, function(req, res, next) {
     Client
         .destroy({
-            where: { id: clientId }
+            where: { id: req.clientId }
         })
         .then(function() {
             res.json({
-                clientId: clientId
+                clientId: req.clientId
             });
         })
         .catch(function(error) {
