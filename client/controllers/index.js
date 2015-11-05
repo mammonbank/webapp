@@ -6,6 +6,10 @@ var express = require('express'),
     jwt = require('jsonwebtoken'),
     config = require('config');
 
+router.post('/register', function(req, res, next) {
+    
+});
+
 router.post('/authenticate', function(req, res, next) {
     Client
         .findOne({
@@ -34,7 +38,7 @@ router.post('/authenticate', function(req, res, next) {
                 }
                 
                 var token = jwt.sign({ clientId: client.id }, config.security.tokenSecret, {
-                    expiresIn: '6h'
+                    expiresIn: config.security.tokenExpirationTime
                 });
                 
                 res.json({

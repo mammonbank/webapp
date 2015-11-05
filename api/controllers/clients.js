@@ -2,11 +2,11 @@
 
 var express = require('express'),
     router  = express.Router(),
-    authenticateToken = require('../middlewares/authenticateToken'),
+    //authenticateToken = require('../middlewares/authenticateToken'),
     getClientId = require('../middlewares/getClientId'),
     Client  = require('models').Client;
 
-router.get('/', authenticateToken, function(req, res, next) {
+router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
@@ -41,15 +41,20 @@ router.get('/:clientId', getClientId, function(req, res, next) {
             next(error);
         });
 });
-
+        
 router.post('/', function(req, res, next) {
     Client
         .create({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
+            patronymic: req.body.patronymic,
+            dateOfBirth: req.body.dateOfBirth,
+            phoneNumber: req.body.phoneNumber,
             email: req.body.email,
             password: req.body.password,
-            phoneNumber: req.body.phoneNumber
+            passportNumber: req.body.passportNumber,
+            passportIdNumber: req.body.passportIdNumber,
+            mothersMaidenName: req.body.mothersMaidenName
         })
         .then(function(client) {
             res.json({

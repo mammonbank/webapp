@@ -5,6 +5,21 @@ var async = require('async'),
     config = require('config'),
     debug = require('debug')('mammonbank:client:db');
 
+/*
+    Client model fields:
+    {
+        firstName,
+        lastName,
+        patronymic,
+        dateOfBirth,
+        phoneNumber,
+        email,
+        password,
+        passportNumber,
+        passportIdNumber,
+        mothersMaidenName
+    }
+*/
 module.exports = function(sequelize, DataTypes) {
     var Client = sequelize.define('Client', {
         firstName: {
@@ -23,7 +38,39 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             field: 'last_name',
             validate: {
+                // TODO: add cyrillic letters support
                 is: /^[a-z,.'-]+$/i
+            }
+        },
+        patronymic: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'patronymic',
+            validate: {
+                // TODO: add cyrillic letters support
+                is: /^[a-z,.'-]+$/i
+            }
+        },
+        dateOfBirth: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            field: 'date_of_birth',
+            validate: {
+                isDate: true,
+                isAfter: '1900-01-01',
+                isBefore: function(value) {
+                    if (value > Date.now()) {
+                        throw new Error('Date of birth cannot be in the future');
+                    }
+                }
+            }
+        },
+        phoneNumber: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'phone_number',
+            validate: {
+                // TODO: add validation
             }
         },
         email: {
@@ -42,18 +89,30 @@ module.exports = function(sequelize, DataTypes) {
                 is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
             }
         },
-        phoneNumber: {
-            type: DataTypes.STRING(50),
+        passportNumber: {
+            type: DataTypes.STRING,
             allowNull: false,
-            field: 'phone_number',
+            field: 'passport_number',
             validate: {
                 // TODO: add validation
             }
         },
-        authyId: {
+        passportIdNumber: {
             type: DataTypes.STRING,
-            allowNull: true,
-            field: 'authy_id'
+            allowNull: false,
+            field: 'passport_id_number',
+            validate: {
+                // TODO: add validation
+            }
+        },
+        mothersMaidenName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'mothers_maiden_name',
+            validate: {
+                // TODO: add cyrillic letters support
+                is: /^[a-z,.'-]+$/i
+            }
         }
     }, {
         tableName: 'clients',
@@ -61,7 +120,7 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: true,
         paranoid: true,
         classMethods: {
-            // TODO: реализовать методы модели + отношения
+
         },
         instanceMethods: {
             verifyPassword: function(password, cb) {

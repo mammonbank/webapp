@@ -8,3 +8,5 @@ client/public/libs
 Session.vim
 .netrwhist
 *~
+#Bash scripts
+*.sh

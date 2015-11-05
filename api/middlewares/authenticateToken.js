@@ -17,7 +17,7 @@ module.exports = function(req, res, next) {
         if (error) {
             return res.status(403).json({
                 success: false,
-                message: 'Failed to authenticate token.'
+                message: error.message
             });
         }
         
