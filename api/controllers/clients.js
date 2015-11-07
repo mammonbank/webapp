@@ -6,7 +6,8 @@ var express = require('express'),
     getClientId = require('../middlewares/getClientId'),
     Client  = require('models').Client,
     Sequelize = require('sequelize'),
-    HttpApiError = require('error').HttpApiError;
+    HttpApiError = require('error').HttpApiError,
+    speakeasy = require('speakeasy');
 
 router.get('/', authenticateToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
@@ -59,9 +60,26 @@ router.post('/', function(req, res, next) {
             mothersMaidenName: req.body.mothersMaidenName
         })
         .then(function(client) {
-            res.json({
-                clientId: client.id
+            var key = speakeasy.generate_key({
+                length: 20,
+                symbols: true,
+                qr_codes: true,
+                google_auth_qr: true,
+                name: 'mammonbank'
             });
+            
+            client.set('secret', key.base32);
+            client.save()
+                  .then(function(client) {
+                      res.json({
+                          clientId: client.id,
+                          key: key
+                      }); 
+                  })
+                  .catch(function(error) {
+                      next(error);
+                  });
+
         })
         .catch(Sequelize.ValidationError, function(error) {
             next(new HttpApiError(400, error.message));

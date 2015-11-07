@@ -181,6 +181,19 @@ module.exports = function(sequelize, DataTypes) {
                 // TODO: add cyrillic letters support
                 is: /^[a-z,.'-]+$/i
             }
+        },
+        //used in two-factor authentication
+        secret: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'secret'
+        },
+        //flag indicating that the client has been checked by bank
+        isConfirmed: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+            field: 'is_confirmed'
         }
     }, {
         tableName: 'clients',
