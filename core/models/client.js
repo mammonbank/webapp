@@ -68,16 +68,50 @@ module.exports = function(sequelize, DataTypes) {
         phoneNumber: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             field: 'phone_number',
             validate: {
-                // TODO: add validation
+                // TODO: add phone format validation
+                isUnique: function(value, next) {
+                    Client
+                        .find({
+                            where: { phoneNumber: value }
+                        })
+                        .then(function(client) {
+                            if (client) {
+                                return next('Phone number already in use!');
+                            }
+                            
+                            next();
+                        })
+                        .catch(function(error) {
+                            return next(error);
+                        });
+                }
             }
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate: {
-                isEmail: true
+                isEmail: true,
+                isUnique: function(value, next) {
+                    Client
+                        .find({
+                            where: { email: value }
+                        })
+                        .then(function(client) {
+                            if (client) {
+                                return next('Email already in use!');
+                            }
+                            
+                            next();
+                        })
+                        .catch(function(error) {
+                            return next(error);
+                        });
+                }
             }
         },
         password: {
@@ -92,17 +126,51 @@ module.exports = function(sequelize, DataTypes) {
         passportNumber: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             field: 'passport_number',
             validate: {
-                // TODO: add validation
+                // TODO: add format validation
+                isUnique: function(value, next) {
+                    Client
+                        .find({
+                            where: { passportNumber: value }
+                        })
+                        .then(function(client) {
+                            if (client) {
+                                return next('Passport number already in use!');
+                            }
+                            
+                            next();
+                        })
+                        .catch(function(error) {
+                            return next(error);
+                        });
+                }
             }
         },
         passportIdNumber: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             field: 'passport_id_number',
             validate: {
-                // TODO: add validation
+                // TODO: add format validation
+                isUnique: function(value, next) {
+                    Client
+                        .find({
+                            where: { passportIdNumber: value }
+                        })
+                        .then(function(client) {
+                            if (client) {
+                                return next('Passport id number already in use!');
+                            }
+                            
+                            next();
+                        })
+                        .catch(function(error) {
+                            return next(error);
+                        });
+                }
             }
         },
         mothersMaidenName: {

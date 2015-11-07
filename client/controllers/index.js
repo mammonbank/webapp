@@ -7,10 +7,6 @@ var express = require('express'),
     config = require('config'),
     HttpApiError = require('error').HttpApiError;
 
-router.post('/register', function(req, res, next) {
-    
-});
-
 router.post('/authenticate', function(req, res, next) {
     Client
         .findOne({

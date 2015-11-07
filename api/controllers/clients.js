@@ -4,7 +4,9 @@ var express = require('express'),
     router  = express.Router(),
     authenticateToken = require('../middlewares/authenticateToken'),
     getClientId = require('../middlewares/getClientId'),
-    Client  = require('models').Client;
+    Client  = require('models').Client,
+    Sequelize = require('sequelize'),
+    HttpApiError = require('error').HttpApiError;
 
 router.get('/', authenticateToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
@@ -41,7 +43,7 @@ router.get('/:clientId', getClientId, function(req, res, next) {
             next(error);
         });
 });
-        
+
 router.post('/', function(req, res, next) {
     Client
         .create({
@@ -60,6 +62,9 @@ router.post('/', function(req, res, next) {
             res.json({
                 clientId: client.id
             });
+        })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
         })
         .catch(function(error) {
             next(error);
