@@ -68,8 +68,8 @@ router.post('/', function(req, res, next) {
                 name: 'mammonbank'
             });
             
-            client.set('secret', key.base32);
-            client.save()
+            client.set('secret', key.base32)
+                  .save()
                   .then(function(client) {
                       res.json({
                           clientId: client.id,
