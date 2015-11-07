@@ -4,7 +4,8 @@ var express = require('express'),
     router  = express.Router(),
     Client = require('models').Client,
     jwt = require('jsonwebtoken'),
-    config = require('config');
+    config = require('config'),
+    HttpApiError = require('error').HttpApiError;
 
 router.post('/register', function(req, res, next) {
     
@@ -17,11 +18,8 @@ router.post('/authenticate', function(req, res, next) {
         })
         .then(function(client) {
             if (!client) {
-                res.json({
-                   success: false,
-                   message: 'Authentication failed. Username or password is invalid.' 
-                });
-                return;
+                return next(new HttpApiError(401, 
+                    'Authentication failed. Username or password is invalid.'));
             }
             
             client.verifyPassword(req.body.password, function(error, isMatch) {
@@ -30,11 +28,8 @@ router.post('/authenticate', function(req, res, next) {
                 }
                 
                 if (!isMatch) {
-                    res.json({
-                        success: false,
-                        message: 'Authentication failed. Username or password is invalid.' 
-                    });
-                    return;
+                    return next(new HttpApiError(401, 
+                        'Authentication failed. Username or password is invalid.'));
                 }
                 
                 var token = jwt.sign({ clientId: client.id }, config.security.tokenSecret, {

@@ -2,11 +2,11 @@
 
 var express = require('express'),
     router  = express.Router(),
-    //authenticateToken = require('../middlewares/authenticateToken'),
+    authenticateToken = require('../middlewares/authenticateToken'),
     getClientId = require('../middlewares/getClientId'),
     Client  = require('models').Client;
 
-router.get('/', function(req, res, next) {
+router.get('/', authenticateToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 

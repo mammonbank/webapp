@@ -6,9 +6,8 @@ var debug = require('debug')('mammonbank:client:error'),
 module.exports = function(error, req, res, next) {
     if (error instanceof HttpApiError) {
         debug(error);
-        res.status(error.statusCode);
-        res.json({
-            code: error.statusCode,
+        res.status(error.statusCode).json({
+            success: false,
             message: error.message
         });
     } else {
