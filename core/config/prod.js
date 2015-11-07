@@ -22,6 +22,7 @@ module.exports = {
     },
     security: {
         saltWorkFactor: 10,
-        tokenSecret: 'War is peace. Freedom is slavery. Ignorance is strength.'
+        tokenSecret: 'War is peace. Freedom is slavery. Ignorance is strength.',
+        tokenExpirationTime: '6h'
     }
 };

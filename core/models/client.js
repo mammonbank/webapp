@@ -5,6 +5,21 @@ var async = require('async'),
     config = require('config'),
     debug = require('debug')('mammonbank:client:db');
 
+/*
+    Client model fields:
+    {
+        firstName,
+        lastName,
+        patronymic,
+        dateOfBirth,
+        phoneNumber,
+        email,
+        password,
+        passportNumber,
+        passportIdNumber,
+        mothersMaidenName
+    }
+*/
 module.exports = function(sequelize, DataTypes) {
     var Client = sequelize.define('Client', {
         firstName: {
@@ -23,14 +38,80 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             field: 'last_name',
             validate: {
+                // TODO: add cyrillic letters support
                 is: /^[a-z,.'-]+$/i
+            }
+        },
+        patronymic: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'patronymic',
+            validate: {
+                // TODO: add cyrillic letters support
+                is: /^[a-z,.'-]+$/i
+            }
+        },
+        dateOfBirth: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            field: 'date_of_birth',
+            validate: {
+                isDate: true,
+                isAfter: '1900-01-01',
+                isBefore: function(value) {
+                    if (value > Date.now()) {
+                        throw new Error('Date of birth cannot be in the future');
+                    }
+                }
+            }
+        },
+        phoneNumber: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            field: 'phone_number',
+            validate: {
+                // TODO: add phone format validation
+                isUnique: function(value, next) {
+                    Client
+                        .find({
+                            where: { phoneNumber: value }
+                        })
+                        .then(function(client) {
+                            if (client) {
+                                return next('Phone number already in use!');
+                            }
+                            
+                            next();
+                        })
+                        .catch(function(error) {
+                            return next(error);
+                        });
+                }
             }
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate: {
-                isEmail: true
+                isEmail: true,
+                isUnique: function(value, next) {
+                    Client
+                        .find({
+                            where: { email: value }
+                        })
+                        .then(function(client) {
+                            if (client) {
+                                return next('Email already in use!');
+                            }
+                            
+                            next();
+                        })
+                        .catch(function(error) {
+                            return next(error);
+                        });
+                }
             }
         },
         password: {
@@ -42,18 +123,77 @@ module.exports = function(sequelize, DataTypes) {
                 is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
             }
         },
-        phoneNumber: {
-            type: DataTypes.STRING(50),
+        passportNumber: {
+            type: DataTypes.STRING,
             allowNull: false,
-            field: 'phone_number',
+            unique: true,
+            field: 'passport_number',
             validate: {
-                // TODO: add validation
+                // TODO: add format validation
+                isUnique: function(value, next) {
+                    Client
+                        .find({
+                            where: { passportNumber: value }
+                        })
+                        .then(function(client) {
+                            if (client) {
+                                return next('Passport number already in use!');
+                            }
+                            
+                            next();
+                        })
+                        .catch(function(error) {
+                            return next(error);
+                        });
+                }
             }
         },
-        authyId: {
+        passportIdNumber: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            field: 'passport_id_number',
+            validate: {
+                // TODO: add format validation
+                isUnique: function(value, next) {
+                    Client
+                        .find({
+                            where: { passportIdNumber: value }
+                        })
+                        .then(function(client) {
+                            if (client) {
+                                return next('Passport id number already in use!');
+                            }
+                            
+                            next();
+                        })
+                        .catch(function(error) {
+                            return next(error);
+                        });
+                }
+            }
+        },
+        mothersMaidenName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'mothers_maiden_name',
+            validate: {
+                // TODO: add cyrillic letters support
+                is: /^[a-z,.'-]+$/i
+            }
+        },
+        //used in two-factor authentication
+        secret: {
             type: DataTypes.STRING,
             allowNull: true,
-            field: 'authy_id'
+            field: 'secret'
+        },
+        //flag indicating that the client has been checked by bank
+        isConfirmed: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+            field: 'is_confirmed'
         }
     }, {
         tableName: 'clients',
@@ -61,7 +201,7 @@ module.exports = function(sequelize, DataTypes) {
         timestamps: true,
         paranoid: true,
         classMethods: {
-            // TODO: реализовать методы модели + отношения
+
         },
         instanceMethods: {
             verifyPassword: function(password, cb) {
