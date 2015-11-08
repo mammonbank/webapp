@@ -13,7 +13,6 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             field: 'title',
             validate: {
-                // Lowercase and uppercase letters, special symbols (,.'-):
                 // TODO: add cyrillic letters support
                 is: /^[a-z,.'-]+$/i
             }
@@ -26,7 +25,13 @@ module.exports = function(sequelize, DataTypes) {
         
         classMethods: {
             associate: function(models) {
-                CreditCategory.hasMany(models.CreditType);
+                CreditCategory.hasMany(models.CreditType, {
+                    onDelete: "CASCADE",
+                    foreignKey: {
+                        name: 'creditCategoryId',
+                        allowNull: false
+                    }
+                });
             }
         }
 

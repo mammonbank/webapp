@@ -39,8 +39,9 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             field: 'max_sum'
         },
+        //in months
         term: {
-            type: DataTypes.RANGE(DataTypes.DATE),
+            type: DataTypes.RANGE(DataTypes.INTEGER),
             allowNull: false,
             field: 'term'
         },
@@ -63,11 +64,22 @@ module.exports = function(sequelize, DataTypes) {
                 CreditType.belongsTo(models.CreditCategory, {
                     onDelete: "CASCADE",
                     foreignKey: {
+                        name: 'creditCategoryId',
                         allowNull: false
                     }
                 });
-                CreditType.hasMany(models.Credit);
-                CreditType.hasMany(models.CreditApplication);
+                CreditType.hasMany(models.Credit, {
+                    onDelete: "CASCADE",
+                    foreignKey: {
+                        allowNull: false
+                    }
+                });
+                CreditType.hasMany(models.CreditApplication, {
+                    onDelete: "CASCADE",
+                    foreignKey: {
+                        allowNull: false
+                    }
+                });
             }
         }
     
