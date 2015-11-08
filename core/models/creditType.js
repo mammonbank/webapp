@@ -67,6 +67,7 @@ module.exports = function(sequelize, DataTypes) {
                     }
                 });
                 CreditType.hasMany(models.Credit);
+                CreditType.hasMany(models.CreditApplication);
             }
         }
     

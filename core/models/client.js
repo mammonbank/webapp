@@ -206,6 +206,7 @@ module.exports = function(sequelize, DataTypes) {
         classMethods: {
             associate: function(models) {
                 Client.hasMany(models.Credit);
+                Client.hasMany(models.CreditApplication);
             }
         },
         
