@@ -17,7 +17,9 @@ var async = require('async'),
         password,
         passportNumber,
         passportIdNumber,
-        mothersMaidenName
+        mothersMaidenName,
+        secret,
+        isConfirmed
     }
 */
 module.exports = function(sequelize, DataTypes) {
@@ -200,9 +202,14 @@ module.exports = function(sequelize, DataTypes) {
         underscored: true,
         timestamps: true,
         paranoid: true,
+        
         classMethods: {
-
+            associate: function(models) {
+                Client.hasMany(models.Credit);
+                Client.hasMany(models.CreditApplication);
+            }
         },
+        
         instanceMethods: {
             verifyPassword: function(password, cb) {
                 bcrypt.compare(password, this.password, function(error, isMatch) {
