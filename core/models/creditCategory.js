@@ -21,17 +21,11 @@ module.exports = function(sequelize, DataTypes) {
         tableName: 'credit_categories',
         underscored: true,
         timestamps: true,
-        paranoid: true,
+        paranoid: false,
         
         classMethods: {
             associate: function(models) {
-                CreditCategory.hasMany(models.CreditType, {
-                    onDelete: "CASCADE",
-                    foreignKey: {
-                        name: 'creditCategoryId',
-                        allowNull: false
-                    }
-                });
+                CreditCategory.hasMany(models.CreditType);
             }
         }
 

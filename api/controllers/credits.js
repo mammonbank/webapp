@@ -3,8 +3,8 @@
 var express = require('express'),
     router  = express.Router(),
     //authenticateToken = require('../middlewares/authenticateToken'),
-    getCreditAppId = require('../middlewares/getCreditAppId'),
-    CreditApplication  = require('models').CreditApplication,
+    getCreditId = require('../middlewares/getCreditId'),
+    Credit  = require('models').Credit,
     Sequelize = require('sequelize'),
     HttpApiError = require('error').HttpApiError;
 
@@ -12,14 +12,14 @@ router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
-    CreditApplication
+    Credit
         .findAll({ offset: offset, limit: limit })
-        .then(function(creditApps) {
+        .then(function(credits) {
             res.json({
-                count: creditApps.length,
+                count: credits.length,
                 offset: offset,
                 limit: limit,
-                creditApps: creditApps
+                credits: credits
             });
         })
         .catch(function(error) {
@@ -27,17 +27,17 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.get('/:creditAppId', getCreditAppId, function(req, res, next) {
-    CreditApplication
-        .findById(req.creditAppId)
-        .then(function(creditApp) {
-            if (!creditApp) {
+router.get('/:creditId', getCreditId, function(req, res, next) {
+    Credit
+        .findById(req.creditId)
+        .then(function(credit) {
+            if (!credit) {
                 return res.json({
-                    message: 'No credit application has been found with given id'    
+                    message: 'No credit has been found with given id'    
                 });
             }
             
-            res.json(creditApp);
+            res.json(credit);
         })
         .catch(function(error) {
             next(error);
@@ -45,16 +45,17 @@ router.get('/:creditAppId', getCreditAppId, function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-    CreditApplication
+    Credit
         .create({
-            plannedSum: req.body.plannedSum,
-            plannedTerm: req.body.plannedTerm,
+            sum: req.body.sum,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
             credit_type_id: req.body.creditTypeId,
             client_id: req.body.clientId
         })
-        .then(function(creditApp) {            
+        .then(function(credit) {            
             res.json({
-                creditAppId: creditApp.id
+                creditId: credit.id
             }); 
         })
         .catch(Sequelize.ValidationError, function(error) {
@@ -65,14 +66,14 @@ router.post('/', function(req, res, next) {
         });
 });
 
-router.delete('/:creditAppId', getCreditAppId, function(req, res, next) {
-    CreditApplication
+router.delete('/:creditId', getCreditId, function(req, res, next) {
+    Credit
         .destroy({
-            where: { id: req.creditAppId }
+            where: { id: req.creditId }
         })
         .then(function() {
             res.json({
-                creditAppId: req.creditAppId
+                creditId: req.creditId
             });
         })
         .catch(function(error) {

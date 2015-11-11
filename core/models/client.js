@@ -205,18 +205,8 @@ module.exports = function(sequelize, DataTypes) {
         
         classMethods: {
             associate: function(models) {
-                Client.hasMany(models.Credit, {
-                    onDelete: "CASCADE",
-                    foreignKey: {
-                        allowNull: false
-                    }
-                });
-                Client.hasMany(models.CreditApplication, {
-                    onDelete: "CASCADE",
-                    foreignKey: {
-                        allowNull: false
-                    }
-                });
+                Client.hasMany(models.Credit);
+                Client.hasMany(models.CreditApplication);
             }
         },
         

@@ -19,7 +19,7 @@ module.exports = function(sequelize, DataTypes) {
             }
         },
         plannedTerm: {
-            type: DataTypes.RANGE(DataTypes.DATE),
+            type: DataTypes.RANGE(DataTypes.INTEGER),
             allowNull: false,
             field: 'planned_term'
         },

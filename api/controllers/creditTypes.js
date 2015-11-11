@@ -53,7 +53,7 @@ router.post('/', function(req, res, next) {
             maxSum: req.body.maxSum,
             term: req.body.term,
             interest: req.body.interest,
-            creditCategoryId: req.body.creditCategoryId
+            credit_category_id: req.body.creditCategoryId
         })
         .then(function(creditType) {         
             res.json({
