@@ -5,7 +5,7 @@ var express = require('express'),
 
 router.use('/api/clients', require('./clients'));
 
-//NOTE: future: /api/clients/:clientId/credit/applications endpoints
+router.use('/api/client', require('./clientAssets'));
 
 router.use('/api/credit/applications', require('./creditApplications'));
 router.use('/api/credit/categories', require('./creditCategories'));
