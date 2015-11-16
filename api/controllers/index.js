@@ -5,7 +5,7 @@ var express = require('express'),
 
 router.use('/api/clients', require('./clients'));
 
-router.use('/api/client', require('./clientCredits'));
+router.use('/api/client', require('./clientAssets'));
 
 router.use('/api/credit/applications', require('./creditApplications'));
 router.use('/api/credit/categories', require('./creditCategories'));
