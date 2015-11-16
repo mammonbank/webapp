@@ -1,5 +1,8 @@
 'use strict';
 
+var debug = require('debug')('mammonbank:client:db'),
+    _ = require('lodash');
+
 /*
     CreditApplication model fields:
     {
@@ -50,8 +53,45 @@ module.exports = function(sequelize, DataTypes) {
                     }
                 });
             }
+        },
+        
+        instanceMethods: {
+            checkForValidity: function(cb) {
+                var self = this;
+                this.getCreditType()
+                    .then(function(creditType) {
+                        var minMonths = creditType.term[0],
+                            maxMonths = creditType.term[1],
+                            plannedMinMonths = self.plannedTerm[0],
+                            plannedMaxMonths = self.plannedTerm[1],
+                            isValid = !!( _.inRange(self.plannedSum, creditType.minSum, creditType.maxSum) &&
+                                 plannedMinMonths >= minMonths &&
+                                 plannedMaxMonths <= maxMonths );
+                        
+                        cb(null, isValid);
+                    })
+                    .catch(function(error) {
+                        cb(error);
+                    });
+            }
         }
     
+    });
+    
+    CreditApplication.hook('beforeCreate', function(creditApp, options, fn) {
+        creditApp.checkForValidity(function(error, isValid) {
+            if (error) {
+                debug(error);
+                fn(error);
+            }
+
+            if (isValid) {
+                fn(null, creditApp);
+            } else {
+                fn(new sequelize.ValidationError('Credit application validation failed!'));
+            }
+            
+        });
     });
 
     return CreditApplication;
