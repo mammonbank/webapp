@@ -1,5 +1,9 @@
 'use strict';
 
+var debug = require('debug')('mammonbank:client:db'),
+    moment = require('moment'),
+    _ = require('lodash');
+
 /*
     Credit model fields:
     {
@@ -21,12 +25,18 @@ module.exports = function(sequelize, DataTypes) {
         startDate: {
             type: DataTypes.DATE,
             allowNull: false,
-            field: 'start_date'
+            field: 'start_date',
+            validate: {
+                isDate: true
+            }
         },
         endDate: {
             type: DataTypes.DATE,
             allowNull: false,
-            field: 'start_date'
+            field: 'end_date',
+            validate: {
+                isDate: true
+            }
         }
     }, {
         tableName: 'credits',
@@ -49,8 +59,43 @@ module.exports = function(sequelize, DataTypes) {
                     }
                 });
             }
+        },
+        
+        instanceMethods: {
+            checkForValidity: function(cb) {
+                var self = this;
+                this.getCreditType()
+                    .then(function(creditType) {
+                        var minMonths = creditType.term[0],
+                            maxMonths = creditType.term[1],
+                            months = moment(self.endDate).diff(moment(self.startDate), 'months'),
+                            isValid = !!( _.inRange(self.sum, creditType.minSum, creditType.maxSum) &&
+                                 _.inRange(months, minMonths, maxMonths) );
+                        
+                        cb(null, isValid);
+                    })
+                    .catch(function(error) {
+                        cb(error);
+                    });
+            }
         }
     
+    });
+    
+    Credit.hook('beforeCreate', function(credit, options, fn) {
+        credit.checkForValidity(function(error, isValid) {
+            if (error) {
+                debug(error);
+                fn(error);
+            }
+
+            if (isValid) {
+                fn(null, credit);
+            } else {
+                fn(new sequelize.ValidationError('Credit validation failed!'));
+            }
+            
+        });
     });
 
     return Credit;
