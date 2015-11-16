@@ -1,32 +1,20 @@
-doctype html
-html
-    head
-        link(href='public/libs/materialize/dist/css/materialize.min.css', rel='stylesheet')
-        link(href='public/styles/style.css', rel='stylesheet')
-        script(src='public/libs/jquery/dist/jquery.min.js')
-        script(src='public/libs/materialize/dist/js/materialize.min.js')
-        title Index
-    body
-        nav
-            .nav-wrapper
-                a(href='/').brand-logo MammonBank
-                ul.right.hide-on-med-and-down
-                    li
-                        a link
-        .container
-            .row
-                form.col.s12
-                    .row
-                        .input-field.col.s6
-                            input(
-                                id='first_name'
-                                type='text'
-                            ).validate
-                            label(for='first_name') First Name
-                        .input-field.col.s6
-                            input(
-                                id='password'
-                                type='password'
-                            ).validate
-                            label(for='password') Password
-                        button.btn.waves-effect.waves-light(type='submit' name='action') Register
+include head.jade
+body
+    include header.jade
+    .container
+        .row
+            form.col.s12
+                .row
+                    .input-field.col.s6
+                        input(
+                            id='first_name'
+                            type='text'
+                        ).validate
+                        label(for='first_name') First Name
+                    .input-field.col.s6
+                        input(
+                            id='password'
+                            type='password'
+                        ).validate
+                        label(for='password') Password
+                    button.btn.waves-effect.waves-light(type='submit' name='action') Register

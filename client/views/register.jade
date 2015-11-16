@@ -1,0 +1,70 @@
+include head.jade
+body
+    include header.jade
+    .container
+        .step1
+            .row
+                .input-field.col.s6
+                    input(
+                        id='firstName'
+                        type='text'
+                    ).validate
+                    label(for='firstName') First Name
+                .input-field.col.s6
+                    input(
+                        id='lastName'
+                        type='text'
+                    ).validate
+                    label(for='lastName') Last Name
+            .row
+                .input-field.col.s6
+                    input(
+                        id='patronymic'
+                        type='text'
+                    ).validate
+                    label(for='patronymic') Patronymic
+                .input-field.col.s6
+                    input(
+                        id='dateOfBirth',
+                        type='date'
+                    ).validate
+            .row
+                .input-field.col.s6
+                    input(
+                        id='phoneNumber'
+                        type='text'
+                    ).validate
+                    laber(for='phoneNumber') Phone Number
+                .input-field.col.s6
+                    input(
+                        id='password'
+                        type='password'
+                    ).validate
+                    label(for='password') Password
+            .row
+                .input-field.col.s6
+                    input(
+                        id='email'
+                        type='email'
+                    ).validate
+                    label(for='email') Email
+                .input-field.col.s6
+                    input(
+                        id='passportNumber'
+                        type='text'
+                    ).validate
+                    label(for='passportNumber') Passport Number
+            .row
+                .input-field.col.s6
+                    input(
+                        id='passportIdNumber'
+                        type='text'
+                    ).validate
+                    label(for='passportIdNumber') Passport Id Number
+                .input-field.col.s6
+                    input(
+                        id='mothersMaidenName',
+                        type='text'
+                    ).validate
+                    label(for='mothersMaidenName') Mothers Maiden Name
+            button.btn.waves-effect.waves-light.register__button(type='submit' name='register') Register

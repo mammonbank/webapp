@@ -46,6 +46,8 @@ router.get('/:clientId', getClientId, function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+
     Client
         .create({
             firstName: req.body.firstName,
