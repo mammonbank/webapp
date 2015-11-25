@@ -4,9 +4,14 @@ var env = process.env;
 
 module.exports = {
     server: {
+        apiPort: env.NODE_API_PORT || 3000,
         clientPort: env.NODE_CLIENT_PORT || 3001,
         bankPort: env.NODE_BANK_PORT || 3002,
-        apiPort: env.NODE_API_PORT || 3000
+        allowedOrigins: [
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'http://localhost:3002'
+        ]
     },
     db: {
         dbname: env.NODE_DB_NAME || 'mammonbank',
