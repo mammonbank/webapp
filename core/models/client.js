@@ -207,6 +207,7 @@ module.exports = function(sequelize, DataTypes) {
             associate: function(models) {
                 Client.hasMany(models.Credit);
                 Client.hasMany(models.CreditApplication);
+                Client.hasMany(models.ClientAccount);
             }
         },
         
@@ -240,7 +241,7 @@ module.exports = function(sequelize, DataTypes) {
                 user.password = hashedPassword;
                 fn(null, user);
             });
-        });
+    });
 
     return Client;
 };
