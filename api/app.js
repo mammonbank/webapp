@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+app.use(require('./middlewares/allowCrossOrigin'));
 app.use(require('./controllers'));
 
 app.use(require('error/handler/404_json'));
