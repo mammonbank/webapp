@@ -2,7 +2,8 @@
 
 var debug = require('debug')('mammonbank:client:db'),
     moment = require('moment'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    Decimal = require('decimal');
 
 /*
     Credit model fields:
@@ -86,15 +87,39 @@ module.exports = function(sequelize, DataTypes) {
         credit.checkForValidity(function(error, isValid) {
             if (error) {
                 debug(error);
-                fn(error);
+                return fn(error);
             }
 
-            if (isValid) {
-                fn(null, credit);
-            } else {
-                fn(new sequelize.ValidationError('Credit validation failed!'));
+            if (!isValid) {
+                return fn(new sequelize.ValidationError('Credit validation failed!'));
             }
-            
+
+            var totalMoneySupply;
+
+            Credit
+                .findAll({
+                    attributes: [
+                        [sequelize.fn('SUM', sequelize.col('sum')), 'totalSum']
+                    ]
+                })
+                .then(function(data) {
+                    totalMoneySupply =
+                        new Decimal(data[0].dataValues.totalSum).add(credit.sum);
+                    return sequelize.models.BankInfo.findById(1);
+                })
+                .then(function(bankInfo) {
+                    //if this is true then bank is made too many loans, so it must stop in order 
+                    //to provide immediate liquidity to depositors
+                    if ( totalMoneySupply > bankInfo.calculateMaxAmountOfMoneySupply() ) {
+                        return fn(new Error('We are sorry, bank cannot make loans right now'));
+                    }
+
+                    fn(null, credit);
+                })
+                .catch(function(error) {
+                    fn(error);
+                });
+
         });
     });
 

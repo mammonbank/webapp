@@ -1,6 +1,8 @@
 'use strict';
 
 /*
+    Fractional-reserve banking
+    
     BankInfo model fields:
     {
         baseMoney
@@ -18,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
                 min: 0
             }
         },
-        //set by a Central Bank. Usually 10%
+        //set by a Central Bank. Usually 10% (or less)
         reserveRatio: {
             type: DataTypes.DECIMAL(3, 2),
             allowNull: false,
