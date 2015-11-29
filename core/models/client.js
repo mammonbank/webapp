@@ -31,8 +31,7 @@ module.exports = function(sequelize, DataTypes) {
             field: 'first_name',
             validate: {
                 // Lowercase and uppercase letters, special symbols (,.'-):
-                // TODO: add cyrillic letters support
-                is: /^[a-z,.'-]+$/i
+                is: /^[а-яА-ЯёЁa-z,.'-]+$/i
             }
         },
         lastName: {
@@ -40,8 +39,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             field: 'last_name',
             validate: {
-                // TODO: add cyrillic letters support
-                is: /^[a-z,.'-]+$/i
+                is: /^[а-яА-ЯёЁa-z,.'-]+$/i
             }
         },
         patronymic: {
@@ -49,8 +47,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             field: 'patronymic',
             validate: {
-                // TODO: add cyrillic letters support
-                is: /^[a-z,.'-]+$/i
+                is: /^[а-яА-ЯёЁa-z,.'-]+$/i
             }
         },
         dateOfBirth: {
@@ -122,7 +119,7 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 // Minimum 8 characters at least 1 uppercase letter,
                 // 1 lowercase letter and 1 number:
-                is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+                is: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[а-яА-ЯёЁa-zA-Z\d]{8,}$/
             }
         },
         passportNumber: {
@@ -180,8 +177,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             field: 'mothers_maiden_name',
             validate: {
-                // TODO: add cyrillic letters support
-                is: /^[a-z,.'-]+$/i
+                is: /^[а-яА-ЯёЁa-z,.'-]+$/i
             }
         },
         //used in two-factor authentication
@@ -221,6 +217,8 @@ module.exports = function(sequelize, DataTypes) {
                     cb(null, isMatch);
                 });
             }
+            
+            //TODO: add various methods regarding payment
         }
     });
 

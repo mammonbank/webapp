@@ -1,5 +1,7 @@
 'use strict';
 
+var Decimal = require('decimal');
+
 /*
     Fractional-reserve banking
     
@@ -38,7 +40,7 @@ module.exports = function(sequelize, DataTypes) {
         instanceMethods: {
             //total sum of all our loans cannot exceed this value
             calculateMaxAmountOfMoneySupply: function() {
-                return Math.floor(this.baseMoney / this.reserveRatio);
+                return Math.floor( new Decimal(this.baseMoney).div(this.reserveRatio) );
             }
         }
     

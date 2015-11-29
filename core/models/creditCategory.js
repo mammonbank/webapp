@@ -13,8 +13,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             field: 'title',
             validate: {
-                // TODO: add cyrillic letters support
-                is: /^[a-z,.'-]+$/i
+                is: /^[0-9а-яА-ЯёЁa-z,.'-]+$/i
             }
         }
     }, {
