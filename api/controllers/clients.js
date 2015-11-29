@@ -2,14 +2,15 @@
 
 var express = require('express'),
     router  = express.Router(),
-    authenticateToken = require('../middlewares/authenticateToken'),
+    //authenticateToken = require('../middlewares/authenticateToken'),
+    prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getClientId = require('../middlewares/getClientId'),
     Client  = require('models').Client,
     Sequelize = require('sequelize'),
     HttpApiError = require('error').HttpApiError,
     speakeasy = require('speakeasy');
 
-router.get('/', authenticateToken, function(req, res, next) {
+router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
@@ -83,6 +84,23 @@ router.post('/', function(req, res, next) {
         })
         .catch(Sequelize.ValidationError, function(error) {
             next(new HttpApiError(400, error.message));
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
+router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, next) {
+    Client
+        .update(req.updateObj, {
+            where: {
+                id: req.clientId
+            }
+        })
+        .then(function() {
+            res.json({
+                updated: req.clientId
+            });
         })
         .catch(function(error) {
             next(error);

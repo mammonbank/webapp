@@ -3,6 +3,7 @@
 var express = require('express'),
     router  = express.Router(),
     //authenticateToken = require('../middlewares/authenticateToken'),
+    prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     BankInfo  = require('models').BankInfo,
     Sequelize = require('sequelize'),
     HttpApiError = require('error').HttpApiError;
@@ -30,7 +31,7 @@ router.post('/', function(req, res, next) {
         .then(function(creditCat) {            
             res.json({
                 success: true
-            }); 
+            });
         })
         .catch(Sequelize.ValidationError, function(error) {
             next(new HttpApiError(400, error.message));
@@ -40,6 +41,21 @@ router.post('/', function(req, res, next) {
         });
 });
 
-//TODO: update
+router.patch('/', prepareUpdateObject, function(req, res, next) {
+    BankInfo
+        .update(req.updateObj, {
+            where: {
+                id: 1
+            }
+        })
+        .then(function() {
+            res.json({
+                updated: true
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
 
 module.exports = router;
