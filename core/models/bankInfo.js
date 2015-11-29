@@ -1,6 +1,10 @@
 'use strict';
 
+var Decimal = require('decimal');
+
 /*
+    Fractional-reserve banking
+    
     BankInfo model fields:
     {
         baseMoney
@@ -18,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
                 min: 0
             }
         },
-        //set by a Central Bank. Usually 10%
+        //set by a Central Bank. Usually 10% (or less)
         reserveRatio: {
             type: DataTypes.DECIMAL(3, 2),
             allowNull: false,
@@ -36,7 +40,7 @@ module.exports = function(sequelize, DataTypes) {
         instanceMethods: {
             //total sum of all our loans cannot exceed this value
             calculateMaxAmountOfMoneySupply: function() {
-                return Math.floor(this.baseMoney / this.reserveRatio);
+                return Math.floor( new Decimal(this.baseMoney).div(this.reserveRatio) );
             }
         }
     

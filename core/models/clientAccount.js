@@ -3,7 +3,8 @@
 /*
     ClientAccount model fields:
     {
-        amount
+        amount,
+        outstandingLoan
     }
 */
 module.exports = function(sequelize, DataTypes) {
@@ -12,6 +13,14 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
             field: 'amount',
+            validate: {
+                min: 0
+            }
+        },
+        outstandingLoan: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: false,
+            field: 'outstanding_loan',
             validate: {
                 min: 0
             }

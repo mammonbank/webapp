@@ -3,6 +3,8 @@
 var express = require('express'),
     router = express.Router();
 
+router.use('/api/bank/info', require('./bankInfo'));
+
 router.use('/api/clients', require('./clients'));
 
 router.use('/api/client', require('./clientAssets'));

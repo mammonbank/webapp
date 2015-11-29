@@ -3,6 +3,7 @@
 var express = require('express'),
     router  = express.Router(),
     //authenticateToken = require('../middlewares/authenticateToken'),
+    prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditCatId = require('../middlewares/getCreditCatId'),
     CreditCategory  = require('models').CreditCategory,
     Sequelize = require('sequelize'),
@@ -56,6 +57,23 @@ router.post('/', function(req, res, next) {
         })
         .catch(Sequelize.ValidationError, function(error) {
             next(new HttpApiError(400, error.message));
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
+router.patch('/:creditCatId', getCreditCatId, prepareUpdateObject, function(req, res, next) {
+    CreditCategory
+        .update(req.updateObj, {
+            where: {
+                id: req.creditCatId
+            }
+        })
+        .then(function() {
+            res.json({
+                updated: req.creditCatId
+            });
         })
         .catch(function(error) {
             next(error);

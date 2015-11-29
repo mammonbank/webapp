@@ -2,7 +2,7 @@
 
 var fs         = require('fs'),
     path       = require('path'),
-    debug      = require('debug')('mammonbank:client:db'),
+    debug      = require('debug')('mammonbank:api'),
     Sequelize  = require('sequelize'),
     config     = require('config'),
     sequelize  = new Sequelize(
