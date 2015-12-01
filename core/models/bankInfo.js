@@ -1,19 +1,19 @@
 'use strict';
 
-var Decimal = require('decimal');
-
 /*
     Fractional-reserve banking
     
     BankInfo model fields:
     {
-        baseMoney
+        baseMoney,
+        moneySupply,
         reserveRatio
     }
 */
 module.exports = function(sequelize, DataTypes) {
     var BankInfo = sequelize.define('BankInfo', {
-        //every time a bank accepts a deposit this value grows
+        //baseMoney += deposit * reserveRatio
+        //acts as banks' reserves
         baseMoney: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
@@ -22,7 +22,19 @@ module.exports = function(sequelize, DataTypes) {
                 min: 0
             }
         },
-        //set by a Central Bank. Usually 10% (or less)
+        //moneySupply += deposit * (1 - reserveRatio)
+        //moneySupply += fee credit
+        //moneySupply -= credit
+        //acts as banks' lending money
+        moneySupply: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: false,
+            field: 'money_supply',
+            validate: {
+                min: 0
+            }
+        },
+        //set by a Central Bank. Usually less than 10%
         reserveRatio: {
             type: DataTypes.DECIMAL(3, 2),
             allowNull: false,
@@ -30,7 +42,8 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 min: 0
             }
-        }
+        },
+
     }, {
         tableName: 'bank_info',
         underscored: true,
@@ -39,8 +52,8 @@ module.exports = function(sequelize, DataTypes) {
         
         instanceMethods: {
             //total sum of all our loans cannot exceed this value
-            calculateMaxAmountOfMoneySupply: function() {
-                return Math.floor( new Decimal(this.baseMoney).div(this.reserveRatio) );
+            getMaxAmountOfMoneySupply: function() {
+                return this.moneySupply;
             }
         }
     

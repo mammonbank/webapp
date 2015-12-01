@@ -49,7 +49,6 @@ router.post('/', function(req, res, next) {
     CreditType
         .create({
             title: req.body.title,
-            currency: req.body.currency,
             minSum: req.body.minSum,
             maxSum: req.body.maxSum,
             term: req.body.term,

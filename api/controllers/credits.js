@@ -6,7 +6,9 @@ var express = require('express'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditId = require('../middlewares/getCreditId'),
     Credit  = require('models').Credit,
-    Sequelize = require('sequelize'),
+    BankInfo = require('models').BankInfo,
+    Sequelize = require('models').Sequelize,
+    sequelize = require('models').sequelize,
     HttpApiError = require('error').HttpApiError;
 
 router.get('/', function(req, res, next) {
@@ -46,25 +48,43 @@ router.get('/:creditId', getCreditId, function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-    Credit
-        .create({
-            sum: req.body.sum,
-            startDate: req.body.startDate,
-            endDate: req.body.endDate,
-            credit_type_id: req.body.creditTypeId,
-            client_id: req.body.clientId
+    var creditId;
+    sequelize.transaction(function(t) {
+       var creditSum;
+       return Credit.create({
+           sum: req.body.sum,
+           //at first outstandingLoan equals to credit sum
+           outstandingLoan: req.body.sum,
+           startDate: req.body.startDate,
+           endDate: req.body.endDate,
+           credit_type_id: req.body.creditTypeId,
+           client_id: req.body.clientId
+        }, { transaction: t })
+        .then(function(credit) {
+            creditSum = credit.sum;
+            creditId = credit.id;
+            return BankInfo.findById(1, { transaction: t });
         })
-        .then(function(credit) {            
-            res.json({
-                creditId: credit.id
-            }); 
-        })
-        .catch(Sequelize.ValidationError, function(error) {
-            next(new HttpApiError(400, error.message));
-        })
-        .catch(function(error) {
-            next(error);
+        .then(function(bankInfo) {
+            return BankInfo.update({
+                moneySupply: bankInfo.moneySupply - creditSum
+            }, {
+                where: { id: 1 },
+                transaction: t
+            });
         });
+    })
+    .then(function() {            
+        res.json({
+            creditId: creditId
+        }); 
+    })
+    .catch(Sequelize.ValidationError, function(error) {
+        next(new HttpApiError(400, error.message));
+    })
+    .catch(function(error) {
+        next(error);
+    });
 });
 
 router.patch('/:creditId', getCreditId, prepareUpdateObject, function(req, res, next) {

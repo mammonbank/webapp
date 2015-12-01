@@ -21,13 +21,6 @@ module.exports = function(sequelize, DataTypes) {
                 is: /^[0-9а-яА-ЯёЁa-z,.'-]+$/i
             }
         },
-        currency: {
-            type: DataTypes.ENUM,
-            values: ['BYR', 'USD', 'EUR', 'RUB'],
-            defaultValue: 'BYR',
-            allowNull: false,
-            field: 'currency'
-        },
         minSum: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
@@ -45,11 +38,12 @@ module.exports = function(sequelize, DataTypes) {
             field: 'term'
         },
         interest: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.DECIMAL(3, 2),
             allowNull: false,
             field: 'interest',
             validate: {
-                min: 0
+                min: 0,
+                max: 1
             }
         }
     }, {

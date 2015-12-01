@@ -14,3 +14,15 @@ util.inherits(HttpApiError, Error);
 HttpApiError.prototype.name = 'HttpApiError';
 
 exports.HttpApiError = HttpApiError;
+
+
+function BankError(message) {
+    this.message = message;
+    Error.captureStackTrace(this, BankError);
+}
+
+util.inherits(BankError, Error);
+
+BankError.prototype.name = 'BankError';
+
+exports.BankError = BankError;
