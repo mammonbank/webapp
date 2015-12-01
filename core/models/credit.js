@@ -126,7 +126,7 @@ module.exports = function(sequelize, DataTypes) {
                     }
 
                     self.outstandingLoan = new Decimal(self.outstandingLoan)
-                                                .minus(self.getStaticMonthFee())
+                                                .sub(self.getStaticMonthFee())
                                                 .toNumber();
 
 

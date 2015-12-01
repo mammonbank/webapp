@@ -6,10 +6,12 @@ var express = require('express'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditId = require('../middlewares/getCreditId'),
     Credit  = require('models').Credit,
+    ClientAccount = require('models').ClientAccount,
     BankInfo = require('models').BankInfo,
     Sequelize = require('models').Sequelize,
     sequelize = require('models').sequelize,
-    HttpApiError = require('error').HttpApiError;
+    HttpApiError = require('error').HttpApiError,
+    Decimal = require('decimal');
 
 router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
@@ -49,8 +51,10 @@ router.get('/:creditId', getCreditId, function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     var creditId;
+
     sequelize.transaction(function(t) {
        var creditSum;
+       //first - create credit
        return Credit.create({
            sum: req.body.sum,
            //at first outstandingLoan equals to credit sum
@@ -60,20 +64,42 @@ router.post('/', function(req, res, next) {
            credit_type_id: req.body.creditTypeId,
            client_id: req.body.clientId
         }, { transaction: t })
+        //second - find corresponding client account
         .then(function(credit) {
             creditSum = credit.sum;
             creditId = credit.id;
+            
+            return ClientAccount.findOne({
+                where: {
+                    client_id: credit.client_id
+                },
+                transaction: t
+            });
+        })
+        //third - add credit sum to account's amount of money
+        .then(function(clientAccount) {
+            return ClientAccount.update({
+                amount: new Decimal(clientAccount.amount).add(creditSum).toNumber()
+            }, {
+                where: { id: clientAccount.id },
+                transaction: t
+            });
+        })
+        //forth - find bank info
+        .then(function(clientAccount) {
             return BankInfo.findById(1, { transaction: t });
         })
+        //fifth - decrease bank's moneySupply
         .then(function(bankInfo) {
             return BankInfo.update({
-                moneySupply: bankInfo.moneySupply - creditSum
+                moneySupply: new Decimal(bankInfo.moneySupply).sub(creditSum).toNumber()
             }, {
                 where: { id: 1 },
                 transaction: t
             });
         });
     })
+    //at this point transaction either has been committed or rolled back
     .then(function() {            
         res.json({
             creditId: creditId

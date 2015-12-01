@@ -55,7 +55,7 @@ router.post('/step-2', function(req, res, next) {
                 return next(new HttpApiError(404, 'This is not the page you are looking for'));
             }
             
-            var oneTimePassword = +speakeasy.totp({
+            var oneTimePassword = speakeasy.totp({
                 key: client.secret,
                 encoding: 'base32'
             });
