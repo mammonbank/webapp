@@ -13,14 +13,14 @@ gulp.task('watch', function() {
 });
 
 gulp.task('js', function() {
-    gulp.src('./client/blocks/**/*.js')
-        .pipe(concat('_bank.js'))
+    gulp.src('./client/js/**/*.js')
+        //.pipe(concat('_bank.js'))
         .pipe(gulp.dest('./client/public/js'));
 
 });
 
 gulp.task('dev', function() {
-    gulp.watch('./client/blocks/**/*.js', ['js']);
+    gulp.watch('./client/js/**/*.js', ['js']);
 });
 
 gulp.task('default', ['clientAssets', 'watch']);

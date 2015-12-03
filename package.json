@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "NODE_PATH=core node main.js",
-    "start-client": "NODE_PATH=core DEBUG=mammonbank:client,mammonbank:client:db,mammonbank:client:error node client/bin/www",
+    "start-client": "gulp js && NODE_PATH=core DEBUG=mammonbank:client,mammonbank:client:db,mammonbank:client:error node client/bin/www",
     "start-bank": "NODE_PATH=core DEBUG=mammonbank:admin node bank/bin/www",
     "start-api": "NODE_PATH=core DEBUG=mammonbank:api node api/bin/www",
     "lint": "jshint .",

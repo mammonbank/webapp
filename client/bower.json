@@ -9,5 +9,10 @@
   "license": "MIT",
   "dependencies": {
     "materialize": "~0.97.1"
+  },
+  "devDependencies": {
+    "backbone": "~1.2.3",
+    "requirejs": "~2.1.22",
+    "underscore": "~1.8.3"
   }
 }
