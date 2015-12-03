@@ -1,14 +1,16 @@
 'use strict';
 
 var debug = require('debug')('mammonbank:client:db'),
-    moment = require('moment'),
+    helper = require('helper'),
     _ = require('lodash'),
-    Decimal = require('decimal');
+    Decimal = require('decimal'),
+    BankError = require('error').BankError;
 
 /*
     Credit model fields:
     {
         sum,
+        outstandingLoan,
         startDate,
         endDate
     }
@@ -19,6 +21,14 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
             field: 'sum',
+            validate: {
+                min: 0
+            }
+        },
+        outstandingLoan: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: false,
+            field: 'outstanding_loan',
             validate: {
                 min: 0
             }
@@ -69,7 +79,7 @@ module.exports = function(sequelize, DataTypes) {
                     .then(function(creditType) {
                         var minMonths = creditType.term[0],
                             maxMonths = creditType.term[1],
-                            months = moment(self.endDate).diff(moment(self.startDate), 'months'),
+                            months = helper.getMonthsNumber(self.startDate, self.endDate),
                             isValid = !!( _.inRange(self.sum, creditType.minSum, creditType.maxSum) &&
                                  _.inRange(months, minMonths, maxMonths) );
                         
@@ -78,6 +88,49 @@ module.exports = function(sequelize, DataTypes) {
                     .catch(function(error) {
                         cb(error);
                     });
+            },
+
+            //without interest on loan
+            getStaticMonthFee: function() {
+                var months = helper.getMonthsNumber(this.startDate, this.endDate);
+                return new Decimal(this.sum).div(months).toNumber();
+            },
+            
+            //with interest on loan
+            getMonthFee: function(cb) {
+                var self = this;
+
+                this.getCreditType()
+                    .then(function(creditType) {
+                        var percentAmount = new Decimal(self.outstandingLoan)
+                                                .times(creditType.interest);
+                        cb( null, percentAmount.add(self.getStaticMonthFee).toNumber() );
+                    })
+                    .catch(function(error) {
+                        cb(error);
+                    });
+            },
+
+            //invoked in the scheduler
+            payCredit: function(sum, fn) {
+                var self = this;
+
+                this.getMonthFee(function(error, monthFee) {
+                    if (error) {
+                        return fn(error);
+                    }
+
+                    if (sum < monthFee) {
+                        return fn(new BankError('The sum is less than month fee!'));
+                        //TODO: начислить дополнительную выплату из-за просрочки
+                    }
+
+                    self.outstandingLoan = new Decimal(self.outstandingLoan)
+                                                .sub(self.getStaticMonthFee())
+                                                .toNumber();
+
+
+                });
             }
         }
     
@@ -104,13 +157,16 @@ module.exports = function(sequelize, DataTypes) {
                 })
                 .then(function(data) {
                     totalMoneySupply =
-                        new Decimal(data[0].dataValues.totalSum).add(credit.sum);
+                        new Decimal(data[0].dataValues.totalSum)
+                            .add(credit.sum)
+                            .toNumber();
                     return sequelize.models.BankInfo.findById(1);
                 })
                 .then(function(bankInfo) {
                     //if this is true then bank is made too many loans, so it must stop in order 
                     //to provide immediate liquidity to depositors
-                    if ( totalMoneySupply > bankInfo.calculateMaxAmountOfMoneySupply() ) {
+                    console.log(totalMoneySupply, bankInfo.getMaxAmountOfMoneySupply());
+                    if ( totalMoneySupply > bankInfo.getMaxAmountOfMoneySupply() ) {
                         return fn(new Error('We are sorry, bank cannot make loans right now'));
                     }
 

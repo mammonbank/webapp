@@ -14,6 +14,7 @@ router.get('/', function(req, res, next) {
         .then(function(bankInfo) {
             res.json({
                 baseMoney: bankInfo.baseMoney,
+                moneySupply: bankInfo.moneySupply,
                 reserveRatio: bankInfo.reserveRatio
             });
         })
@@ -26,9 +27,10 @@ router.post('/', function(req, res, next) {
     BankInfo
         .create({
             baseMoney: req.body.baseMoney,
+            moneySupply: req.body.moneySupply,
             reserveRatio: req.body.reserveRatio
         })
-        .then(function(creditCat) {            
+        .then(function(bankInfo) {            
             res.json({
                 success: true
             });
@@ -52,6 +54,9 @@ router.patch('/', prepareUpdateObject, function(req, res, next) {
             res.json({
                 updated: true
             });
+        })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
         })
         .catch(function(error) {
             next(error);

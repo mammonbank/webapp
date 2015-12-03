@@ -30,7 +30,6 @@ router.post('/step-1', function(req, res, next) {
                 }
                 
                 res.json({
-                    success: true,
                     clientId: client.id
                 });
                 
@@ -69,7 +68,6 @@ router.post('/step-2', function(req, res, next) {
             });
             
             res.json({
-                success: true,
                 token: token
             });
         })

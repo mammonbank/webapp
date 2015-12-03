@@ -6,7 +6,9 @@ var express = require('express'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getClientId = require('../middlewares/getClientId'),
     Client  = require('models').Client,
-    Sequelize = require('sequelize'),
+    ClientAccount = require('models').ClientAccount,
+    Sequelize = require('models').Sequelize,
+    sequelize = require('models').sequelize,
     HttpApiError = require('error').HttpApiError,
     speakeasy = require('speakeasy');
 
@@ -47,8 +49,12 @@ router.get('/:clientId', getClientId, function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-    Client
-        .create({
+    var clientId, 
+        key;
+
+    sequelize.transaction(function(t) {
+        //first - create client
+        return Client.create({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             patronymic: req.body.patronymic,
@@ -59,9 +65,11 @@ router.post('/', function(req, res, next) {
             passportNumber: req.body.passportNumber,
             passportIdNumber: req.body.passportIdNumber,
             mothersMaidenName: req.body.mothersMaidenName
-        })
+        }, { transaction: t })
+        //second - generate secret key (used in 2fa)
         .then(function(client) {
-            var key = speakeasy.generate_key({
+            clientId = client.id;
+            key = speakeasy.generate_key({
                 length: 20,
                 symbols: true,
                 qr_codes: true,
@@ -69,25 +77,34 @@ router.post('/', function(req, res, next) {
                 name: 'mammonbank'
             });
             
-            client.set('secret', key.base32)
-                  .save()
-                  .then(function(client) {
-                      res.json({
-                          clientId: client.id,
-                          key: key
-                      }); 
-                  })
-                  .catch(function(error) {
-                      next(error);
-                  });
-
+            return Client.update({
+                secret: key.base32
+            }, {
+                where: { id: client.id },
+                transaction: t
+            });
         })
-        .catch(Sequelize.ValidationError, function(error) {
-            next(new HttpApiError(400, error.message));
-        })
-        .catch(function(error) {
-            next(error);
+        //third - create client account
+        //TODO: maybe it's better to create account after bank's approval
+        .then(function() {
+            return ClientAccount.create({
+                amount: 0,
+                client_id: clientId
+            }, { transaction: t });
         });
+    })
+    .then(function(client) {
+        res.json({
+            clientId: client.id,
+            key: key
+        }); 
+    })
+    .catch(Sequelize.ValidationError, function(error) {
+        next(new HttpApiError(400, error.message));
+    })
+    .catch(function(error) {
+        next(error);
+    });
 });
 
 router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, next) {
@@ -101,6 +118,9 @@ router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, 
             res.json({
                 updated: req.clientId
             });
+        })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
         })
         .catch(function(error) {
             next(error);

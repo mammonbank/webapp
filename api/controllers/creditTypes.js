@@ -6,7 +6,7 @@ var express = require('express'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditTypeId = require('../middlewares/getCreditTypeId'),
     CreditType  = require('models').CreditType,
-    Sequelize = require('sequelize'),
+    Sequelize = require('models').Sequelize,
     HttpApiError = require('error').HttpApiError;
 
 router.get('/', function(req, res, next) {
@@ -49,7 +49,6 @@ router.post('/', function(req, res, next) {
     CreditType
         .create({
             title: req.body.title,
-            currency: req.body.currency,
             minSum: req.body.minSum,
             maxSum: req.body.maxSum,
             term: req.body.term,
@@ -80,6 +79,9 @@ router.patch('/:creditTypeId', getCreditTypeId, prepareUpdateObject, function(re
             res.json({
                 updated: req.creditTypeId
             });
+        })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
         })
         .catch(function(error) {
             next(error);
