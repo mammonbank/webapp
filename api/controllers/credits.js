@@ -125,6 +125,9 @@ router.patch('/:creditId', getCreditId, prepareUpdateObject, function(req, res, 
                 updated: req.creditId
             });
         })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
+        })
         .catch(function(error) {
             next(error);
         });

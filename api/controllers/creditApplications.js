@@ -6,7 +6,7 @@ var express = require('express'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditAppId = require('../middlewares/getCreditAppId'),
     CreditApplication  = require('models').CreditApplication,
-    Sequelize = require('sequelize'),
+    Sequelize = require('models').Sequelize,
     HttpApiError = require('error').HttpApiError;
 
 router.get('/', function(req, res, next) {
@@ -77,6 +77,9 @@ router.patch('/:creditAppId', getCreditAppId, prepareUpdateObject, function(req,
             res.json({
                 updated: req.creditAppId
             });
+        })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
         })
         .catch(function(error) {
             next(error);

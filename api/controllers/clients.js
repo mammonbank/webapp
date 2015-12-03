@@ -68,6 +68,7 @@ router.post('/', function(req, res, next) {
         }, { transaction: t })
         //second - generate secret key (used in 2fa)
         .then(function(client) {
+            clientId = client.id;
             key = speakeasy.generate_key({
                 length: 20,
                 symbols: true,
@@ -84,11 +85,11 @@ router.post('/', function(req, res, next) {
             });
         })
         //third - create client account
-        .then(function(client) {
-            clientId = client.id;
+        //TODO: maybe it's better to create account after bank's approval
+        .then(function() {
             return ClientAccount.create({
                 amount: 0,
-                client_id: client.id
+                client_id: clientId
             }, { transaction: t });
         });
     })
@@ -117,6 +118,9 @@ router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, 
             res.json({
                 updated: req.clientId
             });
+        })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
         })
         .catch(function(error) {
             next(error);

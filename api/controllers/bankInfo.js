@@ -55,6 +55,9 @@ router.patch('/', prepareUpdateObject, function(req, res, next) {
                 updated: true
             });
         })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
+        })
         .catch(function(error) {
             next(error);
         });
