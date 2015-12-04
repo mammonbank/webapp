@@ -1,24 +1,12 @@
-# Dependency directory
-node_modules
-client/public/libs
-#Temporary vim files
-[._]*.s[a-w][a-z]
-[._]s[a-w][a-z]
-*.un~
-Session.vim
-.netrwhist
-*~
-#Bash scripts
-*.sh
-#BEM
 libs/
 node_modules/
 .DS_Store
 .idea
-.svg
 .project
+.svn
 npm-debug.log
 
+# bem
 .bem/cache/
 .enb/tmp/
 *bundles*/*/*.*

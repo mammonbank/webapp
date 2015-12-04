@@ -14,6 +14,10 @@ API-сервер: [`3000`](http://localhost:3000)
 Главная: [`3001`](http://localhost:3001)
 Админка: [`3002`](http://localhost:3002)
 
+Клиентский сервер:
+* `npm install`
+запуск - `npm start -p 3001` или `bem server -p 3001`(нужны bem-tools)
+
 Остановка серверов (демонов)
 `pm2 kill`
 
