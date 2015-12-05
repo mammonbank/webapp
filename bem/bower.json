@@ -1,0 +1,15 @@
+{
+  "name": "bem-project-stub",
+  "version": "1.3.2",
+  "description": "BEM project stub",
+  "bugs": "https://github.com/bem/project-stub/issues",
+  "ignore": [
+    ".bem/cache",
+    "node_modules",
+    "libs"
+  ],
+  "dependencies": {
+    "bem-components": "2.3.0",
+    "bem-snippets": "git@github.com:ideus-team/bem-snippets.git"
+  }
+}

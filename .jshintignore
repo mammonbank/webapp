@@ -1,2 +1,4 @@
 node_modules
-client/public/libs
+bem/desktop.bundles
+bem/node_modules
+bem/libs

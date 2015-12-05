@@ -1,0 +1,10 @@
+.reg-form
+{
+    margin: 0 auto;
+    width: 300px;
+}
+
+.reg-form .input
+{
+    margin: 10px 0;
+}

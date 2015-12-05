@@ -1,0 +1,11 @@
+.info-bar
+{
+    background: #cc181e;
+    height: 50px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.info-bar_hide
+{
+    display: none;
+}
