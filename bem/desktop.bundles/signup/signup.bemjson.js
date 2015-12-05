@@ -8,6 +8,7 @@ module.exports = {
     content: [
         {
             block: 'header',
+            js: true,
             content: [
                 {
                 }
@@ -21,39 +22,39 @@ module.exports = {
                     block: 'step1',
                     content: [
                         {
+                            block: 'input',
+                            mods: { theme: 'islands', size: 'm' },
+                            placeholder: 'Фамилия'
+                        },
+                        {
                             block : 'input',
                             mods : { theme : 'islands', size : 'm' },
-                            placeholder : 'Введите имя'
+                            placeholder : 'Имя'
                         },
                         {
                             block: 'input',
                             mods: { theme: 'islands', size: 'm' },
-                            placeholder: 'Введите фамилию'
-                        },
-                        {
-                            block: 'input',
-                            mods: { theme: 'islands', size: 'm' },
-                            placeholder: 'Введите отчество'
+                            placeholder: 'Отчество'
                         },
                         {
                             block: 'input',
                             mods: { theme: 'islands', size: 'm', type: 'date' },
-                            placeholder: 'Введите дату рождения'
+                            placeholder: 'Дата рождения'
                         },
                         {
                             block: 'input',
                             mods: { theme: 'islands', size: 'm' },
-                            placeholder: 'Введите номер телефона'
+                            placeholder: 'Номер телефона'
                         },
                         {
                             block: 'input',
                             mods: { theme: 'islands', size: 'm' },
-                            placeholder: 'Email'
+                            placeholder: 'Почта (email)'
                         },
                         {
                             block: 'input',
                             mods: { theme: 'islands', size: 'm', type: 'password' },
-                            placeholder: 'Password'
+                            placeholder: 'Пароль'
                         },
                         {
                             block: 'input',
@@ -63,7 +64,7 @@ module.exports = {
                         {
                             block: 'input',
                             mods: { theme: 'islands', size: 'm' },
-                            placeholder: 'Id пасспорта'
+                            placeholder: 'Личный (идентификационный) номер'
                         },
                         {
                             block: 'input',
@@ -89,7 +90,7 @@ module.exports = {
                         {
                             block: 'input',
                             mods: { theme: 'islands', size: 'm' },
-                            placeholder: 'One time password'
+                            placeholder: 'Введите пароль с телефона'
                         },
                         {
                             block: 'button',

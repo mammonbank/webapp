@@ -1,6 +1,6 @@
-modules.define('reg-forma', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) {
+modules.define('reg-form', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) {
 
-provide(BEMDOM.decl('reg-forma', {
+provide(BEMDOM.decl('reg-form', {
 
     onSetMod : {
         'js': {
@@ -9,7 +9,6 @@ provide(BEMDOM.decl('reg-forma', {
                 this.button = this.step1.findBlockInside('button');
                 this.inputs = this.step1.findBlocksInside('input');
                 this.qr = this.findBlockInside('qr');
-                console.log(this.step1);
 
                 this.button.on('click', this.onSubmit.bind(this));
             }
@@ -17,10 +16,9 @@ provide(BEMDOM.decl('reg-forma', {
     },
 
     onSubmit: function() {
-        console.log('submit');
         $.post('//localhost:3000/api/clients', {
-            firstName: this.inputs[0].getVal(),
-            lastName: this.inputs[1].getVal(),
+            lastName: this.inputs[0].getVal(),
+            firstName: this.inputs[1].getVal(),
             patronymic: this.inputs[2].getVal(),
             dateOfBirth: this.inputs[3].getVal(),
             phoneNumber: this.inputs[4].getVal(),

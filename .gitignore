@@ -10,20 +10,3 @@ Session.vim
 *~
 #Bash scripts
 *.sh
-#BEM
-libs/
-node_modules/
-.DS_Store
-.idea
-.svg
-.project
-npm-debug.log
-
-.bem/cache/
-.enb/tmp/
-*bundles*/*/*.*
-!*bundles*/*/*.bemjson.js
-!*bundles*/.bem/*
-*pages*/*/*.*
-!*pages*/*/*.bemjson.js
-!*pages*/.bem/*

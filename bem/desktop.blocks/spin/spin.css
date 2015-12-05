@@ -1,0 +1,9 @@
+.spin_theme_islands.spin_visible.spin_pos_center
+{
+    display: block;
+    margin-top: -19px;
+    margin-left: -19px;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
