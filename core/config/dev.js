@@ -32,5 +32,17 @@ module.exports = {
         saltWorkFactor: 10,
         tokenSecret: 'War is peace. Freedom is slavery. Ignorance is strength.',
         tokenExpirationTime: '6h'
+    },
+    cron: {
+        times: {
+            creditor: '*/10 * * * * *',
+            debtor: '*/10 * * * * *'
+        }
+    },
+    testcron: {
+        times: {
+            creditor: '*/5 * * * * *',
+            debtor: '*/5 * * * * *'
+        }
     }
 };

@@ -86,7 +86,7 @@ router.post('/', function(req, res, next) {
             });
         })
         //forth - find bank info
-        .then(function(clientAccount) {
+        .then(function() {
             return BankInfo.findById(1, { transaction: t });
         })
         //fifth - decrease bank's moneySupply

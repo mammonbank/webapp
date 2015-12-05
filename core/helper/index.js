@@ -4,7 +4,7 @@ var moment = require('moment'),
     util = {};
 
 //may be a fraction
-util.getMonthsNumber = function(startDate, endDate) {
+util.getMonthsDiff = function(endDate, startDate) {
     return moment(endDate).diff(moment(startDate), 'months', true);
 };
 
