@@ -7,8 +7,25 @@ var app = require('../app'),
 
 app.set('port', config.server.apiPort);
 
-models.sequelize.sync().then(function() {
-    var server = app.listen(app.get('port'), function() {
-       debug('Express server listening on port ' + server.address().port); 
+
+models.sequelize.sync({force: false}).then(function() {
+    //initialize db with necessary data
+    models.BankInfo.findOrCreate({
+        where: {
+            id: 1
+        },
+        defaults: {
+            baseMoney: config.bank.baseMoney,
+            moneySupply: config.bank.moneySupply,
+            reserveRatio: config.bank.reserveRatio
+        }
+    })
+    .then(function(bankInfo) {
+        var server = app.listen(app.get('port'), function() {
+            debug('Express server listening on port ' + server.address().port); 
+        });
+    })
+    .catch(function(error) {
+        throw error;
     });
 });

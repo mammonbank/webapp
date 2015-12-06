@@ -3,8 +3,8 @@
 var CronJob = require('cron').CronJob,
     Credit = require('models').Credit,
     //helper = require('helper'),
-    BankError = require('error').BankError,
-    debug = require('debug')('mammonbank:cron');
+    BankError = require('error').BankError;
+    //debug = require('debug')('mammonbank:cron');
 
 function onTick() {
     Credit
@@ -34,7 +34,7 @@ function onTick() {
                         }
                     }
                     
-                    debug('Credit transaction successfully passed', 'CreditId: ', credit.id);
+                    console.log('Credit transaction successfully passed', 'CreditId: ', credit.id);
                     
                 });
                     

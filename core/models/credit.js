@@ -114,6 +114,7 @@ module.exports = function(sequelize, DataTypes) {
                         var percentAmount = new Decimal(self.outstandingLoan)
                                                 .mul(creditType.interest)
                                                 .div(12);
+                        
                         cb( null, percentAmount.add(self.getStaticMonthFee()).toNumber() );
                     })
                     .catch(function(error) {
