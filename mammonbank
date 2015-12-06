@@ -4,8 +4,8 @@ server {
 
     server_name mammonbank.tk;
 
-    ssl_certificate /etc/nginx/ssl/nginx.crt;
-    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+    ssl_certificate /etc/letsencrypt/live/mammonbank.tk/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mammonbank.tk/privkey.pem;
 
     location / {
             proxy_pass http://127.0.0.1:3001;
@@ -13,12 +13,12 @@ server {
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection 'upgrade';
             proxy_set_header Host $host;
-            proxy_cache_bypass $http_upgrade;
+            proxy_cache_bypass $http_upgrade;            
     }
 
     location /public/ {
         root /var/www/mammonbank.tk/;
-        autoindex on;
+	    autoindex on;
     }
 
 }
@@ -28,8 +28,8 @@ server {
 
     server_name admin-mammonbank.tk;
 
-    ssl_certificate /etc/nginx/ssl/nginx.crt;
-    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+    ssl_certificate /etc/letsencrypt/live/admin-mammonbank.tk/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/admin-mammonbank.tk/privkey.pem;
 
     location / {
         proxy_pass http://127.0.0.1:3002;
@@ -50,10 +50,10 @@ server {
 server {
     listen 443 ssl;
 
-    server_name mammonbank-api-server.tk;
+    server_name api-mammonbank.com;
 
-    ssl_certificate /etc/nginx/ssl/nginx.crt;
-    ssl_certificate_key /etc/nginx/ssl/nginx.key;
+    ssl_certificate /etc/letsencrypt/live/api-mammonbank.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api-mammonbank.com/privkey.pem;
 
     location / {
         proxy_pass http://127.0.0.1:3000;
