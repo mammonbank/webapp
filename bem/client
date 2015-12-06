@@ -1,7 +1,0 @@
-'use strict';
-
-var shelljs = require('shelljs'),
-    config = require('../core/config');
-
-shelljs.echo('Starting bem server on port ' + config.server.clientPort);
-shelljs.exec('bem server -p ' + config.server.clientPort);
