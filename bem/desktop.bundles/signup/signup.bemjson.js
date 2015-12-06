@@ -12,7 +12,7 @@ module.exports = {
             content: [
                 {
                     block: 'link',
-                    url: '../index/index.html',
+                    url: '/',
                     content: {
                         block: 'header',
                         elem: 'logo',

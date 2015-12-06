@@ -2,9 +2,9 @@ module.exports = {
     block: 'page',
     title: 'index',
     head: [
-        { elem: 'css', url: 'index.min.css' }
+        { elem: 'css', url: 'index/index.min.css' }
     ],
-    scripts: [{ elem: 'js', url: 'index.min.js' }],
+    scripts: [{ elem: 'js', url: 'index/index.min.js' }],
     content: [
         {
             block: 'header',
@@ -12,7 +12,7 @@ module.exports = {
             content: [
                 {
                     block: 'link',
-                    url: '../index/index.html',
+                    url: '/',
                     content: {
                         block: 'header',
                         elem: 'logo',
@@ -37,7 +37,7 @@ module.exports = {
                                     content: {
                                         block: 'link',
                                         mods: { theme: 'islands', size: 'm' },
-                                        url: '../signup/signup.html',
+                                        url: '/signup',
                                         content: 'Регистрация'
                                     }
                                 },
@@ -46,7 +46,7 @@ module.exports = {
                                     content: {
                                         block: 'link',
                                         mods: { theme: 'islands', size: 'm' },
-                                        url: '../dashboard/dashboard.html',
+                                        url: '/dashboard',
                                         content: 'Панель управления'
                                     }
                                 }

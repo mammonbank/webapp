@@ -12,7 +12,7 @@ module.exports = {
             content: [
                 {
                     block: 'link',
-                    url: '../index/index.html',
+                    url: '/',
                     mix: { block: 'header', elem: 'logo' },
                     content: 'Mammonbank'
                 }

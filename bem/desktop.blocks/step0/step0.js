@@ -4,9 +4,9 @@ provide(BEMDOM.decl('step0', {
 
     onSetMod : {
         'js': function() {
-            this.button = this.findBlockInside('button');
+            this.buttons = this.findBlocksInside('button');
 
-            this.button.on('click', this.onSubmit.bind(this));
+            this.buttons[1].on('click', this.onSubmit.bind(this));
         }
     },
 
