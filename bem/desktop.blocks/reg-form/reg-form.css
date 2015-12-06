@@ -1,7 +1,18 @@
 .reg-form
 {
-    margin: 0 auto;
-    width: 300px;
+    transition: all 1s;
+    position: absolute;
+    width: 800px;
+    margin-top: 20px;
+    margin-left: -400px;
+    left: 50%;
+    opacity: 1;
+}
+
+.reg-form_hide
+{
+    opacity: 0;
+    left: 100%;
 }
 
 .reg-form .input
