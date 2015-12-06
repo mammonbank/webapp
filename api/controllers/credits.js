@@ -11,7 +11,9 @@ var express = require('express'),
     Sequelize = require('models').Sequelize,
     sequelize = require('models').sequelize,
     HttpApiError = require('error').HttpApiError,
-    Decimal = require('decimal');
+    Decimal = require('decimal.js'),
+    helper = require('helper'),
+    banklogic = require('banklogic');
 
 router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
@@ -49,6 +51,70 @@ router.get('/:creditId', getCreditId, function(req, res, next) {
         });
 });
 
+router.get('/:creditId/info', getCreditId, function(req, res, next) {
+    Credit
+        .findById(req.creditId)
+        .then(function(credit) {
+            if (!credit) {
+                return res.json({
+                    message: 'No credit has been found with given id'    
+                });
+            }
+            
+            credit.getCreditRepaymentInfo(function(error, creditRepaymentInfo) {
+                if (error) {
+                    return next(error);
+                }
+                
+                return res.json(creditRepaymentInfo);
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
+//example:
+//:3000/api/credits/info/payment?type=equal&sum=20000000&startDate=12-31-2014&endDate=12-31-2018&interest=0.48&title=Easy
+router.get('/info/payment', function(req, res, next) {
+    var info = {
+            sum: +req.query.sum,
+            startDate: req.query.startDate,
+            endDate: req.query.endDate,
+            interest: +req.query.interest,
+            title: req.query.title
+        },
+        creditRepaymentInfo;
+
+    for (var property in info) {
+        if (info.hasOwnProperty(property)) {
+            if (!info[property]) {
+                return res.status(400).json({
+                    message: 'Missing parameters'
+                });
+            }
+        }
+    }
+    
+    try {
+        info.staticFee = new Decimal(info.sum)
+        .div(helper.getMonthsDiff(info.endDate, info.startDate)).toNumber();
+    
+        if (req.query.type === 'equal') {
+            creditRepaymentInfo = banklogic.getCreditAnnuityRepaymentInfo(info);
+        } else if (req.query.type === 'diff') {
+            creditRepaymentInfo = banklogic.getCreditDifferentiatedRepaymentInfo(info);
+        } else {
+            return next(new HttpApiError(400, 'Type does not specified'));
+        }
+    }
+    catch(ex) {
+        return next(ex);
+    }
+    
+    return res.json(creditRepaymentInfo);
+});
+
 router.post('/', function(req, res, next) {
     var creditId;
 
@@ -59,6 +125,7 @@ router.post('/', function(req, res, next) {
            sum: req.body.sum,
            //at first outstandingLoan equals to credit sum
            outstandingLoan: req.body.sum,
+           repaymentType: req.body.repaymentType,
            startDate: req.body.startDate,
            endDate: req.body.endDate,
            credit_type_id: req.body.creditTypeId,
@@ -79,7 +146,7 @@ router.post('/', function(req, res, next) {
         //third - add credit sum to account's amount of money
         .then(function(clientAccount) {
             return ClientAccount.update({
-                amount: new Decimal(clientAccount.amount).add(creditSum).toNumber()
+                amount: new Decimal(clientAccount.amount).plus(creditSum).toNumber()
             }, {
                 where: { id: clientAccount.id },
                 transaction: t
@@ -92,7 +159,7 @@ router.post('/', function(req, res, next) {
         //fifth - decrease bank's moneySupply
         .then(function(bankInfo) {
             return BankInfo.update({
-                moneySupply: new Decimal(bankInfo.moneySupply).sub(creditSum).toNumber()
+                moneySupply: new Decimal(bankInfo.moneySupply).minus(creditSum).toNumber()
             }, {
                 where: { id: 1 },
                 transaction: t

@@ -3,17 +3,22 @@
 var debug = require('debug')('mammonbank:client:db'),
     helper = require('helper'),
     _ = require('lodash'),
-    Decimal = require('decimal'),
+    Decimal = require('decimal.js'),
     BankError = require('error').BankError,
-    Sequelize = require('sequelize');
+    Sequelize = require('sequelize'),
+    banklogic = require('banklogic');
+
+Decimal.config({ precision: 10, rounding: 8 });
 
 /*
     Credit model fields:
     {
         sum,
         outstandingLoan,
+        repaymentType,
         startDate,
-        endDate
+        endDate,
+        lastPaymentDate
     }
 */
 module.exports = function(sequelize, DataTypes) {
@@ -33,6 +38,11 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 min: 0
             }
+        },
+        repaymentType: {
+            type: DataTypes.ENUM('EQUAL', 'DIFF'),
+            allowNull: false,
+            field: 'repayment_type'
         },
         startDate: {
             type: DataTypes.DATE,
@@ -98,24 +108,93 @@ module.exports = function(sequelize, DataTypes) {
                         cb(error);
                     });
             },
+            
+            getCreditRepaymentInfo: function(cb) {
+                switch(this.repaymentType) {
+                    case 'EQUAL':
+                        this.getCreditAnnuityRepaymentInfo(cb);
+                        break;
+                    case 'DIFF':
+                        this.getCreditDifferentiatedRepaymentInfo(cb);
+                        break;
+                    default:
+                        this.getCreditAnnuityRepaymentInfo(cb);
+                        break;
+                }
+            },
+            
+            getCreditAnnuityRepaymentInfo: function(cb) {
+                var self = this;
+                
+                this.getCreditType()
+                    .then(function(creditType) {
+                        var creditRepaymentInfo = banklogic.getCreditAnnuityRepaymentInfo({
+                            staticFee: self.getStaticFee(),
+                            sum: self.sum,
+                            startDate: self.startDate,
+                            endDate: self.endDate,
+                            interest: creditType.interest,
+                            title: creditType.title
+                        });
+                        
+                        cb(null, creditRepaymentInfo);
+                        
+                    })
+                    .catch(function(error) {
+                        cb(error);
+                    });
+            },
+            
+            getCreditDifferentiatedRepaymentInfo: function(cb) {
+                var self = this;
+                
+                this.getCreditType()
+                    .then(function(creditType) {
+                        var creditRepaymentInfo = banklogic.getCreditDifferentiatedRepaymentInfo({
+                            staticFee: self.getStaticFee(),
+                            sum: self.sum,
+                            startDate: self.startDate,
+                            endDate: self.endDate,
+                            interest: creditType.interest,
+                            title: creditType.title
+                        });
+                        
+                        cb(null, creditRepaymentInfo);
+
+                    })
+                    .catch(function(error) {
+                        cb(error);
+                    });
+                
+            },
 
             //without interest on loan
-            getStaticMonthFee: function() {
+            getStaticFee: function() {
                 var months = helper.getMonthsDiff(this.endDate, this.startDate);
                 return new Decimal(this.sum).div(months).toNumber();
             },
             
+            
+            //TODO: remake
             //with interest on loan
             getMonthFee: function(cb) {
-                var self = this;
+                var self = this,
+                    staticMonthFee = this.getStaticFee();
 
                 this.getCreditType()
                     .then(function(creditType) {
+                        //if it the last payment
+                        console.log(self.outstandingLoan <= staticMonthFee);
+                        if (self.outstandingLoan <= staticMonthFee) {
+                            console.log(self.outstandingLoan, staticMonthFee);
+                            return cb( null, self.oustandingLoan );
+                        }
+                        
                         var percentAmount = new Decimal(self.outstandingLoan)
-                                                .mul(creditType.interest)
+                                                .times(creditType.interest)
                                                 .div(12);
                         
-                        cb( null, percentAmount.add(self.getStaticMonthFee()).toNumber() );
+                        cb( null, percentAmount.add(staticMonthFee).toNumber() );
                     })
                     .catch(function(error) {
                         cb(error);
@@ -123,7 +202,7 @@ module.exports = function(sequelize, DataTypes) {
             },
 
             //invoked in the scheduler
-            payCredit: function(fn) {
+            payCredit: function(fn, isLast) {
                 var self = this,
                     ClientAccount = sequelize.models.ClientAccount,
                     BankInfo = sequelize.models.BankInfo;
@@ -146,9 +225,9 @@ module.exports = function(sequelize, DataTypes) {
                             if (clientAccount.amount < monthFee) {
                                 throw new BankError('Insufficient funds!');
                             }
-                            //TODO: handle zero values
+                            
                             return ClientAccount.update({
-                                amount: new Decimal(clientAccount.amount).sub(monthFee).toNumber()
+                                amount: new Decimal(clientAccount.amount).minus(monthFee).toNumber()
                             }, {
                                 where: { id: clientAccount.id },
                                 transaction: t
@@ -158,7 +237,7 @@ module.exports = function(sequelize, DataTypes) {
                         .then(function() {
                             return Credit.update({
                                 outstandingLoan: new Decimal(self.outstandingLoan)
-                                    .sub(self.getStaticMonthFee())
+                                    .minus(self.getStaticFee())
                                     .toNumber()
                             }, {
                                 where: { id: self.id },
@@ -172,7 +251,7 @@ module.exports = function(sequelize, DataTypes) {
                         //fifth - increase bank's moneySupply
                         .then(function(bankInfo) {
                             return BankInfo.update({
-                                moneySupply: new Decimal(bankInfo.moneySupply).add(monthFee).toNumber()
+                                moneySupply: new Decimal(bankInfo.moneySupply).plus(monthFee).toNumber()
                             }, {
                                 where: { id: 1 },
                                 transaction: t
@@ -215,8 +294,8 @@ module.exports = function(sequelize, DataTypes) {
                 })
                 .then(function(data) {
                     totalMoneySupply =
-                        new Decimal(data[0].dataValues.totalSum)
-                            .add(credit.sum)
+                        new Decimal(data[0].dataValues.totalSum || 0)
+                            .plus(credit.sum)
                             .toNumber();
                     return sequelize.models.BankInfo.findById(1);
                 })

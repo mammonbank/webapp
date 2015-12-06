@@ -2,7 +2,7 @@
 
 var CronJob = require('cron').CronJob,
     Credit = require('models').Credit,
-    //helper = require('helper'),
+    helper = require('helper'),
     BankError = require('error').BankError;
     //debug = require('debug')('mammonbank:cron');
 
@@ -10,14 +10,14 @@ function onTick() {
     Credit
         .findAll()
         .then(function(credits) {
-            //var now = Date.now();
+            var now = Date.now();
             credits.forEach(function(credit) {
-                //var lastPaymentDate = credit.lastPaymentDate || credit.created_at,
-                    //monthsDiff = helper.getMonthsDiff(now, lastPaymentDate);
+                var lastPaymentDate = credit.lastPaymentDate || credit.created_at,
+                    monthsDiff = helper.getMonthsDiff(now, lastPaymentDate);
                 
-                // if (monthsDiff < 1) {
-                //     return;
-                // }
+                if (now <= credit.endDate || monthsDiff < 1) {
+                    return;
+                }
                 
                 credit.payCredit(function(error) {
                     credit.lastPaymentDate = new Date();
@@ -35,6 +35,12 @@ function onTick() {
                     }
                     
                     console.log('Credit transaction successfully passed', 'CreditId: ', credit.id);
+                    
+                    //credit has been repaid
+                    if (credit.outstandingLoan === 0) {
+                        console.log('Credit successfully repaid', 'CreditId: ', credit.id);
+                        credit.destroy();
+                    }
                     
                 });
                     
