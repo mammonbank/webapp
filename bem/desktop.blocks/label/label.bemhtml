@@ -1,0 +1,13 @@
+block('label')(
+
+    tag()('label'),
+
+    attrs()(function() {
+        return { for : this.ctx.for };
+    }),
+
+    match(function() { return this._form_field; }).attrs()(function() {
+        return { for : this._form_field.id };
+    })
+
+);

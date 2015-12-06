@@ -8,7 +8,15 @@ module.exports = {
     content: [
         {
             block: 'header',
-            js: true
+            js: true,
+            content: [
+                {
+                    block: 'link',
+                    url: '../index/index.html',
+                    mix: { block: 'header', elem: 'logo' },
+                    content: 'Mammonbank'
+                }
+            ]
         },
         {
             block: 'spin',
