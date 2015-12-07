@@ -15,6 +15,12 @@ var express = require('express'),
     helper = require('helper'),
     banklogic = require('banklogic');
 
+Decimal.config({
+    precision: 20,
+    rounding: 8,
+    errors: false
+});
+
 router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
@@ -98,7 +104,7 @@ router.get('/info/payment', function(req, res, next) {
     
     try {
         info.staticFee = new Decimal(info.sum)
-        .div(helper.getMonthsDiff(info.endDate, info.startDate)).toNumber();
+            .div(helper.getMonthsDiff(info.endDate, info.startDate)).toNumber();
     
         if (req.query.type === 'equal') {
             creditRepaymentInfo = banklogic.getCreditAnnuityRepaymentInfo(info);

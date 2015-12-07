@@ -4,7 +4,11 @@ var helper = require('helper'),
     Decimal = require('decimal.js'),
     banklogic = {};
 
-Decimal.config({ precision: 10, rounding: 8 });
+Decimal.config({
+    precision: 20,
+    rounding: 8,
+    errors: false
+});
 
 //equal payments
 //http://myfin.by/wiki/term/annuitetnyj-platyozh

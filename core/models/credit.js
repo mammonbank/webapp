@@ -8,7 +8,11 @@ var debug = require('debug')('mammonbank:client:db'),
     Sequelize = require('sequelize'),
     banklogic = require('banklogic');
 
-Decimal.config({ precision: 10, rounding: 8 });
+Decimal.config({
+    precision: 20,
+    rounding: 8,
+    errors: false
+});
 
 /*
     Credit model fields:
@@ -158,14 +162,13 @@ module.exports = function(sequelize, DataTypes) {
                             interest: creditType.interest,
                             title: creditType.title
                         });
-                        
+
                         cb(null, creditRepaymentInfo);
 
                     })
                     .catch(function(error) {
                         cb(error);
                     });
-                
             },
 
             //without interest on loan
@@ -173,9 +176,7 @@ module.exports = function(sequelize, DataTypes) {
                 var months = helper.getMonthsDiff(this.endDate, this.startDate);
                 return new Decimal(this.sum).div(months).toNumber();
             },
-            
-            
-            //TODO: remake
+
             //with interest on loan
             getMonthFee: function(cb) {
                 var self = this,
@@ -184,7 +185,7 @@ module.exports = function(sequelize, DataTypes) {
                 this.getCreditType()
                     .then(function(creditType) {
                         //if it the last payment
-                        console.log(self.outstandingLoan <= staticMonthFee);
+
                         if (self.outstandingLoan <= staticMonthFee) {
                             console.log(self.outstandingLoan, staticMonthFee);
                             return cb( null, self.oustandingLoan );
