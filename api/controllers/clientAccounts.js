@@ -9,7 +9,7 @@ var express = require('express'),
     Sequelize = require('models').Sequelize,
     HttpApiError = require('error').HttpApiError;
 
-router.get('/accounts/all', getClientId, function(req, res, next) {
+router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
@@ -25,7 +25,7 @@ router.get('/accounts/all', getClientId, function(req, res, next) {
         });
 });
 
-router.get('/:clientId/account', getClientId, function(req, res, next) {
+router.get('/:clientId', getClientId, function(req, res, next) {
     ClientAccount
         .findOne({ 
             where: { client_id: req.clientId }
@@ -46,7 +46,7 @@ router.get('/:clientId/account', getClientId, function(req, res, next) {
         });
 });
 
-router.patch('/:clientId/account', getClientId, prepareUpdateObject, function(req, res, next) {
+router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, next) {
     ClientAccount
         .update(req.updateObj, { 
             where: { client_id: req.clientId }

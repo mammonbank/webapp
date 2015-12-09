@@ -3,7 +3,7 @@
 var async = require('async'),
     bcrypt = require('bcrypt'),
     config = require('config'),
-    debug = require('debug')('mammonbank:client:db');
+    debug = require('debug')('mammonbank:api');
 
 /*
     Client model fields:

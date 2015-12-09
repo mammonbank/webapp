@@ -28,9 +28,30 @@ module.exports = {
             idle: env.NODE_DB_POOL_IDLE || 5000
         }
     },
+    bank: {
+        baseMoney: 100000000,
+        moneySupply: 900000000,
+        reserveRatio: 0.1,
+        credits: {
+            overduePercent: 0.05
+        }
+    },
     security: {
         saltWorkFactor: 10,
         tokenSecret: 'War is peace. Freedom is slavery. Ignorance is strength.',
         tokenExpirationTime: '6h'
+    },
+    cron: {
+        isEnabled: true,
+        times: {
+            creditor: '*/10 * * * * *',
+            debtor: '*/10 * * * * *'
+        }
+    },
+    testcron: {
+        times: {
+            creditor: '*/1 * * * * *',
+            debtor: '*/5 * * * * *'
+        }
     }
 };

@@ -21,6 +21,11 @@ module.exports = function(sequelize, DataTypes) {
                 is: /^[0-9а-яА-ЯёЁa-z,.'-]+$/i
             }
         },
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            field: 'description'
+        },
         minSum: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
@@ -38,7 +43,7 @@ module.exports = function(sequelize, DataTypes) {
             field: 'term'
         },
         interest: {
-            type: DataTypes.DECIMAL(3, 2),
+            type: DataTypes.DECIMAL(3, 3),
             allowNull: false,
             field: 'interest',
             validate: {
