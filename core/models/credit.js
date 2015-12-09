@@ -1,11 +1,11 @@
 'use strict';
 
-var debug = require('debug')('mammonbank:client:db'),
+var debug = require('debug')('mammonbank:api'),
+    config = require('config'),
     helper = require('helper'),
     _ = require('lodash'),
     Decimal = require('decimal.js'),
     BankError = require('error').BankError,
-    Sequelize = require('sequelize'),
     banklogic = require('banklogic');
 
 Decimal.config({
@@ -22,7 +22,9 @@ Decimal.config({
         repaymentType,
         startDate,
         endDate,
-        lastPaymentDate
+        lastPaymentDate,
+        numberOfPayments,
+        overdueSum
     }
 */
 module.exports = function(sequelize, DataTypes) {
@@ -39,8 +41,9 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
             field: 'outstanding_loan',
+            //rounding issues
             validate: {
-                min: 0
+                min: -100
             }
         },
         repaymentType: {
@@ -70,6 +73,22 @@ module.exports = function(sequelize, DataTypes) {
             field: 'last_payment_date',
             validate: {
                 isDate: true
+            }
+        },
+        numberOfPayments: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            field: 'number_of_payments',
+            validate: {
+                min: 0
+            }
+        },
+        overdueSum: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: false,
+            field: 'overdue_sum',
+            validate: {
+                min: -100
             }
         }
     }, {
@@ -170,52 +189,64 @@ module.exports = function(sequelize, DataTypes) {
                         cb(error);
                     });
             },
-
+            
+            getTotalNumberOfPayments: function() {
+                return Math.ceil( helper.getMonthsDiff(this.endDate, this.startDate) );  
+            },
+            
             //without interest on loan
             getStaticFee: function() {
-                var months = helper.getMonthsDiff(this.endDate, this.startDate);
+                var months = Math.ceil(helper.getMonthsDiff(this.endDate, this.startDate));
                 return new Decimal(this.sum).div(months).toNumber();
             },
 
             //with interest on loan
-            getMonthFee: function(cb) {
-                var self = this,
-                    staticMonthFee = this.getStaticFee();
+            getMonthFee: function(paymentNumber, cb) {
+                var self = this;
+                
+                this.getCreditRepaymentInfo(function(error, creditRepaymentInfo) {
+                    if (error) {
+                        return cb(error);
+                    }
+                    
+                    //standard month fee + overdue fee (if any)
+                    var monthFee = Math.round(
+                        new Decimal(creditRepaymentInfo.payments[paymentNumber].totalFee)
+                            .plus(self.overdueSum).toNumber()
+                    );
 
-                this.getCreditType()
-                    .then(function(creditType) {
-                        //if it the last payment
+                    cb(null, monthFee);
+                });
+            },
+            
+            getMonthFeeWithoutOverdueSum: function(paymentNumber, cb) {
+                this.getCreditRepaymentInfo(function(error, creditRepaymentInfo) {
+                    if (error) {
+                        return cb(error);
+                    }
 
-                        if (self.outstandingLoan <= staticMonthFee) {
-                            console.log(self.outstandingLoan, staticMonthFee);
-                            return cb( null, self.oustandingLoan );
-                        }
-                        
-                        var percentAmount = new Decimal(self.outstandingLoan)
-                                                .times(creditType.interest)
-                                                .div(12);
-                        
-                        cb( null, percentAmount.add(staticMonthFee).toNumber() );
-                    })
-                    .catch(function(error) {
-                        cb(error);
-                    });
+                    cb(null, creditRepaymentInfo.payments[paymentNumber].totalFee);
+                });
             },
 
             //invoked in the scheduler
-            payCredit: function(fn, isLast) {
+            payCredit: function(paymentNumber, cb) {
                 var self = this,
                     ClientAccount = sequelize.models.ClientAccount,
                     BankInfo = sequelize.models.BankInfo;
+                
+                //credit has been repaid
+                //why not zero: rounding issues
+                if (this.outstandingLoan <= 10) {
+                    return cb(null, true);
+                }
 
-                this.getMonthFee(function(error, monthFee) {
+                this.getMonthFee(this.numberOfPayments, function(error, monthFee) {
                     if (error) {
-                        return fn(error);
+                        return cb(error);
                     }
-
-                    sequelize.transaction({
-                        isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED
-                    }, function(t) {
+                    
+                    sequelize.transaction(function(t) {
                         //first - find corresponding client account
                         return ClientAccount.findOne({
                             where: { client_id: self.client_id },
@@ -239,7 +270,8 @@ module.exports = function(sequelize, DataTypes) {
                             return Credit.update({
                                 outstandingLoan: new Decimal(self.outstandingLoan)
                                     .minus(self.getStaticFee())
-                                    .toNumber()
+                                    .toNumber(),
+                                numberOfPayments: self.numberOfPayments + 1
                             }, {
                                 where: { id: self.id },
                                 transaction: t
@@ -261,15 +293,46 @@ module.exports = function(sequelize, DataTypes) {
                     })
                     //transaction successfully passed
                     .then(function() {
-                        fn(null);
+                        cb(null, false);
                     })
                     //transaction failed
                     .catch(function(error) {
-                        fn(error);
+                        cb(error);
                     });
 
                 });
+            },
+            
+            setOverduePayment: function(cb) {
+                var self = this;
+                
+                this.getMonthFeeWithoutOverdueSum(this.numberOfPayments, function(error, monthFee) {
+                    if (error) {
+                        return cb(error);
+                    }
+
+                    var overduePayment = Math.round( 
+                        new Decimal(monthFee).times(config.bank.credits.overduePercent) 
+                    );
+
+                    Credit.update({
+                        overdueSum: Math.round(
+                            new Decimal(self.overdueSum).plus(overduePayment)
+                        )
+                    }, {
+                        where: { id: self.id }
+                    })
+                    .then(function() {
+                        cb(null, overduePayment);
+                    })
+                    .catch(function(error) {
+                        cb(error);
+                    });
+                    
+                    
+                });
             }
+            
         }
     
     });
@@ -303,7 +366,6 @@ module.exports = function(sequelize, DataTypes) {
                 .then(function(bankInfo) {
                     //if this is true then bank is made too many loans, so it must stop in order 
                     //to provide immediate liquidity to depositors
-                    console.log(totalMoneySupply, bankInfo.getMaxAmountOfMoneySupply());
                     if ( totalMoneySupply > bankInfo.getMaxAmountOfMoneySupply() ) {
                         return fn(new BankError('We are sorry, bank cannot make loans right now'));
                     }

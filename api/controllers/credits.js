@@ -134,6 +134,8 @@ router.post('/', function(req, res, next) {
            repaymentType: req.body.repaymentType,
            startDate: req.body.startDate,
            endDate: req.body.endDate,
+           numberOfPayments: 0,
+           overdueSum: 0,
            credit_type_id: req.body.creditTypeId,
            client_id: req.body.clientId
         }, { transaction: t })

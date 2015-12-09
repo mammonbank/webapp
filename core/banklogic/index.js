@@ -77,10 +77,10 @@ banklogic.getAnnuityCoefficient = function(interest, numberOfPayments) {
 banklogic.getCreditDifferentiatedRepaymentInfo = function(info) {
     var creditRepaymentInfo = {},
         numberOfPayments = Math.ceil( helper.getMonthsDiff(info.endDate, info.startDate) ),
-        staticFee = info.staticFee,
-        outstandingLoan = new Decimal(info.sum).minus(staticFee).toNumber(),
+        staticFee = Math.round(info.staticFee),
+        outstandingLoan = Math.round(new Decimal(info.sum).minus(staticFee).toNumber()),
         paymentDate = helper.addMonthsToDate(info.startDate, 1),
-        percentFee = this.getPercentFee(info.sum, info.interest, paymentDate),
+        percentFee = Math.round(this.getPercentFee(info.sum, info.interest, paymentDate)),
         totalFee = new Decimal(0),
         totalPercentFee = new Decimal(0);
 
@@ -95,10 +95,10 @@ banklogic.getCreditDifferentiatedRepaymentInfo = function(info) {
         creditRepaymentInfo.payments.push({
             paymentNumber: i + 1,
             paymentDate: paymentDate,
-            staticFee: Math.round(staticFee),
-            percentFee: Math.round(percentFee),
+            staticFee: staticFee,
+            percentFee: percentFee,
             totalFee: Math.round(new Decimal(staticFee).plus(percentFee).toNumber()),
-            outstandingLoan: Math.round(outstandingLoan)
+            outstandingLoan: outstandingLoan
         });
 
         if (helper.getMonthsDiff(info.endDate, paymentDate) < 1) {
@@ -110,12 +110,14 @@ banklogic.getCreditDifferentiatedRepaymentInfo = function(info) {
         if (outstandingLoan <= staticFee) {
             outstandingLoan = 0;
         } else {
-            percentFee = this.getPercentFee(outstandingLoan, info.interest, paymentDate);
-            outstandingLoan = new Decimal(outstandingLoan).minus(staticFee).toNumber();
+            percentFee = Math.round(this.getPercentFee(outstandingLoan, info.interest, paymentDate));
+            outstandingLoan = Math.round(new Decimal(outstandingLoan).minus(staticFee).toNumber());
         }
         
-        totalFee = Math.round(new Decimal(totalFee).plus(staticFee).plus(percentFee));
-        totalPercentFee = Math.round(new Decimal(totalPercentFee).plus(percentFee));
+        totalFee = Math.round(
+            new Decimal(totalFee).plus(creditRepaymentInfo.payments[i].totalFee).toNumber()
+        );
+        totalPercentFee = Math.round(new Decimal(totalPercentFee).plus(percentFee).toNumber());
     }
     
     creditRepaymentInfo.totalFee = totalFee;

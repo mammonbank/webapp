@@ -1,6 +1,6 @@
 'use strict';
 
-var debug = require('debug')('mammonbank:client:db'),
+var debug = require('debug')('mammonbank:api'),
     _ = require('lodash');
 
 /*
@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
             }
         },
         plannedTerm: {
-            type: DataTypes.RANGE(DataTypes.INTEGER),
+            type: DataTypes.INTEGER,
             allowNull: false,
             field: 'planned_term'
         },
@@ -62,11 +62,8 @@ module.exports = function(sequelize, DataTypes) {
                     .then(function(creditType) {
                         var minMonths = creditType.term[0],
                             maxMonths = creditType.term[1],
-                            plannedMinMonths = self.plannedTerm[0],
-                            plannedMaxMonths = self.plannedTerm[1],
                             isValid = !!( _.inRange(self.plannedSum, creditType.minSum, creditType.maxSum) &&
-                                 plannedMinMonths >= minMonths &&
-                                 plannedMaxMonths <= maxMonths );
+                                 _.inRange(self.plannedTerm, minMonths, maxMonths) );
                         
                         cb(null, isValid);
                     })

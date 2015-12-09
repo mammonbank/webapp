@@ -31,7 +31,10 @@ module.exports = {
     bank: {
         baseMoney: 100000000,
         moneySupply: 900000000,
-        reserveRatio: 0.1
+        reserveRatio: 0.1,
+        credits: {
+            overduePercent: 0.05
+        }
     },
     security: {
         saltWorkFactor: 10,
@@ -39,6 +42,7 @@ module.exports = {
         tokenExpirationTime: '6h'
     },
     cron: {
+        isEnabled: true,
         times: {
             creditor: '*/10 * * * * *',
             debtor: '*/10 * * * * *'
