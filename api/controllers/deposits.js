@@ -31,7 +31,7 @@ router.get('/', function (req, res, next) {
 
 
 
-router.get('/clientCredits/:clientId', function (req, res, next) {
+router.get('/clientDeposits/:clientId', function (req, res, next) {
     Deposit
         .findAll({
             where:
@@ -40,7 +40,7 @@ router.get('/clientCredits/:clientId', function (req, res, next) {
         .then(function (deposits) {
             if (!deposits || deposits.length == 0) {
                 return res.json({
-                    message: 'client does not exists or does not have deposit'
+                    message: 'client does not exists or does not have deposits'
                 });
             }
 

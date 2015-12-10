@@ -1,6 +1,5 @@
 'use strict';
 
-//var DepositType = this.sequelize.define('DepositType');
 /*
     Deposit model fields:
     {
@@ -56,7 +55,7 @@ module.exports = function (sequelize, DataTypes) {
         tableName: 'deposits',
         underscored: true,
         timestamps: true,
-        paranoid: false,
+        paranoid: true,
         classMethods: {
             associate: function(models) {
                 Deposit.belongsTo(models.DepositType, {

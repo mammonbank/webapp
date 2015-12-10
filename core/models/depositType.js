@@ -6,6 +6,8 @@
         percent
         title
         description
+        minTerm
+        minSum
     }
 */
 module.exports = function (sequelize, DataTypes) {
@@ -39,7 +41,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         minSum: {
             type: DataTypes.DECIMAL(12, 2),
-            allowNull: true,
+            allowNull: false,
             field: 'min_sum',
             
         },

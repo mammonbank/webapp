@@ -27,14 +27,14 @@ router.get('/', function (req, res, next) {
 router.get('/:depositTypeId', function (req, res, next) {
     DepositType
         .findById(req.params.depositTypeId)
-        .then(function (DepositType) {
-            if (!DepositType) {
+        .then(function (depositType) {
+            if (!depositType) {
                 return res.json({
                     message: 'No deposit type has been found with given id'
                 });
             }
 
-            res.json(DepositType);
+            res.json(depositType);
         })
         .catch(function (error) {
             next(error);
@@ -50,9 +50,9 @@ router.post('/', function (req, res, next) {
             minSum: req.body.minSum,
             minTerm: req.body.minTerm,
         })
-        .then(function (DepositType) {
+        .then(function (depositType) {
             res.json({
-                DepositTypeId: DepositType.id
+                depositTypeId: depositType.id
             });
         })
         .catch(Sequelize.ValidationError, function (error) {
