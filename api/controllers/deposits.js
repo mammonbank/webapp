@@ -1,22 +1,31 @@
 'use strict';
 
 var express = require('express'),
-    router = express.Router(),
-    Deposit = require('models').Deposit,
+    router  = express.Router(),
+    //authenticateToken = require('../middlewares/authenticateToken'),
+    prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
+    getDepositId = require('../middlewares/getDepositId'),
+    Deposit  = require('models').Deposit,
+    ClientAccount = require('models').ClientAccount,
+    BankInfo = require('models').BankInfo,
     Sequelize = require('models').Sequelize,
     sequelize = require('models').sequelize,
     HttpApiError = require('error').HttpApiError,
-    BankError = require('error').BankError,
-    DepositType = require('models').DepositType;
+    Decimal = require('decimal.js');
 
+Decimal.config({
+    precision: 20,
+    rounding: 8,
+    errors: false
+});
 
-router.get('/', function (req, res, next) {
+router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
     Deposit
         .findAll({ offset: offset, limit: limit })
-        .then(function (deposits) {
+        .then(function(deposits) {
             res.json({
                 count: deposits.length,
                 offset: offset,
@@ -24,90 +33,137 @@ router.get('/', function (req, res, next) {
                 deposits: deposits
             });
         })
-        .catch(function (error) {
+        .catch(function(error) {
             next(error);
         });
 });
 
-
-
-router.get('/clientDeposits/:clientId', function (req, res, next) {
+router.get('/:depositId', getDepositId, function(req, res, next) {
     Deposit
-        .findAll({
-            where:
-                { client_id: req.params.clientId }
-        })
-        .then(function (deposits) {
-            if (!deposits || deposits.length == 0) {
-                return res.json({
-                    message: 'client does not exists or does not have deposits'
-                });
-            }
-
-            res.json(deposits);
-        })
-        .catch(function (error) {
-            next(error);
-        });
-});
-
-router.get('/:depositId', function (req, res, next) {
-    Deposit
-        .findById(req.params.depositId)
-        .then(function (deposit) {
+        .findById(req.depositId)
+        .then(function(deposit) {
             if (!deposit) {
                 return res.json({
-                    message: 'No deposit has been found with given id'
+                    message: 'No deposit has been found with given id'    
                 });
             }
-
+            
             res.json(deposit);
         })
-        .catch(function (error) {
+        .catch(function(error) {
             next(error);
         });
 });
-
+        
 router.post('/', function(req, res, next) {
     var depositId;
 
-    sequelize.transaction(function (t) {
-        return Deposit.create({
-                percent: req.body.percent,
-                startDate: req.body.startDate,
-                term: req.body.term,
-                deposit_type_id: req.body.depositTypeId,
-                client_id: req.body.clientId,
-                startSum: req.body.sum,
-                currentSum: req.body.sum,
-            }, { transaction: t })
-            .then(function (deposit) {
-                depositId = deposit.id;
-                return DepositType
-                    .findById(deposit.deposit_type_id)
-                    .then(function(depositType) {
-                        var isValid = true;
-                        isValid = deposit.term == null || deposit.term >= depositType.minTerm;
-                        isValid = (depositType.minSum == null || deposit.startSum >= depositType.minSum) && isValid;
-                        console.log(isValid);
-                        if (!isValid) {
-                            throw new BankError("deposit is not valid");
-                        }
-                    }, { transaction: t });
-            }, { transaction: t })
-            // TODO: logic for client account
-            .then(function () {
-                    res.json({
-                        depositId: depositId
-                    });
-            })
-            .catch(Sequelize.ValidationError, function(error) {
-                next(new HttpApiError(400, error.message));
-            })
-            .catch(function(error) {
-                next(error);
-            }, {transcation: t});
+    sequelize.transaction(function(t) {
+       var depositStartSum;
+       //first - create deposit
+       return Deposit.create({
+           startSum: req.body.startSum,
+           //the same
+           currentSum: req.body.startSum,
+           startDate: new Date(),
+           numberOfMonths: 0,
+           deposit_type_id: req.body.depositTypeId,
+           client_id: req.body.clientId
+        }, { transaction: t })
+        //second - find corresponding client account
+        .then(function(deposit) {
+            depositStartSum = deposit.startSum;
+            depositId = deposit.id;
+            
+            return ClientAccount.findOne({
+                where: {
+                    client_id: deposit.client_id
+                },
+                transaction: t
+            });
+        })
+        //third - add deposit start sum to account's amount of money
+        .then(function(clientAccount) {
+            return ClientAccount.update({
+                amount: new Decimal(clientAccount.amount).plus(depositStartSum).toNumber()
+            }, {
+                where: { id: clientAccount.id },
+                transaction: t
+            });
+        })
+        //forth - find bank info
+        .then(function() {
+            return BankInfo.findById(1, { transaction: t });
+        })
+        //fifth - increase bank's baseMoney and moneySupply:
+        .then(function(bankInfo) {
+            return BankInfo.update({
+                //baseMoney += deposit * reserveRatio
+                baseMoney: Math.round(
+                    new Decimal(bankInfo.baseMoney).plus( 
+                        new Decimal(depositStartSum).times(bankInfo.reserveRatio)
+                    ).toNumber()
+                ),
+                //moneySupply += deposit * (1 - reserveRatio)
+                moneySupply: Math.round(
+                    new Decimal(bankInfo.moneySupply).plus(
+                        new Decimal(depositStartSum).times(1 - bankInfo.reserveRatio)
+                    ).toNumber()
+                )
+            }, {
+                where: { id: 1 },
+                transaction: t
+            });
+        });
+    })
+    //at this point transaction either has been committed or rolled back
+    .then(function() {            
+        res.json({
+            depositId: depositId
+        }); 
+    })
+    .catch(Sequelize.ValidationError, function(error) {
+        next(new HttpApiError(400, error.message));
+    })
+    .catch(function(error) {
+        next(error);
     });
+});
+//more in debug purpuses
+//in prod direct invocation of this method (and other updates - credits, accounts, etc.) is unacceptable
+router.patch('/:depositId', getDepositId, prepareUpdateObject, function(req, res, next) {
+    Deposit
+        .update(req.updateObj, {
+            where: {
+                id: req.depositId
+            }
+        })
+        .then(function() {
+            res.json({
+                updated: req.depositId
+            });
+        })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
+router.delete('/:depositId', getDepositId, function(req, res, next) {
+    Deposit
+        .destroy({
+            where: { id: req.depositId }
+        })
+        .then(function() {
+            res.json({
+                depositId: req.depositId
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
 });
 
 module.exports = router;

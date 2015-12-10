@@ -203,6 +203,7 @@ module.exports = function(sequelize, DataTypes) {
             associate: function(models) {
                 Client.hasMany(models.Credit);
                 Client.hasMany(models.CreditApplication);
+                Client.hasMany(models.Deposit);
                 Client.hasOne(models.ClientAccount);
             }
         },

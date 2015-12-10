@@ -1,23 +1,19 @@
 'use strict';
 
+var debug = require('debug')('mammonbank:api');
+
 /*
     Deposit model fields:
     {
-        percent
-        start_sum
-        current_sum
-        start_date
-        end_date
-        term
+        startSum,
+        currentSum,
+        startDate,
+        endDate,
+        numberOfMonths
     }
 */
 module.exports = function (sequelize, DataTypes) {
     var Deposit = sequelize.define('Deposit', {
-        percent: {
-            type: DataTypes.DECIMAL(3, 2),
-            allowNull: false,
-            field: 'percent',
-        },
         startSum: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
@@ -26,8 +22,7 @@ module.exports = function (sequelize, DataTypes) {
         currentSum: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
-            field: 'current_sum',
-
+            field: 'current_sum'
         },
         startDate: {
             type: DataTypes.DATE,
@@ -36,7 +31,6 @@ module.exports = function (sequelize, DataTypes) {
             validate: {
                 isDate: true
             }
-
         },
         endDate: {
             type: DataTypes.DATE,
@@ -46,16 +40,18 @@ module.exports = function (sequelize, DataTypes) {
                 isDate: true
             }
         },
-        term: {
-            type: DataTypes.INTEGER, // months
+        //how much time the bank has this deposit
+        numberOfMonths: {
+            type: DataTypes.INTEGER,
             allowNull: false,
-            field: 'term',
+            field: 'number_of_months'
         }
     }, {
         tableName: 'deposits',
         underscored: true,
         timestamps: true,
         paranoid: true,
+        
         classMethods: {
             associate: function(models) {
                 Deposit.belongsTo(models.DepositType, {
@@ -72,21 +68,37 @@ module.exports = function (sequelize, DataTypes) {
                 });
             }
         },
+        
         instanceMethods: {
-            instanceMethods: {
-
-                /// should be runned by scheduler every unit term
-                chargePercents: function () {
-                    var deposit = this;
-
-                    deposit.currentSum = new Decimal(deposit.currentSum).multiply(deposit.percent);
-                }
+            checkForValidity: function(cb) {
+                var self = this;
+                this.getDepositType()
+                    .then(function(depositType) {
+                        var isValid = self.startSum >= depositType.minSum;
+                        
+                        cb(null, isValid);
+                    })
+                    .catch(function(error) {
+                        cb(error);
+                    });
             }
         }
+        
     });
+    
+    Deposit.hook('beforeCreate', function(deposit, options, cb) {
+        deposit.checkForValidity(function(error, isValid) {
+            if (error) {
+                debug(error);
+                return cb(error);
+            }
 
-    Deposit.hook('beforeCreate', function(deposit, options, fn) {
-        ///
+            if (!isValid) {
+                return cb(new sequelize.ValidationError('Deposit validation failed!'));
+            }
+            
+            cb(null, deposit);
+        });
     });
 
     return Deposit;

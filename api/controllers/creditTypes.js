@@ -6,6 +6,7 @@ var express = require('express'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditTypeId = require('../middlewares/getCreditTypeId'),
     CreditType  = require('models').CreditType,
+    Credit = require('models').Credit,
     Sequelize = require('models').Sequelize,
     HttpApiError = require('error').HttpApiError;
 
@@ -21,6 +22,29 @@ router.get('/', function(req, res, next) {
                 offset: offset,
                 limit: limit,
                 creditTypes: creditTypes
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
+router.get('/:creditTypeId/credits', getCreditTypeId, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    Credit
+        .findAll({ 
+            offset: offset, 
+            limit: limit,
+            where: { credit_type_id: req.creditTypeId }
+        })
+        .then(function(credits) {
+            res.json({
+                count: credits.length,
+                offset: offset,
+                limit: limit,
+                credits: credits
             });
         })
         .catch(function(error) {

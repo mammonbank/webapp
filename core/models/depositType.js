@@ -3,20 +3,14 @@
 /*
     DepositType model fields:
     {
-        percent
-        title
-        description
-        minTerm
+        title,
+        description,
+        interest,
         minSum
     }
 */
 module.exports = function (sequelize, DataTypes) {
     var DepositType = sequelize.define('DepositType', {
-        percent: {
-            type: DataTypes.DECIMAL(3, 2),
-            allowNull: false,
-            field: 'percent',
-        },
         title: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -26,25 +20,24 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         description: {
-            type: DataTypes.STRING,
-            allowNull: true,
-            field: 'description',
-            validate: {
-                is: /^[0-9а-яА-ЯёЁa-z,.'-]+$/i
-            }
-        },
-        minTerm: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.TEXT,
             allowNull: false,
-            field: 'min_term',
-            
+            field: 'description'
+        },
+        interest: {
+            type: DataTypes.DECIMAL(3, 3),
+            allowNull: false,
+            field: 'interest',
         },
         minSum: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
             field: 'min_sum',
-            
-        },
+            //rounding issues
+            validate: {
+                min: -100
+            }
+        }
     }, {
         tableName: 'deposit_types',
         underscored: true,

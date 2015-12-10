@@ -2,9 +2,13 @@
 
 var express = require('express'),
     router = express.Router(),
+    getDepositTypeId = require('../middlewares/getDepositTypeId'),
+    prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     DepositType = require('models').DepositType,
+    Deposit = require('models').Deposit,
     Sequelize = require('models').Sequelize,
     HttpApiError = require('error').HttpApiError;
+
 
 router.get('/', function (req, res, next) {
     var offset = +req.query.offset || 0,
@@ -20,6 +24,29 @@ router.get('/', function (req, res, next) {
             });
         })
         .catch(function (error) {
+            next(error);
+        });
+});
+
+router.get('/:depositTypeId/deposits', getDepositTypeId, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    Deposit
+        .findAll({ 
+            offset: offset, 
+            limit: limit,
+            where: { deposit_type_id: req.depositTypeId }
+        })
+        .then(function(deposits) {
+            res.json({
+                count: deposits.length,
+                offset: offset,
+                limit: limit,
+                deposits: deposits
+            });
+        })
+        .catch(function(error) {
             next(error);
         });
 });
@@ -44,21 +71,55 @@ router.get('/:depositTypeId', function (req, res, next) {
 router.post('/', function (req, res, next) {
     DepositType
         .create({
-            percent: req.body.percent,
             title: req.body.title,
             description: req.body.description,
-            minSum: req.body.minSum,
-            minTerm: req.body.minTerm,
+            interest: req.body.interest,
+            minSum: req.body.minSum
         })
-        .then(function (depositType) {
+        .then(function(depositType) {         
             res.json({
                 depositTypeId: depositType.id
-            });
+            }); 
         })
-        .catch(Sequelize.ValidationError, function (error) {
+        .catch(Sequelize.ValidationError, function(error) {
             next(new HttpApiError(400, error.message));
         })
-        .catch(function (error) {
+        .catch(function(error) {
+            next(error);
+        });
+});
+
+router.patch('/:depositTypeId', getDepositTypeId, prepareUpdateObject, function(req, res, next) {
+    DepositType
+        .update(req.updateObj, {
+            where: {
+                id: req.depositTypeId
+            }
+        })
+        .then(function() {
+            res.json({
+                updated: req.depositTypeId
+            });
+        })
+        .catch(Sequelize.ValidationError, function(error) {
+            next(new HttpApiError(400, error.message));
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
+router.delete('/:depositTypeId', getDepositTypeId, function(req, res, next) {
+    DepositType
+        .destroy({
+            where: { id: req.depositTypeId }
+        })
+        .then(function() {
+            res.json({
+                depositTypeId: req.depositTypeId
+            });
+        })
+        .catch(function(error) {
             next(error);
         });
 });
