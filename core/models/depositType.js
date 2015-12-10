@@ -11,7 +11,7 @@
 module.exports = function (sequelize, DataTypes) {
     var DepositType = sequelize.define('DepositType', {
         percent: {
-            type: DataTypes.FLOAT,
+            type: DataTypes.DECIMAL(3, 2),
             allowNull: false,
             field: 'percent',
         },
@@ -30,6 +30,18 @@ module.exports = function (sequelize, DataTypes) {
             validate: {
                 is: /^[0-9а-яА-ЯёЁa-z,.'-]+$/i
             }
+        },
+        minTerm: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            field: 'min_term',
+            
+        },
+        minSum: {
+            type: DataTypes.DECIMAL(12, 2),
+            allowNull: true,
+            field: 'min_sum',
+            
         },
     }, {
         tableName: 'deposit_types',

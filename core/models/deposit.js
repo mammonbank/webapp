@@ -1,5 +1,6 @@
 'use strict';
 
+//var DepositType = this.sequelize.define('DepositType');
 /*
     Deposit model fields:
     {
@@ -8,12 +9,13 @@
         current_sum
         start_date
         end_date
+        term
     }
 */
 module.exports = function (sequelize, DataTypes) {
     var Deposit = sequelize.define('Deposit', {
         percent: {
-            type: DataTypes.FLOAT,
+            type: DataTypes.DECIMAL(3, 2),
             allowNull: false,
             field: 'percent',
         },
@@ -26,7 +28,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
             field: 'current_sum',
-            
+
         },
         startDate: {
             type: DataTypes.DATE,
@@ -35,7 +37,7 @@ module.exports = function (sequelize, DataTypes) {
             validate: {
                 isDate: true
             }
-            
+
         },
         endDate: {
             type: DataTypes.DATE,
@@ -45,6 +47,11 @@ module.exports = function (sequelize, DataTypes) {
                 isDate: true
             }
         },
+        term: {
+            type: DataTypes.INTEGER, // months
+            allowNull: false,
+            field: 'term',
+        }
     }, {
         tableName: 'deposits',
         underscored: true,
@@ -66,6 +73,21 @@ module.exports = function (sequelize, DataTypes) {
                 });
             }
         },
+        instanceMethods: {
+            instanceMethods: {
+
+                /// should be runned by scheduler every unit term
+                chargePercents: function () {
+                    var deposit = this;
+
+                    deposit.currentSum = new Decimal(deposit.currentSum).multiply(deposit.percent);
+                }
+            }
+        }
+    });
+
+    Deposit.hook('beforeCreate', function(deposit, options, fn) {
+        ///
     });
 
     return Deposit;
