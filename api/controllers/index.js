@@ -16,6 +16,8 @@ router.use('/api/credit/applications', require('./creditApplications'));
 router.use('/api/credit/categories', require('./creditCategories'));
 router.use('/api/credit/types', require('./creditTypes'));
 router.use('/api/credits', require('./credits'));
+router.use('/api/deposit/types', require('./depositTypes'));
+router.use('/api/deposits', require('./deposits'));
 
 router.get('/', function(req, res) {
     res.json({

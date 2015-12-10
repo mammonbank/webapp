@@ -10,3 +10,5 @@ Session.vim
 *~
 #Bash scripts
 *.sh
+#Windows bats
+*.bat
