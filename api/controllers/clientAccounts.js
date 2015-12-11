@@ -46,6 +46,64 @@ router.get('/:clientId', getClientId, function(req, res, next) {
         });
 });
 
+router.post('/:clientId/deposit', getClientId, function(req, res, next) {
+    var sum = +req.body.sum;
+    if (!sum || sum <= 0) {
+        return next(new HttpApiError(400, 'Invalid sum'));
+    }
+    
+    ClientAccount
+        .findOne({
+            where: { client_id: req.clientId }
+        })
+        .then(function(clientAccount) {
+            if (!clientAccount) {
+                return res.json({
+                    message: 'No client account has been found with given client id'
+                });
+            }
+            
+            clientAccount.deposit(sum, function(error, amount) {
+                if (error) {
+                    return next(error);
+                }
+                
+                res.json({
+                    amount: amount
+                });
+            }); 
+        });
+});
+
+router.post('/:clientId/withdraw', getClientId, function(req, res, next) {
+    var sum = +req.body.sum;
+    if (!sum || sum <= 0) {
+        return next(new HttpApiError(400, 'Invalid sum'));
+    }
+    
+    ClientAccount
+        .findOne({
+            where: { client_id: req.clientId }
+        })
+        .then(function(clientAccount) {
+            if (!clientAccount) {
+                return res.json({
+                    message: 'No client account has been found with given client id'
+                });
+            }
+            
+            clientAccount.withdraw(sum, function(error, amount) {
+                if (error) {
+                    return next(error);
+                }
+                
+                res.json({
+                    amount: amount
+                });
+            }); 
+        });
+});
+
 router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, next) {
     ClientAccount
         .update(req.updateObj, { 

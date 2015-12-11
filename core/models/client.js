@@ -218,8 +218,6 @@ module.exports = function(sequelize, DataTypes) {
                     cb(null, isMatch);
                 });
             }
-            
-            //TODO: add various methods regarding payment
         }
     });
 
