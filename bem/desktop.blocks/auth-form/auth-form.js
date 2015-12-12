@@ -5,14 +5,13 @@ provide(BEMDOM.decl('auth-form', {
     onSetMod: {
         'js': function() {
             this.button = this.findBlockInside('button');
-            this.inputs = this.findBlocksInside('input');
-            this.idNumber = this.inputs[0];
-            this.password = this.inputs[1];
-            console.log(this, this.idNumber);
+            this.idNumber = this.findBlockInside({ block: 'input', modName: 'id', modVal: 'idNumber' });
+            this.password = this.findBlockInside({ block: 'input', modName: 'id', modVal: 'password' });
+            this.modal = this.findBlockInside('modal');
 
             this.button.on('click', this.onSubmit.bind(this));
 
-            if (!localStorage.getItem('clientId')) {
+            if (!localStorage.getItem('clientId') || !localStorage.getItem('token')) {
                 this.delMod('hide');
                 this.findBlockOutside('page').findBlockInside('spin').delMod('visible');
             }
@@ -21,10 +20,12 @@ provide(BEMDOM.decl('auth-form', {
 
     onSubmit: function() {
         $.ajax({
-            url: '//localhost:3000/auth/client/step-1',
+            url: BEMDOM.url + 'auth/client/step-1',
             method: 'POST',
             data: { passportIdNumber: this.idNumber.getVal(), password: this.password.getVal() }
-        }).done(this.onSuccess.bind(this));
+        })
+        .done(this.onSuccess.bind(this))
+        .fail(this.onFail.bind(this));
     },
 
     onSuccess: function(data) {
@@ -35,6 +36,13 @@ provide(BEMDOM.decl('auth-form', {
             this.otp.delMod('hide');
             this.setMod('hide');
         }
+    },
+
+    onFail: function(data) {
+        console.log('fail', data);
+        this.modal
+            .setContent('<h3>Ошибка авторизации</h3> Идентификационный номер или пароль неправильный.')
+            .setMod('visible', true);
     }
 }));
 

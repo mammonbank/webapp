@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express'),
+    favicon = require('serve-favicon'),
     bodyParser = require('body-parser'),
     app = express();
 
@@ -10,6 +11,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static('bem/desktop.bundles/'));
+app.use(express.static('bem/libs/'));
+app.use(favicon(__dirname + '/favicon.ico'));
 
 app.use(require('./controllers'));
 

@@ -3,4 +3,10 @@
     display: inline-block;
     vertical-align: top;
     width: 75%;
+    margin-left: -1px;
+}
+
+.main-right_hide
+{
+    display: none;
 }

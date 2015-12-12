@@ -1,3 +1,9 @@
+.auth-form
+{
+    width: 500px;
+    margin: 20px auto;
+}
+
 .auth-form_hide
 {
     display: none;

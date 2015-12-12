@@ -29,6 +29,7 @@
     "pg": "^4.4.2",
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.11.0",
+    "serve-favicon": "^2.3.0",
     "shelljs": "^0.5.3",
     "speakeasy": "^1.0.3"
   },

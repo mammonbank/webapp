@@ -6,6 +6,7 @@ provide(BEMDOM.decl('one-time-password', {
         'js': function() {
             this.pwd = this.findBlockInside('input');
             this.button = this.findBlockInside('button');
+            this.modal = this.findBlockInside('modal');
 
             this.button.on('click', this.onSubmit.bind(this));
         }
@@ -13,10 +14,12 @@ provide(BEMDOM.decl('one-time-password', {
 
     onSubmit: function() {
         $.ajax({
-            url: '//localhost:3000/auth/client/step-2',
+            url: BEMDOM.url + 'auth/client/step-2',
             method: 'POST',
             data: { clientId: localStorage.getItem('clientId'), oneTimePassword: this.pwd.getVal() }
-        }).done(this.onSuccess.bind(this));
+        })
+        .done(this.onSuccess.bind(this))
+        .fail(this.onFail.bind(this));
     },
 
     onSuccess: function(data) {
@@ -24,8 +27,19 @@ provide(BEMDOM.decl('one-time-password', {
         if (data.token) {
             localStorage.setItem('token', data.token);
             this.setMod('hide');
-            this.findBlockOutside('page').findBlockInside('info-bar').delMod('hide').setMod('reload');
+
+            var page = this.findBlockOutside('page');
+
+            page.findBlockInside('main-left').delMod('hide');
+            page.findBlockInside('main-right').delMod('hide');
+            page.findBlockInside('info-bar').setMod('reload');
         }
+    },
+
+    onFail: function(data) {
+        console.log('fail', data);
+        this.modal.setContent('<h3>Ошибка авторизации</h3> Неправильный код.');
+        this.modal.setMod('visible', true);
     }
 }));
 

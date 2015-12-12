@@ -10,6 +10,7 @@
   ],
   "dependencies": {
     "bem-components": "2.3.0",
-    "bem-snippets": "git@github.com:ideus-team/bem-snippets.git"
+    "bem-history": "https://github.com/bem/bem-history.git",
+    "moment": "~2.10.6"
   }
 }

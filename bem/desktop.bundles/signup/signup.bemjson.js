@@ -67,6 +67,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -76,13 +77,18 @@ module.exports = {
                                 {
                                     block: 'input',
                                     id: 'lastName',
-                                    mods: { theme: 'islands', size: 'm' },
-                                    placeholder: 'Фамилия'
+                                    mods: { theme: 'islands', size: 'm', id: 'lastName' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -91,14 +97,18 @@ module.exports = {
                                 },
                                 {
                                     block : 'input',
-                                    id: 'firstName',
-                                    mods : { theme : 'islands', size : 'm' },
-                                    placeholder : 'Имя'
+                                    mods : { theme : 'islands', size : 'm', id: 'firstName' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -107,13 +117,18 @@ module.exports = {
                                 },
                                 {
                                     block: 'input',
-                                    mods: { theme: 'islands', size: 'm' },
-                                    placeholder: 'Отчество'
+                                    mods: { theme: 'islands', size: 'm', id: 'patronymic' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -122,13 +137,18 @@ module.exports = {
                                 },
                                 {
                                     block: 'input',
-                                    mods: { theme: 'islands', size: 'm', type: 'date' },
-                                    placeholder: 'Дата рождения'
+                                    mods: { theme: 'islands', size: 'm', type: 'date', id: 'dateOfBirth' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -137,14 +157,18 @@ module.exports = {
                                 },
                                 {
                                     block: 'input',
-                                    id: 'phoneNumber',
-                                    mods: { theme: 'islands', size: 'm' },
-                                    placeholder: 'Номер телефона'
+                                    mods: { theme: 'islands', size: 'm', id: 'phoneNumber' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -153,14 +177,18 @@ module.exports = {
                                 },
                                 {
                                     block: 'input',
-                                    id: 'email',
-                                    mods: { theme: 'islands', size: 'm' },
-                                    placeholder: 'Почта (email)'
+                                    mods: { theme: 'islands', size: 'm', id: 'email' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -169,14 +197,18 @@ module.exports = {
                                 },
                                 {
                                     block: 'input',
-                                    id: 'password',
-                                    mods: { theme: 'islands', size: 'm', type: 'password' },
-                                    placeholder: 'Пароль'
+                                    mods: { theme: 'islands', size: 'm', type: 'password', id: 'password' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -185,14 +217,18 @@ module.exports = {
                                 },
                                 {
                                     block: 'input',
-                                    id: 'passportNumber',
-                                    mods: { theme: 'islands', size: 'm' },
-                                    placeholder: 'Номер пасспорта'
+                                    mods: { theme: 'islands', size: 'm', id: 'passportNumber' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -201,14 +237,18 @@ module.exports = {
                                 },
                                 {
                                     block: 'input',
-                                    id: 'passportIdNumber',
-                                    mods: { theme: 'islands', size: 'm' },
-                                    placeholder: 'Личный (идентификационный) номер'
+                                    mods: { theme: 'islands', size: 'm', id: 'passportIdNumber' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },
                         {
                             elem: 'group',
+                            mix: { block: 'line' },
                             content: [
                                 {
                                     block: 'label',
@@ -217,9 +257,12 @@ module.exports = {
                                 },
                                 {
                                     block: 'input',
-                                    id: 'mothersMaidenName',
-                                    mods: { theme: 'islands', size: 'm' },
-                                    placeholder: 'Девичья фамилия матери'
+                                    mods: { theme: 'islands', size: 'm', id: 'mothersMaidenName' }
+                                },
+                                {
+                                    block: 'popup',
+                                    mods: { theme: 'islands', autoclosable: true, target: 'anchor' },
+                                    directions: ['right-center']
                                 }
                             ]
                         },

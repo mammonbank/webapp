@@ -12,7 +12,7 @@ provide(BEMDOM.decl('qr', {
     },
 
     onSubmit: function() {
-        $.post('//localhost:3000/auth/client/step-2', {
+        $.post(BEMDOM.url + 'auth/client/step-2', {
             clientId: this.params.clientId,
             oneTimePassword: this.input.getVal()
         }, this.onSuccess);
