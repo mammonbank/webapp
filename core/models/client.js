@@ -218,12 +218,15 @@ module.exports = function(sequelize, DataTypes) {
                     cb(null, isMatch);
                 });
             }
-            
-            //TODO: add various methods regarding payment
         }
     });
 
-    Client.hook('beforeCreate', function(user, options, fn) {
+    Client
+        .beforeCreate(hook)
+        .beforeUpdate(hook);
+    
+    function hook(user, options, fn) {
+        debug('hook');
         async.waterfall([
             function(cb) {
                 bcrypt.genSalt(config.saltWorkFactor, cb);
@@ -240,7 +243,7 @@ module.exports = function(sequelize, DataTypes) {
                 user.password = hashedPassword;
                 fn(null, user);
             });
-    });
+    }
 
     return Client;
 };

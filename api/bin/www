@@ -8,7 +8,7 @@ var app = require('../app'),
 app.set('port', config.server.apiPort);
 
 
-models.sequelize.sync({force: false}).then(function() {
+models.sequelize.sync({force: true}).then(function() {
     //initialize db with necessary data
     models.BankInfo.findOrCreate({
         where: {

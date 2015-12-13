@@ -59,20 +59,17 @@ router.post('/', function(req, res, next) {
     var depositId;
 
     sequelize.transaction(function(t) {
-       var depositStartSum;
+       var depositSum;
        //first - create deposit
        return Deposit.create({
-           startSum: req.body.startSum,
-           //the same
-           currentSum: req.body.startSum,
+           sum: req.body.sum,
            startDate: new Date(),
-           numberOfMonths: 0,
            deposit_type_id: req.body.depositTypeId,
            client_id: req.body.clientId
         }, { transaction: t })
         //second - find corresponding client account
         .then(function(deposit) {
-            depositStartSum = deposit.startSum;
+            depositSum = deposit.sum;
             depositId = deposit.id;
             
             return ClientAccount.findOne({
@@ -85,7 +82,7 @@ router.post('/', function(req, res, next) {
         //third - add deposit start sum to account's amount of money
         .then(function(clientAccount) {
             return ClientAccount.update({
-                amount: new Decimal(clientAccount.amount).plus(depositStartSum).toNumber()
+                amount: new Decimal(clientAccount.amount).plus(depositSum).toNumber()
             }, {
                 where: { id: clientAccount.id },
                 transaction: t
@@ -101,13 +98,13 @@ router.post('/', function(req, res, next) {
                 //baseMoney += deposit * reserveRatio
                 baseMoney: Math.round(
                     new Decimal(bankInfo.baseMoney).plus( 
-                        new Decimal(depositStartSum).times(bankInfo.reserveRatio)
+                        new Decimal(depositSum).times(bankInfo.reserveRatio)
                     ).toNumber()
                 ),
                 //moneySupply += deposit * (1 - reserveRatio)
                 moneySupply: Math.round(
                     new Decimal(bankInfo.moneySupply).plus(
-                        new Decimal(depositStartSum).times(1 - bankInfo.reserveRatio)
+                        new Decimal(depositSum).times(1 - bankInfo.reserveRatio)
                     ).toNumber()
                 )
             }, {
@@ -150,7 +147,7 @@ router.patch('/:depositId', getDepositId, prepareUpdateObject, function(req, res
             next(error);
         });
 });
-
+//debug purpuses
 router.delete('/:depositId', getDepositId, function(req, res, next) {
     Deposit
         .destroy({
