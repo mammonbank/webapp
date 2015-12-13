@@ -1,11 +1,22 @@
 .info-bar
 {
-    background: #cc181e;
     height: 50px;
     border-bottom: 1px solid #e8e8e8;
+    position: relative;
 }
 
-.info-bar_hide
+.info-bar__name,
+.info-bar__status
 {
-    display: none;
+    display: inline-block;
+    vertical-align: top;
+    height: 50px;
+    padding: 0 15px;
+    line-height: 50px;
+}
+
+.info-bar__status
+{
+    position: absolute;
+    right: 0;
 }
