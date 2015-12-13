@@ -76,7 +76,7 @@ provide(BEMDOM.decl('reg-form', {
             password: {
                 presence: { message: '^Обязательное поле' },
                 format: {
-                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[а-яА-ЯёЁa-zA-Z\d]$/,
+                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[а-яА-ЯёЁa-zA-Z\d]{8,}$/,
                     message: "^Пароль должен содержать хотя бы одну цифру и заглавную букву"
                 },
                 length: {
