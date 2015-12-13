@@ -3,10 +3,8 @@
 var express = require('express'),
     router  = express.Router(),
     //authenticateToken = require('../middlewares/authenticateToken'),
-    prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getClientId = require('../middlewares/getClientId'),
     ClientAccount  = require('models').ClientAccount,
-    Sequelize = require('models').Sequelize,
     HttpApiError = require('error').HttpApiError;
 
 router.get('/', function(req, res, next) {
@@ -101,24 +99,6 @@ router.post('/:clientId/withdraw', getClientId, function(req, res, next) {
                     amount: amount
                 });
             }); 
-        });
-});
-
-router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, next) {
-    ClientAccount
-        .update(req.updateObj, { 
-            where: { client_id: req.clientId }
-        })
-        .then(function() {
-            res.json({
-                updated: true
-            });
-        })
-        .catch(Sequelize.ValidationError, function(error) {
-            next(new HttpApiError(400, error.message));
-        })
-        .catch(function(error) {
-            next(error);
         });
 });
 

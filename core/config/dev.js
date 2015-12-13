@@ -51,7 +51,7 @@ module.exports = {
     testcron: {
         times: {
             creditor: '*/1 * * * * *',
-            debtor: '*/5 * * * * *'
+            debtor: '*/1 * * * * *'
         }
     }
 };

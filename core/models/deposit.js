@@ -1,28 +1,31 @@
 'use strict';
 
-var debug = require('debug')('mammonbank:api');
+var debug = require('debug')('mammonbank:api'),
+    Decimal = require('decimal.js');
+
+Decimal.config({
+    precision: 20,
+    rounding: 8,
+    errors: false
+});
 
 /*
+    Call Deposit with capitalized interest (per month)
+    
     Deposit model fields:
     {
-        startSum,
-        currentSum,
+        sum,
         startDate,
         endDate,
-        numberOfMonths
+        lastInterestDate
     }
 */
 module.exports = function (sequelize, DataTypes) {
     var Deposit = sequelize.define('Deposit', {
-        startSum: {
+        sum: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
-            field: 'start_sum'
-        },
-        currentSum: {
-            type: DataTypes.DECIMAL(12, 2),
-            allowNull: false,
-            field: 'current_sum'
+            field: 'sum'
         },
         startDate: {
             type: DataTypes.DATE,
@@ -40,11 +43,13 @@ module.exports = function (sequelize, DataTypes) {
                 isDate: true
             }
         },
-        //how much time the bank has this deposit
-        numberOfMonths: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            field: 'number_of_months'
+        lastInterestDate: {
+            type: DataTypes.DATE,
+            allowNull: true,
+            field: 'last_interest_date',
+            validate: {
+                isDate: true
+            }
         }
     }, {
         tableName: 'deposits',
@@ -74,14 +79,71 @@ module.exports = function (sequelize, DataTypes) {
                 var self = this;
                 this.getDepositType()
                     .then(function(depositType) {
-                        var isValid = self.startSum >= depositType.minSum;
+                        var isValid = self.sum >= depositType.minSum;
                         
                         cb(null, isValid);
                     })
                     .catch(function(error) {
                         cb(error);
                     });
+            },
+            
+            calculateInterest: function(cb) {
+                var self = this;
+                this.getDepositType()
+                    .then(function(depositType) {
+                        var interest = Math.round(
+                            new Decimal(self.sum).times(depositType.interest).div(12).toNumber()
+                        );
+                        cb(null, interest);
+                    })
+                    .catch(function(error) {
+                        cb(error);
+                    });
+            },
+            
+            earnInterest: function(cb) {
+                var self = this,
+                    BankInfo = sequelize.models.BankInfo;
+                    
+                this.calculateInterest(function(error, interest) {
+                    if (error) {
+                        return cb(error);
+                    }
+                    
+                    sequelize.transaction(function(t) {
+                        //first - increase deposit's sum
+                        return Deposit.update({
+                            sum: Math.round(new Decimal(self.sum).plus(interest))
+                        }, {
+                            where: { id: self.id },
+                            transaction: t
+                        })
+                        //second - find bank info
+                        .then(function() {
+                            return BankInfo.findById(1, { transaction: t });
+                        })
+                        //third - decrease bank's moneySupply
+                        .then(function(bankInfo) {
+                            return BankInfo.update({
+                                moneySupply: new Decimal(bankInfo.moneySupply).minus(interest).toNumber()
+                            }, {
+                                where: { id: 1 },
+                                transaction: t
+                            });
+                        });
+                    })
+                    //transaction successfully passed
+                    .then(function() {
+                        cb(null);
+                    })
+                    //transaction failed
+                    .catch(function(error) {
+                        cb(error);
+                    });
+                });
             }
+            
         }
         
     });

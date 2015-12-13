@@ -42,8 +42,7 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 min: 0
             }
-        },
-
+        }
     }, {
         tableName: 'bank_info',
         underscored: true,
