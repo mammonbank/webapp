@@ -76,7 +76,7 @@ provide(BEMDOM.decl('reg-form', {
             password: {
                 presence: { message: '^Обязательное поле' },
                 format: {
-                    pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[а-яА-ЯёЁa-zA-Z\d]{8,}$",
+                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[а-яА-ЯёЁa-zA-Z\d]$/,
                     message: "^Пароль должен содержать хотя бы одну цифру и заглавную букву"
                 },
                 length: {
@@ -149,7 +149,7 @@ provide(BEMDOM.decl('reg-form', {
             passportNumber: this.inputs[7].getVal(),
             passportIdNumber: this.inputs[8].getVal(),
             mothersMaidenName: this.inputs[9].getVal(),
-        }, this.onSuccess.bind(this));
+        }, this.onSuccess.bind(this), this.onFail.bind(this));
     },
 
     onSuccess: function(data) {
@@ -158,6 +158,10 @@ provide(BEMDOM.decl('reg-form', {
         this.img.domElem.attr('src', data.key.google_auth_qr);
         this.qr.params.clientId = data.clientId;
         this.qr.delMod('hide');
+    },
+
+    onFail: function(data) {
+        // modal + data.message
     }
 }));
 

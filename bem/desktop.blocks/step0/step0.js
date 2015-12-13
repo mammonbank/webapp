@@ -6,6 +6,7 @@ provide(BEMDOM.decl('step0', {
         'js': function() {
             this.buttons = this.findBlocksInside('button');
 
+            this.buttons[0].on('click', this.onCancel.bind(this));
             this.buttons[1].on('click', this.onSubmit.bind(this));
         }
     },
@@ -13,6 +14,10 @@ provide(BEMDOM.decl('step0', {
     onSubmit: function() {
         this.setMod('hide');
         this.findBlockOutside('page').findBlockInside('reg-form').delMod('hide');
+    },
+
+    onCancel: function() {
+        window.location.href = '/';
     }
 }));
 

@@ -33,20 +33,20 @@ module.exports = {
                             title: 'Навигация',
                             content: [
                                 {
-                                    block: 'menu-item',
+                                    block: 'link',
+                                    mods: { theme: 'islands', size: 'm' },
+                                    url: '/signup',
                                     content: {
-                                        block: 'link',
-                                        mods: { theme: 'islands', size: 'm' },
-                                        url: '/signup',
+                                        block: 'menu-item',
                                         content: 'Регистрация'
                                     }
                                 },
                                 {
-                                    block: 'menu-item',
+                                    block: 'link',
+                                    mods: { theme: 'islands', size: 'm' },
+                                    url: '/dashboard',
                                     content: {
-                                        block: 'link',
-                                        mods: { theme: 'islands', size: 'm' },
-                                        url: '/dashboard',
+                                        block: 'menu-item',
                                         content: 'Панель управления'
                                     }
                                 }

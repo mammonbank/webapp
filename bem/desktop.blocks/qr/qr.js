@@ -15,12 +15,16 @@ provide(BEMDOM.decl('qr', {
         $.post(BEMDOM.url + 'auth/client/step-2', {
             clientId: this.params.clientId,
             oneTimePassword: this.input.getVal()
-        }, this.onSuccess);
+        }, this.onSuccess, this.onFail.bind(this));
     },
 
     onSuccess: function(data) {
-        console.log('auth', data);
         localStorage.setItem('token', data.token);
+        window.location.href = '/dashboard';
+    },
+
+    onFail: function(data) {
+        console.log('fail', data);
     }
 }));
 

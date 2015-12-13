@@ -284,14 +284,19 @@ module.exports = {
                             url: ''
                         },
                         {
-                            block: 'input',
-                            mods: { theme: 'islands', size: 'm' },
-                            placeholder: 'Введите пароль с телефона'
-                        },
-                        {
-                            block: 'button',
-                            mods : { theme : 'islands', size : 'm', type : 'submit' },
-                            text: 'Отправить'
+                            block : 'control-group',
+                            content: [
+                                {
+                                    block: 'input',
+                                    mods: { theme: 'islands', size: 'm' },
+                                    placeholder: 'Введите пароль с телефона'
+                                },
+                                {
+                                    block: 'button',
+                                    mods : { theme : 'islands', size : 'm', type : 'submit', view: 'action' },
+                                    text: 'Отправить'
+                                }
+                            ]
                         }
                     ]
                 }
