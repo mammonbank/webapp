@@ -112,7 +112,8 @@ router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, 
         .update(req.updateObj, {
             where: {
                 id: req.clientId
-            }
+            },
+            individualHooks: true
         })
         .then(function() {
             res.json({
