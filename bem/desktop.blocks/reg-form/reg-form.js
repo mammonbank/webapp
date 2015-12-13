@@ -138,18 +138,24 @@ provide(BEMDOM.decl('reg-form', {
     onSubmit: function() {
         if (!this.validate()) { return; }
 
-        $.post(BEMDOM.url + 'api/clients', {
-            lastName: this.inputs[0].getVal(),
-            firstName: this.inputs[1].getVal(),
-            patronymic: this.inputs[2].getVal(),
-            dateOfBirth: this.inputs[3].getVal(),
-            phoneNumber: this.inputs[4].getVal(),
-            email: this.inputs[5].getVal(),
-            password: this.inputs[6].getVal(),
-            passportNumber: this.inputs[7].getVal(),
-            passportIdNumber: this.inputs[8].getVal(),
-            mothersMaidenName: this.inputs[9].getVal(),
-        }, this.onSuccess.bind(this), this.onFail.bind(this));
+        $.ajax({
+            url: BEMDOM.url + 'api/clients',
+            method: 'POST',
+            data: {
+                lastName: this.inputs[0].getVal(),
+                firstName: this.inputs[1].getVal(),
+                patronymic: this.inputs[2].getVal(),
+                dateOfBirth: this.inputs[3].getVal(),
+                phoneNumber: this.inputs[4].getVal(),
+                email: this.inputs[5].getVal(),
+                password: this.inputs[6].getVal(),
+                passportNumber: this.inputs[7].getVal(),
+                passportIdNumber: this.inputs[8].getVal(),
+                mothersMaidenName: this.inputs[9].getVal(),
+            }
+        })
+        .done(this.onSuccess.bind(this))
+        .fail(this.onFail.bind(this));
     },
 
     onSuccess: function(data) {

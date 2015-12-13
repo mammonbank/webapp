@@ -12,10 +12,16 @@ provide(BEMDOM.decl('qr', {
     },
 
     onSubmit: function() {
-        $.post(BEMDOM.url + 'auth/client/step-2', {
-            clientId: this.params.clientId,
-            oneTimePassword: this.input.getVal()
-        }, this.onSuccess, this.onFail.bind(this));
+        $.ajax({
+            url: BEMDOM.url + 'auth/client/step-2',
+            method: 'POST',
+            data: {
+                clientId: this.params.clientId,
+                oneTimePassword: this.input.getVal()
+            }
+        })
+        .done(this.onSuccess)
+        .fail(this.onFail.bind(this));
     },
 
     onSuccess: function(data) {
