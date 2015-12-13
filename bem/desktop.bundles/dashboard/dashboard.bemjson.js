@@ -36,7 +36,7 @@ module.exports = {
                     content: [
                         {
                             block: 'label',
-                            content: 'Идентификационный номер:'
+                            content: 'Личный (идентификационный) номер:'
                         },
                         {
                             block: 'input',

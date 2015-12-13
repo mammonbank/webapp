@@ -38,7 +38,7 @@ provide(BEMDOM.decl('reg-form', {
                 format: {
                     pattern: "^[а-яА-ЯёЁa-z,.'-]+$",
                     flags: "i",
-                    message: "Поле может содержать только буквы"
+                    message: "Поле не может содержать цифры и спец символы"
                 }
             },
             firstName: {
@@ -46,7 +46,7 @@ provide(BEMDOM.decl('reg-form', {
                 format: {
                     pattern: "^[а-яА-ЯёЁa-z,.'-]+$",
                     flags: "i",
-                    message: "^Поле может содержать только буквы"
+                    message: "^Поле не может содержать цифры и спец символы"
                 }
             },
             patronymic: {
@@ -54,7 +54,7 @@ provide(BEMDOM.decl('reg-form', {
                 format: {
                     pattern: "^[а-яА-ЯёЁa-z,.'-]+$",
                     flags: "i",
-                    message: "^Поле может содержать только буквы"
+                    message: "^Поле не может содержать цифры и спец символы"
                 }
             },
             dateOfBirth: {
@@ -63,7 +63,7 @@ provide(BEMDOM.decl('reg-form', {
                     dateOnly: true,
                     earliest: '1900-01-01',
                     latest: Date.now(),
-                    message: "^Дата рождения не может быть позже 1900 и раньше сегодняшнего дня"
+                    message: "^Дата рождения не может быть раньше 1900 или в будущем"
                 }
             },
             phoneNumber: {
@@ -77,7 +77,11 @@ provide(BEMDOM.decl('reg-form', {
                 presence: { message: '^Обязательное поле' },
                 format: {
                     pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[а-яА-ЯёЁa-zA-Z\d]{8,}$",
-                    message: "^Пароль должен быть не короче 8 символов и содержать цифру"
+                    message: "^Пароль должен содержать хотя бы одну цифру и заглавную букву"
+                },
+                length: {
+                    minimum: 8,
+                    message: "^Пароль должен быть не короче 8 символов"
                 }
             },
             passportNumber: {
@@ -91,7 +95,7 @@ provide(BEMDOM.decl('reg-form', {
                 format: {
                     pattern: "^[а-яА-ЯёЁa-z,.'-]+$",
                     flags: "i",
-                    message: "^Поле может содержать только буквы"
+                    message: "^Поле не может содержать цифры и спец символы"
                 }
             }
         };
