@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('../../fonts/SourceSansPro-Light.otf');
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    opacity: 1;
+    background: linear-gradient(to left, rgb(81, 127, 164), rgb(72, 114, 146));
+}
+
+canvas {
+    display: block;
+}

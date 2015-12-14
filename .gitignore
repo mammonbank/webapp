@@ -12,3 +12,8 @@ Session.vim
 *.sh
 #Windows bats
 *.bat
+
+bank/public/libs
+bank/public/build
+
+jsconfig.json

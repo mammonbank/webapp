@@ -1,0 +1,13 @@
+{
+  "name": "mammonbank-bank",
+  "version": "0.0.1",
+  "homepage": "https://github.com/mammonbank/webapp",
+  "authors": [
+    "wiranoid"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "alertify.js": "alertifyjs#~1.0.8"
+  }
+}
