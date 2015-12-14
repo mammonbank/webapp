@@ -4,6 +4,7 @@ var express = require('express'),
     router  = express.Router(),
     //authenticateToken = require('../middlewares/authenticateToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
+    getClientId = require('../middlewares/getClientId'),
     getDepositId = require('../middlewares/getDepositId'),
     Deposit  = require('models').Deposit,
     ClientAccount = require('models').ClientAccount,
@@ -96,17 +97,13 @@ router.post('/', function(req, res, next) {
         .then(function(bankInfo) {
             return BankInfo.update({
                 //baseMoney += deposit * reserveRatio
-                baseMoney: Math.round(
-                    new Decimal(bankInfo.baseMoney).plus( 
+                baseMoney: new Decimal(bankInfo.baseMoney).plus( 
                         new Decimal(depositSum).times(bankInfo.reserveRatio)
-                    ).toNumber()
-                ),
+                    ).toNumber(),
                 //moneySupply += deposit * (1 - reserveRatio)
-                moneySupply: Math.round(
-                    new Decimal(bankInfo.moneySupply).plus(
+                moneySupply: new Decimal(bankInfo.moneySupply).plus(
                         new Decimal(depositSum).times(1 - bankInfo.reserveRatio)
                     ).toNumber()
-                )
             }, {
                 where: { id: 1 },
                 transaction: t
@@ -126,6 +123,145 @@ router.post('/', function(req, res, next) {
         next(error);
     });
 });
+
+router.post('/:clientId/deposit/:depositId', getClientId, getDepositId, function(req, res, next) {
+    var sum = +req.body.sum;
+    if (!sum || sum <= 0) {
+        return next(new HttpApiError(400, 'Invalid sum'));
+    }
+    
+    var newDepositSum;
+    
+    sequelize.transaction(function(t) {
+        return ClientAccount.findOne({
+            where: {
+                client_id: req.clientId
+            },
+            transaction: t
+        })
+        .then(function(clientAccount) {
+            return ClientAccount.update({
+                amount: new Decimal(clientAccount.amount).minus(sum).toNumber()
+            }, {
+                where: { client_id: req.clientId },
+                transaction: t
+            });
+        })
+        .then(function() {
+            return Deposit.findById(req.depositId, { transaction: t });
+        })
+        .then(function(deposit) {
+            newDepositSum = new Decimal(deposit.sum).plus(sum).toNumber();
+            
+            return Deposit.update({
+                sum: newDepositSum
+            }, {
+                where: { id: deposit.id },
+                transaction: t
+            });
+        })
+        .then(function() {
+            return BankInfo.findById(1, { transaction: t });
+        })
+        .then(function(bankInfo) {
+            return BankInfo.update({
+                //baseMoney += deposit * reserveRatio
+                baseMoney: new Decimal(bankInfo.baseMoney).plus( 
+                        new Decimal(sum).times(bankInfo.reserveRatio)
+                    ).toNumber(),
+                //moneySupply += deposit * (1 - reserveRatio)
+                moneySupply: new Decimal(bankInfo.moneySupply).plus(
+                        new Decimal(sum).times(1 - bankInfo.reserveRatio)
+                    ).toNumber()
+            }, {
+                where: { id: 1 },
+                transaction: t
+            });
+        });
+    })
+    //at this point transaction either has been committed or rolled back
+    .then(function() {            
+        res.json({
+            depositSum: newDepositSum
+        }); 
+    })
+    .catch(Sequelize.ValidationError, function(error) {
+        next(new HttpApiError(400, error.message));
+    })
+    .catch(function(error) {
+        next(error);
+    });
+});
+
+router.post('/:clientId/withdraw/:depositId', getClientId, getDepositId, function(req, res, next) {
+    var sum = +req.body.sum;
+    if (!sum || sum <= 0) {
+        return next(new HttpApiError(400, 'Invalid sum'));
+    }
+    
+    var newDepositSum;
+    
+    sequelize.transaction(function(t) {
+        return ClientAccount.findOne({
+            where: {
+                client_id: req.clientId
+            },
+            transaction: t
+        })
+        .then(function(clientAccount) {
+            return ClientAccount.update({
+                amount: new Decimal(clientAccount.amount).plus(sum).toNumber()
+            }, {
+                where: { client_id: req.clientId },
+                transaction: t
+            });
+        })
+        .then(function() {
+            return Deposit.findById(req.depositId, { transaction: t });
+        })
+        .then(function(deposit) {
+            newDepositSum = new Decimal(deposit.sum).minus(sum).toNumber();
+            
+            return Deposit.update({
+                sum: newDepositSum
+            }, {
+                where: { id: deposit.id },
+                transaction: t
+            });
+        })
+        .then(function() {
+            return BankInfo.findById(1, { transaction: t });
+        })
+        .then(function(bankInfo) {
+            return BankInfo.update({
+                //baseMoney -= deposit * reserveRatio
+                baseMoney: new Decimal(bankInfo.baseMoney).minus( 
+                        new Decimal(sum).times(bankInfo.reserveRatio)
+                    ).toNumber(),
+                //moneySupply -= deposit * (1 - reserveRatio)
+                moneySupply: new Decimal(bankInfo.moneySupply).minus(
+                        new Decimal(sum).times(1 - bankInfo.reserveRatio)
+                    ).toNumber()
+            }, {
+                where: { id: 1 },
+                transaction: t
+            });
+        });
+    })
+    //at this point transaction either has been committed or rolled back
+    .then(function() {            
+        res.json({
+            depositSum: newDepositSum
+        }); 
+    })
+    .catch(Sequelize.ValidationError, function(error) {
+        next(new HttpApiError(400, error.message));
+    })
+    .catch(function(error) {
+        next(error);
+    });
+});
+
 //more in debug purpuses
 //in prod direct invocation of this method (and other updates - credits, accounts, etc.) is unacceptable
 router.patch('/:depositId', getDepositId, prepareUpdateObject, function(req, res, next) {
