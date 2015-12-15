@@ -49,7 +49,8 @@ router.post('/', function(req, res, next) {
     Operator
         .create({
             username: req.body.username,
-            password: req.body.password
+            password: req.body.password,
+            numberOfApplications: 0
         })
         .then(function(operator) {            
             res.json({

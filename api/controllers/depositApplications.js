@@ -6,8 +6,9 @@ var express = require('express'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getDepositAppId = require('../middlewares/getDepositAppId'),
     DepositApplication  = require('models').DepositApplication,
-    //Operator  = require('models').Operator,
+    Operator  = require('models').Operator,
     Sequelize = require('models').Sequelize,
+    sequelize = require('models').sequelize,
     HttpApiError = require('error').HttpApiError;
 
 router.get('/', function(req, res, next) {
@@ -46,28 +47,61 @@ router.get('/:depositAppId', getDepositAppId, function(req, res, next) {
         });
 });
 
-//выбрать всех операторов
-//найти у кого из них меньше всего заявок (учитывать заявки на кредиты и депозиты)
-//назначить ему заявку
-
+//find all operators
+//find who has the fewest number of applications (creidit and deposit)
+//assign application to him
 router.post('/', function(req, res, next) {
-    DepositApplication
-        .create({
-            plannedSum: req.body.plannedSum,
-            deposit_type_id: req.body.depositTypeId,
-            client_id: req.body.clientId
+    var operatorId;
+    
+    sequelize.transaction(function(t) {
+        return Operator.findAll({ transaction: t })
+        .then(function(operators) {
+            if (!operators) {
+                throw new Error('No operators found');
+            }
+            
+            //maybe some more complex logic here...
+            
+            var operatorIndex = 0;
+            
+            for (var i = 1; i < operators.length; i++) {
+                if ( operators[i].numberOfApplications < operators[operatorIndex].numberOfApplications ) {
+                    operatorIndex = i;
+                }
+            }
+            
+            operatorId = operators[operatorIndex].id;
+            
+            return Operator.findById(operatorId, { transaction: t });
         })
-        .then(function(depositApp) {            
-            res.json({
-                depositAppId: depositApp.id
-            }); 
+        .then(function(operator) {
+            return Operator.update( {
+                numberOfApplications: operator.numberOfApplications + 1
+            }, {
+                where: { id: operator.id },
+                transaction: t
+            });
         })
-        .catch(Sequelize.ValidationError, function(error) {
-            next(new HttpApiError(400, error.message));
-        })
-        .catch(function(error) {
-            next(error);
+        .then(function() {
+            return DepositApplication.create({
+                plannedSum: req.body.plannedSum,
+                deposit_type_id: req.body.depositTypeId,
+                client_id: req.body.clientId,
+                operator_id: operatorId
+            }, { transaction: t });
         });
+    })
+    .then(function(depositApp) {            
+        res.json({
+            depositAppId: depositApp.id
+        }); 
+    })
+    .catch(Sequelize.ValidationError, function(error) {
+        next(new HttpApiError(400, error.message));
+    })
+    .catch(function(error) {
+        next(error);
+    });   
 });
 
 router.patch('/:depositAppId', getDepositAppId, prepareUpdateObject, function(req, res, next) {

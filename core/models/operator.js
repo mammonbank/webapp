@@ -4,7 +4,8 @@
     Operator model fields:
     {
         username,
-        password
+        password,
+        numberOfApplications
     }
 */
 module.exports = function(sequelize, DataTypes) {
@@ -20,6 +21,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             field: 'password'
+        },
+        //both - credit and deposit
+        numberOfApplications: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            field: 'number_of_applications'
         }
     }, {
         tableName: 'operators',
