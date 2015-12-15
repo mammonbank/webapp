@@ -4,9 +4,8 @@ var express = require('express'),
     router  = express.Router(),
     //authenticateToken = require('../middlewares/authenticateToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
-    getCreditAppId = require('../middlewares/getCreditAppId'),
-    CreditApplication  = require('models').CreditApplication,
-    //Operator  = require('models').Operator,
+    getOperatorId = require('../middlewares/getOperatorId'),
+    Operator  = require('models').Operator,
     Sequelize = require('models').Sequelize,
     HttpApiError = require('error').HttpApiError;
 
@@ -14,14 +13,14 @@ router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
-    CreditApplication
+    Operator
         .findAll({ offset: offset, limit: limit })
-        .then(function(creditApps) {
+        .then(function(operators) {
             res.json({
-                count: creditApps.length,
+                count: operators.length,
                 offset: offset,
                 limit: limit,
-                creditApps: creditApps
+                operators: operators
             });
         })
         .catch(function(error) {
@@ -29,43 +28,32 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.get('/:creditAppId', getCreditAppId, function(req, res, next) {
-    CreditApplication
-        .findById(req.creditAppId)
-        .then(function(creditApp) {
-            if (!creditApp) {
+router.get('/:operatorId', getOperatorId, function(req, res, next) {
+    Operator
+        .findById(req.operatorId)
+        .then(function(operator) {
+            if (!operator) {
                 return res.json({
-                    message: 'No credit application has been found with given id'    
+                    message: 'No operator has been found with given id'    
                 });
             }
             
-            res.json(creditApp);
+            res.json(operator);
         })
         .catch(function(error) {
             next(error);
         });
 });
 
-//выбрать всех операторов
-//найти у кого из них меньше всего заявок (учитывать заявки на кредиты и депозиты)
-//назначить ему заявку
-
 router.post('/', function(req, res, next) {
-    
-    
-    
-    
-    
-    CreditApplication
+    Operator
         .create({
-            plannedSum: req.body.plannedSum,
-            plannedTerm: req.body.plannedTerm,
-            credit_type_id: req.body.creditTypeId,
-            client_id: req.body.clientId
+            username: req.body.username,
+            password: req.body.password
         })
-        .then(function(creditApp) {            
+        .then(function(operator) {            
             res.json({
-                creditAppId: creditApp.id
+                operatorId: operator.id
             }); 
         })
         .catch(Sequelize.ValidationError, function(error) {
@@ -76,16 +64,17 @@ router.post('/', function(req, res, next) {
         });
 });
 
-router.patch('/:creditAppId', getCreditAppId, prepareUpdateObject, function(req, res, next) {
-    CreditApplication
+router.patch('/:operatorId', getOperatorId, prepareUpdateObject, function(req, res, next) {
+    Operator
         .update(req.updateObj, {
             where: {
-                id: req.creditAppId
-            }
+                id: req.operatorId
+            },
+            individualHooks: true
         })
         .then(function() {
             res.json({
-                updated: req.creditAppId
+                updated: req.operatorId
             });
         })
         .catch(Sequelize.ValidationError, function(error) {
@@ -96,14 +85,14 @@ router.patch('/:creditAppId', getCreditAppId, prepareUpdateObject, function(req,
         });
 });
 
-router.delete('/:creditAppId', getCreditAppId, function(req, res, next) {
-    CreditApplication
+router.delete('/:operatorId', getOperatorId, function(req, res, next) {
+    Operator
         .destroy({
-            where: { id: req.creditAppId }
+            where: { id: req.operatorId }
         })
         .then(function() {
             res.json({
-                creditAppId: req.creditAppId
+                operatorId: req.operatorId
             });
         })
         .catch(function(error) {

@@ -1,18 +1,16 @@
 'use strict';
 
-var debug = require('debug')('mammonbank:api'),
-    _ = require('lodash');
+var debug = require('debug')('mammonbank:api');
 
 /*
-    CreditApplication model fields:
+    DepositApplication model fields:
     {
         plannedSum,
-        plannedTerm,
         isConfirmed
     }
 */
 module.exports = function(sequelize, DataTypes) {
-    var CreditApplication = sequelize.define('CreditApplication', {
+    var DepositApplication = sequelize.define('DepositApplication', {
         plannedSum: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
@@ -21,11 +19,6 @@ module.exports = function(sequelize, DataTypes) {
                 min: 0
             }
         },
-        plannedTerm: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            field: 'planned_term'
-        },
         isConfirmed: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
@@ -33,26 +26,26 @@ module.exports = function(sequelize, DataTypes) {
             field: 'is_confirmed'
         }
     }, {
-        tableName: 'credit_applications',
+        tableName: 'deposit_applications',
         underscored: true,
         timestamps: true,
         paranoid: true,
         
         classMethods: {
             associate: function(models) {
-                CreditApplication.belongsTo(models.Client, {
+                DepositApplication.belongsTo(models.Client, {
                     onDelete: "CASCADE",
                     foreignKey: {
                         allowNull: false
                     }
                 });
-                CreditApplication.belongsTo(models.CreditType, {
+                DepositApplication.belongsTo(models.DepositType, {
                     onDelete: "CASCADE",
                     foreignKey: {
                         allowNull: false
                     }
                 });
-                CreditApplication.belongsTo(models.Operator, {
+                DepositApplication.belongsTo(models.Operator, {
                     onDelete: "CASCADE",
                     foreignKey: {
                         allowNull: false
@@ -64,12 +57,9 @@ module.exports = function(sequelize, DataTypes) {
         instanceMethods: {
             checkForValidity: function(cb) {
                 var self = this;
-                this.getCreditType()
-                    .then(function(creditType) {
-                        var minMonths = creditType.term[0],
-                            maxMonths = creditType.term[1],
-                            isValid = !!( _.inRange(self.plannedSum, creditType.minSum, creditType.maxSum) &&
-                                 _.inRange(self.plannedTerm, minMonths, maxMonths) );
+                this.getDepositType()
+                    .then(function(depositType) {
+                        var isValid = self.plannedSum >= depositType.minSum;
                         
                         cb(null, isValid);
                     })
@@ -81,21 +71,21 @@ module.exports = function(sequelize, DataTypes) {
     
     });
     
-    CreditApplication.hook('beforeCreate', function(creditApp, options, fn) {
-        creditApp.checkForValidity(function(error, isValid) {
+    DepositApplication.hook('beforeCreate', function(depositApp, options, fn) {
+        depositApp.checkForValidity(function(error, isValid) {
             if (error) {
                 debug(error);
                 fn(error);
             }
 
             if (isValid) {
-                fn(null, creditApp);
+                fn(null, depositApp);
             } else {
-                fn(new sequelize.ValidationError('Credit application validation failed!'));
+                fn(new sequelize.ValidationError('Deposit application validation failed!'));
             }
             
         });
     });
 
-    return CreditApplication;
+    return DepositApplication;
 };
