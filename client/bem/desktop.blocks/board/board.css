@@ -1,0 +1,10 @@
+.board
+{
+    padding: 20px;
+}
+
+.board__account
+{
+    border-left: 3px solid #ffdb4d;
+    padding: 5px;
+}

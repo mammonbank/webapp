@@ -1,0 +1,35 @@
+.credit-new
+{
+    margin: 0 auto;
+    width: 80%;
+}
+
+.credit-new__group .label
+{
+    width: 100px;
+    display: inline-block;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.credit-new__group
+{
+    margin: 5px 0;
+}
+
+.credit-new .button
+{
+    display: block;
+    margin: 20px auto;
+}
+
+.credit-new__type
+{
+    border: 1px solid #ccc;
+    padding: 20px;
+}
+
+.credit-new__type_hide
+{
+    display: none;
+}

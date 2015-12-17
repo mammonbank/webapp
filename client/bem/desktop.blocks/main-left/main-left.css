@@ -1,0 +1,13 @@
+.main-left
+{
+    display: inline-block;
+    vertical-align: top;
+    width: 20%;
+    height: 100%;
+    border-right: 1px solid #ccc;
+}
+
+.main-left_hide
+{
+    display: none;
+}
