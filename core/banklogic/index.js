@@ -58,6 +58,10 @@ banklogic.getCreditAnnuityRepaymentInfo = function(info) {
     creditRepaymentInfo.totalPercentFee = Math.round(new Decimal(creditRepaymentInfo.totalFee)
         .minus(info.sum)
         .toNumber());
+    //1.7 - some random coefficient
+    creditRepaymentInfo.preferredIncome = Math.round(new Decimal(creditRepaymentInfo.payments[0].totalFee)
+        .times(1.7)
+        .toNumber());
     
     return creditRepaymentInfo;
 };
@@ -122,6 +126,9 @@ banklogic.getCreditDifferentiatedRepaymentInfo = function(info) {
     
     creditRepaymentInfo.totalFee = totalFee;
     creditRepaymentInfo.totalPercentFee = totalPercentFee;
+    creditRepaymentInfo.preferredIncome = Math.round(new Decimal(creditRepaymentInfo.payments[0].totalFee)
+        .times(1.3)
+        .toNumber());
     
     return creditRepaymentInfo;
 };
