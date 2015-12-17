@@ -4,7 +4,7 @@ module.exports = {
     head: [
         { elem: 'css', url: 'dashboard.min.css' }
     ],
-    scripts: [{ elem: 'js', url: 'dashboard.min.js' }],
+    scripts: [{ elem: 'js', url: 'dashboard.min.js' }, { elem: 'js', url: 'dashboard.bemhtml.js' }],
     content: [
         {
             block: 'header',
@@ -116,17 +116,38 @@ module.exports = {
                     content: [
                         {
                             elem: 'group',
+                            title: 'Общее',
+                            content: [
+                                {
+                                    block: 'menu-item',
+                                    mix: { block: 'main-left', elem: 'main' },
+                                    content: 'Главная'
+                                }
+                            ]
+                        },
+                        {
+                            elem: 'group',
                             title: 'Кредиты',
                             content: [
                                 {
                                     block: 'menu-item',
                                     mix: { block: 'main-left', elem: 'credit_new' },
-                                    content: 'Новый'
+                                    content: 'Подать заявку'
                                 },
                                 {
                                     block: 'menu-item',
                                     mix: { block: 'main-left', elem: 'credit_all' },
-                                    content: 'Текущие кредиты'
+                                    content: 'Текущие Заявки'
+                                },
+                                {
+                                    block: 'menu-item',
+                                    mix: { block: 'main-left', elem: 'credit_active' },
+                                    content: 'Активные кредиты'
+                                },
+                                {
+                                    block: 'menu-item',
+                                    mix: { block: 'main-left', elem: 'credit_archive' },
+                                    content: 'Архив'
                                 },
                                 {
                                     block: 'menu-item',
@@ -137,26 +158,52 @@ module.exports = {
                         },
                         {
                             elem: 'group',
+                            title: 'Депозиты',
+                            content: [
+                                {
+                                    block: 'menu-item',
+                                    mix: { block: 'main-left', elem: 'deposit_new' },
+                                    content: 'Подать заявку'
+                                },
+                                {
+                                    block: 'menu-item',
+                                    mix: { block: 'main-left', elem: 'deposit_all' },
+                                    content: 'Текущие Заявки'
+                                },
+                                {
+                                    block: 'menu-item',
+                                    mix: { block: 'main-left', elem: 'deposit_active' },
+                                    content: 'Активные депозиты'
+                                },
+                                {
+                                    block: 'menu-item',
+                                    mix: { block: 'main-left', elem: 'deposit_archive' },
+                                    content: 'Архив'
+                                }
+                            ]
+                        },
+                        {
+                            elem: 'group',
                             title: 'Пользователь',
                             content: [
                                 {
                                     block: 'menu-item',
-                                    mix: { block: 'main-left', elem: 'credit_new' },
+                                    mix: { block: 'main-left', elem: 'settings' },
                                     content: 'Учетная запись'
                                 },
                                 {
                                     block: 'menu-item',
-                                    mix: { block: 'main-left', elem: 'credit_new' },
+                                    mix: { block: 'main-left', elem: 'reset' },
                                     content: 'Сменить пароль'
                                 },
                                 {
                                     block: 'menu-item',
-                                    mix: { block: 'main-left', elem: 'credit_new' },
+                                    mix: { block: 'main-left', elem: 'help' },
                                     content: 'Помощь'
                                 },
                                 {
                                     block: 'menu-item',
-                                    mix: { block: 'main-left', elem: 'credit_new' },
+                                    mix: { block: 'main-left', elem: 'logout' },
                                     content: 'Выход'
                                 }
                             ]
@@ -186,63 +233,7 @@ module.exports = {
                 {
                     block: 'content',
                     js: true,
-                    content: [
-                        {
-                            block: 'credit-new',
-                            js: true,
-                            content: [
-                                {
-                                    elem: 'category',
-                                    content: []
-                                },
-                                {
-                                    elem: 'type',
-                                    content: []
-                                },
-                                {
-                                    elem: 'finish',
-                                    content: [
-                                        {
-                                            elem: 'group',
-                                            content: [
-                                                {
-                                                    block: 'label',
-                                                    for: 'plannedSum',
-                                                    content: 'Сумма кредита:'
-                                                },
-                                                {
-                                                    block: 'input',
-                                                    id: 'plannedSum',
-                                                    mods: { theme: 'islands', size: 'm' }
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            elem: 'group',
-                                            content: [
-                                                {
-                                                    block: 'label',
-                                                    for: 'plannedTerm',
-                                                    content: 'Условия:'
-                                                },
-                                                {
-                                                    block: 'input',
-                                                    id: 'plannedTerm',
-                                                    mods: { theme: 'islands', size: 'm' }
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            block: 'button',
-                                            mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action' },
-                                            mix: { block: 'step1', elem: 'button' },
-                                            text: 'Отправить заявку'
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    content: []
                 }
             ]
         }

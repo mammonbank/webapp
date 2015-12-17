@@ -20,12 +20,13 @@ provide(BEMDOM.decl('qr', {
                 oneTimePassword: this.input.getVal()
             }
         })
-        .done(this.onSuccess)
+        .done(this.onSuccess.bind(this))
         .fail(this.onFail.bind(this));
     },
 
     onSuccess: function(data) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('clientId', this.params.clientId);
         window.location.href = '/dashboard';
     },
 

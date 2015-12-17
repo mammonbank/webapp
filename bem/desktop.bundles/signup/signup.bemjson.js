@@ -67,7 +67,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',
@@ -88,7 +88,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',
@@ -108,7 +108,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',
@@ -128,7 +128,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',
@@ -148,7 +148,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',
@@ -168,7 +168,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',
@@ -188,7 +188,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',
@@ -208,7 +208,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',
@@ -228,7 +228,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',
@@ -248,7 +248,7 @@ module.exports = {
                         },
                         {
                             elem: 'group',
-                            mix: { block: 'line' },
+                            mix: { block: 'line2' },
                             content: [
                                 {
                                     block: 'label',

@@ -123,7 +123,7 @@ provide(BEMDOM.decl('reg-form', {
                 popup = input.params.popup;
 
             if (!popup) {
-                popup = input.findBlockOutside('line').findBlockInside('popup');
+                popup = input.findBlockOutside('line2').findBlockInside('popup');
                 input.params.popup = popup;
             }
 

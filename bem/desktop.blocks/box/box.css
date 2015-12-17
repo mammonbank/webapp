@@ -1,0 +1,37 @@
+.box
+{
+    display: inline-block;
+    vertical-align: top;
+    width: 30%;
+    margin: 0 24px;
+    border: 5px solid #ffdb4d;
+}
+
+.box:first-child
+{
+    margin-left: 0;
+}
+
+.box:last-child
+{
+    margin-right: 0;
+}
+
+.box__title
+{
+    font-size: 18px;
+    padding: 10px;
+}
+
+.box__info
+{
+    text-align: left;
+    color: #777;
+    padding: 20px;
+}
+
+.box__button
+{
+    text-align: center;
+    margin: 20px;
+}
