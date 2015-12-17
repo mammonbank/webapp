@@ -1,0 +1,15 @@
+.category-item
+{
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    margin: 10px 5px;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.category-item_active
+{
+    background: #ffdb4d;
+}

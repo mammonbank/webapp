@@ -1,0 +1,25 @@
+.application
+{
+    margin: 20px;
+    border: 1px solid #ccc;
+    padding: 20px;
+}
+
+.application__date
+{
+    color: #777;
+}
+
+.application__sum,
+.application__term
+{
+    display: inline-block;
+    vertical-align: top;
+    margin: 20px 10px;
+}
+
+.application__confirm
+{
+    padding: 5px;
+    border-left: 3px solid #ffdb4d;
+}

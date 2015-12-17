@@ -1,0 +1,11 @@
+.credit-finish
+{
+    border: 1px solid #ccc;
+    padding: 20px;
+}
+
+.credit-finish__title
+{
+    font-size: 18px;
+    padding: 20px 10px;
+}

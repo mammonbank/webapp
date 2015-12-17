@@ -1,0 +1,12 @@
+.main-right
+{
+    display: inline-block;
+    vertical-align: top;
+    width: 80%;
+    margin-left: -1px;
+}
+
+.main-right_hide
+{
+    display: none;
+}
