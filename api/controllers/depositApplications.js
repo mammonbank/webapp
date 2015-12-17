@@ -4,8 +4,8 @@ var express = require('express'),
     router  = express.Router(),
     //authenticateToken = require('../middlewares/authenticateToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
-    getCreditAppId = require('../middlewares/getCreditAppId'),
-    CreditApplication  = require('models').CreditApplication,
+    getDepositAppId = require('../middlewares/getDepositAppId'),
+    DepositApplication  = require('models').DepositApplication,
     Operator  = require('models').Operator,
     Sequelize = require('models').Sequelize,
     sequelize = require('models').sequelize,
@@ -15,14 +15,14 @@ router.get('/', function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
-    CreditApplication
+    DepositApplication
         .findAll({ offset: offset, limit: limit })
-        .then(function(creditApps) {
+        .then(function(depositApps) {
             res.json({
-                count: creditApps.length,
+                count: depositApps.length,
                 offset: offset,
                 limit: limit,
-                creditApps: creditApps
+                depositApps: depositApps
             });
         })
         .catch(function(error) {
@@ -30,17 +30,17 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.get('/:creditAppId', getCreditAppId, function(req, res, next) {
-    CreditApplication
-        .findById(req.creditAppId)
-        .then(function(creditApp) {
-            if (!creditApp) {
+router.get('/:depositAppId', getDepositAppId, function(req, res, next) {
+    DepositApplication
+        .findById(req.depositAppId)
+        .then(function(depositApp) {
+            if (!depositApp) {
                 return res.json({
-                    message: 'No credit application has been found with given id'    
+                    message: 'No deposit application has been found with given id'    
                 });
             }
             
-            res.json(creditApp);
+            res.json(depositApp);
         })
         .catch(function(error) {
             next(error);
@@ -56,7 +56,7 @@ router.post('/', function(req, res, next) {
     sequelize.transaction(function(t) {
         return Operator.findAll({ transaction: t })
         .then(function(operators) {
-            if (!operators || operators.length === 0) {
+            if (!operators && operators.length === 0) {
                 throw new Error('No operators found');
             }
             
@@ -83,18 +83,17 @@ router.post('/', function(req, res, next) {
             });
         })
         .then(function() {
-            return CreditApplication.create({
+            return DepositApplication.create({
                 plannedSum: req.body.plannedSum,
-                plannedTerm: req.body.plannedTerm,
-                credit_type_id: req.body.creditTypeId,
+                deposit_type_id: req.body.depositTypeId,
                 client_id: req.body.clientId,
                 operator_id: operatorId
             }, { transaction: t });
         });
     })
-    .then(function(creditApp) {            
+    .then(function(depositApp) {            
         res.json({
-            creditAppId: creditApp.id
+            depositAppId: depositApp.id
         }); 
     })
     .catch(Sequelize.ValidationError, function(error) {
@@ -105,16 +104,16 @@ router.post('/', function(req, res, next) {
     });   
 });
 
-router.patch('/:creditAppId', getCreditAppId, prepareUpdateObject, function(req, res, next) {
-    CreditApplication
+router.patch('/:depositAppId', getDepositAppId, prepareUpdateObject, function(req, res, next) {
+    DepositApplication
         .update(req.updateObj, {
             where: {
-                id: req.creditAppId
+                id: req.depositAppId
             }
         })
         .then(function() {
             res.json({
-                updated: req.creditAppId
+                updated: req.depositAppId
             });
         })
         .catch(Sequelize.ValidationError, function(error) {
@@ -125,14 +124,14 @@ router.patch('/:creditAppId', getCreditAppId, prepareUpdateObject, function(req,
         });
 });
 
-router.delete('/:creditAppId', getCreditAppId, function(req, res, next) {
-    CreditApplication
+router.delete('/:depositAppId', getDepositAppId, function(req, res, next) {
+    DepositApplication
         .destroy({
-            where: { id: req.creditAppId }
+            where: { id: req.depositAppId }
         })
         .then(function() {
             res.json({
-                creditAppId: req.creditAppId
+                depositAppId: req.depositAppId
             });
         })
         .catch(function(error) {
