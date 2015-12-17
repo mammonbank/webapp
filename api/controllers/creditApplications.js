@@ -56,7 +56,7 @@ router.post('/', function(req, res, next) {
     sequelize.transaction(function(t) {
         return Operator.findAll({ transaction: t })
         .then(function(operators) {
-            if (!operators) {
+            if (!operators || operators.length === 0) {
                 throw new Error('No operators found');
             }
             
