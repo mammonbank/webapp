@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use(express.static('bem/desktop.bundles/'));
-app.use(express.static('bem/libs/'));
+app.use(express.static('client/bem/desktop.bundles/'));
+app.use(express.static('client/bem/libs/'));
 app.use(favicon(__dirname + '/favicon.ico'));
 
 app.use(require('./controllers'));
