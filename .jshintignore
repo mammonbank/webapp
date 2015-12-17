@@ -1,7 +1,7 @@
 node_modules
-bem/desktop.bundles
-bem/desktop.blocks
-bem/node_modules
-bem/libs
+client/bem/desktop.bundles
+client/bem/desktop.blocks
+client/bem/node_modules
+client/bem/libs
 
 bank/public/
