@@ -21,9 +21,8 @@ router.use('/api/deposit/applications', require('./depositApplications'));
 router.use('/api/deposit/types', require('./depositTypes'));
 router.use('/api/deposits', require('./deposits'));
 
-router.use('/api/operators', require('./operators'));
-router.use('/api/managers', require('./managers'));
-router.use('/api/overseers', require('./overseers'));
+router.use('/auth/bank', require('./bankAuth'));
+router.use('/api/bank/employees', require('./bankEmployees'));
 
 router.get('/', function(req, res) {
     res.json({

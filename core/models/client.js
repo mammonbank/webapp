@@ -226,7 +226,6 @@ module.exports = function(sequelize, DataTypes) {
         .beforeUpdate(hook);
     
     function hook(user, options, fn) {
-        debug('hook');
         async.waterfall([
             function(cb) {
                 bcrypt.genSalt(config.saltWorkFactor, cb);

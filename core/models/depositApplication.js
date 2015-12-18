@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
                         allowNull: false
                     }
                 });
-                DepositApplication.belongsTo(models.Operator, {
+                DepositApplication.belongsTo(models.BankEmployee, {
                     onDelete: "CASCADE",
                     foreignKey: {
                         allowNull: false

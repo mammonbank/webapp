@@ -2,7 +2,7 @@
 
 var express = require('express'),
     router  = express.Router(),
-    //authenticateToken = require('../middlewares/authenticateToken'),
+    authenticateOverseerToken = require('../middlewares/authenticateOverseerToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditTypeId = require('../middlewares/getCreditTypeId'),
     CreditType  = require('models').CreditType,
@@ -69,7 +69,7 @@ router.get('/:creditTypeId', getCreditTypeId, function(req, res, next) {
         });
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', authenticateOverseerToken, function(req, res, next) {
     CreditType
         .create({
             title: req.body.title,
@@ -93,7 +93,9 @@ router.post('/', function(req, res, next) {
         });
 });
 
-router.patch('/:creditTypeId', getCreditTypeId, prepareUpdateObject, function(req, res, next) {
+router.patch('/:creditTypeId', authenticateOverseerToken,
+                               getCreditTypeId, 
+                               prepareUpdateObject, function(req, res, next) {
     CreditType
         .update(req.updateObj, {
             where: {
@@ -113,7 +115,8 @@ router.patch('/:creditTypeId', getCreditTypeId, prepareUpdateObject, function(re
         });
 });
 
-router.delete('/:creditTypeId', getCreditTypeId, function(req, res, next) {
+router.delete('/:creditTypeId', authenticateOverseerToken, 
+                                getCreditTypeId, function(req, res, next) {
     CreditType
         .destroy({
             where: { id: req.creditTypeId }

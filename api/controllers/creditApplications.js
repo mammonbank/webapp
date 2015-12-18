@@ -2,16 +2,17 @@
 
 var express = require('express'),
     router  = express.Router(),
-    //authenticateToken = require('../middlewares/authenticateToken'),
+    authenticateOperatorToken = require('../middlewares/authenticateOperatorToken'),
+    authenticateClientToken = require('../middlewares/authenticateClientToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditAppId = require('../middlewares/getCreditAppId'),
     CreditApplication  = require('models').CreditApplication,
-    Operator  = require('models').Operator,
+    BankEmployee  = require('models').BankEmployee,
     Sequelize = require('models').Sequelize,
     sequelize = require('models').sequelize,
     HttpApiError = require('error').HttpApiError;
 
-router.get('/', function(req, res, next) {
+router.get('/', authenticateOperatorToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
@@ -30,7 +31,8 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.get('/:creditAppId', getCreditAppId, function(req, res, next) {
+router.get('/:creditAppId', authenticateOperatorToken,
+                            getCreditAppId, function(req, res, next) {
     CreditApplication
         .findById(req.creditAppId)
         .then(function(creditApp) {
@@ -50,11 +52,11 @@ router.get('/:creditAppId', getCreditAppId, function(req, res, next) {
 //find all operators
 //find who has the fewest number of applications (creidit and deposit)
 //assign application to him
-router.post('/', function(req, res, next) {
+router.post('/', authenticateClientToken, function(req, res, next) {
     var operatorId;
     
     sequelize.transaction(function(t) {
-        return Operator.findAll({ transaction: t })
+        return BankEmployee.findAll({ where: { type: 'OPERATOR' }, transaction: t })
         .then(function(operators) {
             if (!operators || operators.length === 0) {
                 throw new Error('No operators found');
@@ -72,10 +74,10 @@ router.post('/', function(req, res, next) {
             
             operatorId = operators[operatorIndex].id;
             
-            return Operator.findById(operatorId, { transaction: t });
+            return BankEmployee.findById(operatorId, { transaction: t });
         })
         .then(function(operator) {
-            return Operator.update( {
+            return BankEmployee.update( {
                 numberOfApplications: operator.numberOfApplications + 1
             }, {
                 where: { id: operator.id },
@@ -88,7 +90,7 @@ router.post('/', function(req, res, next) {
                 plannedTerm: req.body.plannedTerm,
                 credit_type_id: req.body.creditTypeId,
                 client_id: req.body.clientId,
-                operator_id: operatorId
+                bank_employee_id: operatorId
             }, { transaction: t });
         });
     })
@@ -105,7 +107,9 @@ router.post('/', function(req, res, next) {
     });   
 });
 
-router.patch('/:creditAppId', getCreditAppId, prepareUpdateObject, function(req, res, next) {
+router.patch('/:creditAppId', authenticateOperatorToken,
+                              getCreditAppId, 
+                              prepareUpdateObject, function(req, res, next) {
     CreditApplication
         .update(req.updateObj, {
             where: {
@@ -125,7 +129,8 @@ router.patch('/:creditAppId', getCreditAppId, prepareUpdateObject, function(req,
         });
 });
 
-router.delete('/:creditAppId', getCreditAppId, function(req, res, next) {
+router.delete('/:creditAppId', authenticateOperatorToken, 
+                               getCreditAppId, function(req, res, next) {
     CreditApplication
         .destroy({
             where: { id: req.creditAppId }

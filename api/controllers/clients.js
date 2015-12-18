@@ -2,7 +2,7 @@
 
 var express = require('express'),
     router  = express.Router(),
-    //authenticateToken = require('../middlewares/authenticateToken'),
+    authenticateClientToken = require('../middlewares/authenticateClientToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getClientId = require('../middlewares/getClientId'),
     Client  = require('models').Client,
@@ -12,7 +12,7 @@ var express = require('express'),
     HttpApiError = require('error').HttpApiError,
     speakeasy = require('speakeasy');
 
-router.get('/', function(req, res, next) {
+router.get('/', authenticateClientToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
@@ -31,7 +31,8 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.get('/:clientId', getClientId, function(req, res, next) {
+router.get('/:clientId', authenticateClientToken, 
+                         getClientId, function(req, res, next) {
     Client
         .findById(req.clientId)
         .then(function(client) {
@@ -107,7 +108,9 @@ router.post('/', function(req, res, next) {
     });
 });
 
-router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, next) {
+router.patch('/:clientId', authenticateClientToken, 
+                           getClientId, 
+                           prepareUpdateObject, function(req, res, next) {
     Client
         .update(req.updateObj, {
             where: {
@@ -128,7 +131,8 @@ router.patch('/:clientId', getClientId, prepareUpdateObject, function(req, res, 
         });
 });
 
-router.delete('/:clientId', getClientId, function(req, res, next) {
+router.delete('/:clientId', authenticateClientToken, 
+                            getClientId, function(req, res, next) {
     Client
         .destroy({
             where: { id: req.clientId }
