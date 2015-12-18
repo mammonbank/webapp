@@ -2,7 +2,8 @@
 
 var express = require('express'),
     router  = express.Router(),
-    //authenticateToken = require('../middlewares/authenticateToken'),
+    authenticateOperatorToken = require('../middlewares/authenticateOperatorToken'),
+    authenticateClientToken = require('../middlewares/authenticateClientToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getClientId = require('../middlewares/getClientId'),
     getDepositId = require('../middlewares/getDepositId'),
@@ -20,7 +21,7 @@ Decimal.config({
     errors: false
 });
 
-router.get('/', function(req, res, next) {
+router.get('/', authenticateOperatorToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
@@ -39,7 +40,8 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.get('/:depositId', getDepositId, function(req, res, next) {
+router.get('/:depositId', authenticateOperatorToken, 
+                          getDepositId, function(req, res, next) {
     Deposit
         .findById(req.depositId)
         .then(function(deposit) {
@@ -56,7 +58,7 @@ router.get('/:depositId', getDepositId, function(req, res, next) {
         });
 });
         
-router.post('/', function(req, res, next) {
+router.post('/', authenticateClientToken, function(req, res, next) {
     var depositId;
 
     sequelize.transaction(function(t) {
@@ -124,7 +126,9 @@ router.post('/', function(req, res, next) {
     });
 });
 
-router.post('/:clientId/deposit/:depositId', getClientId, getDepositId, function(req, res, next) {
+router.post('/:clientId/deposit/:depositId', authenticateClientToken, 
+                                             getClientId, 
+                                             getDepositId, function(req, res, next) {
     var sum = +req.body.sum;
     if (!sum || sum <= 0) {
         return next(new HttpApiError(400, 'Invalid sum'));
@@ -193,7 +197,9 @@ router.post('/:clientId/deposit/:depositId', getClientId, getDepositId, function
     });
 });
 
-router.post('/:clientId/withdraw/:depositId', getClientId, getDepositId, function(req, res, next) {
+router.post('/:clientId/withdraw/:depositId', authenticateClientToken,
+                                              getClientId, 
+                                              getDepositId, function(req, res, next) {
     var sum = +req.body.sum;
     if (!sum || sum <= 0) {
         return next(new HttpApiError(400, 'Invalid sum'));
@@ -264,7 +270,9 @@ router.post('/:clientId/withdraw/:depositId', getClientId, getDepositId, functio
 
 //more in debug purpuses
 //in prod direct invocation of this method (and other updates - credits, accounts, etc.) is unacceptable
-router.patch('/:depositId', getDepositId, prepareUpdateObject, function(req, res, next) {
+router.patch('/:depositId', authenticateOperatorToken, 
+                            getDepositId, 
+                            prepareUpdateObject, function(req, res, next) {
     Deposit
         .update(req.updateObj, {
             where: {
@@ -284,7 +292,8 @@ router.patch('/:depositId', getDepositId, prepareUpdateObject, function(req, res
         });
 });
 //debug purpuses
-router.delete('/:depositId', getDepositId, function(req, res, next) {
+router.delete('/:depositId', authenticateOperatorToken, 
+                             getDepositId, function(req, res, next) {
     Deposit
         .destroy({
             where: { id: req.depositId }

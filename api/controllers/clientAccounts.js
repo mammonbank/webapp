@@ -2,12 +2,12 @@
 
 var express = require('express'),
     router  = express.Router(),
-    //authenticateToken = require('../middlewares/authenticateToken'),
+    authenticateClientToken = require('../middlewares/authenticateClientToken'),
     getClientId = require('../middlewares/getClientId'),
     ClientAccount  = require('models').ClientAccount,
     HttpApiError = require('error').HttpApiError;
 
-router.get('/', function(req, res, next) {
+router.get('/', authenticateClientToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.get('/:clientId', getClientId, function(req, res, next) {
+router.get('/:clientId', authenticateClientToken, getClientId, function(req, res, next) {
     ClientAccount
         .findOne({ 
             where: { client_id: req.clientId }
@@ -44,7 +44,7 @@ router.get('/:clientId', getClientId, function(req, res, next) {
         });
 });
 
-router.post('/:clientId/deposit', getClientId, function(req, res, next) {
+router.post('/:clientId/deposit', authenticateClientToken, getClientId, function(req, res, next) {
     var sum = +req.body.sum;
     if (!sum || sum <= 0) {
         return next(new HttpApiError(400, 'Invalid sum'));
@@ -73,7 +73,7 @@ router.post('/:clientId/deposit', getClientId, function(req, res, next) {
         });
 });
 
-router.post('/:clientId/withdraw', getClientId, function(req, res, next) {
+router.post('/:clientId/withdraw', authenticateClientToken, getClientId, function(req, res, next) {
     var sum = +req.body.sum;
     if (!sum || sum <= 0) {
         return next(new HttpApiError(400, 'Invalid sum'));

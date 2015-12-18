@@ -2,7 +2,8 @@
 
 var express = require('express'),
     router  = express.Router(),
-    //authenticateToken = require('../middlewares/authenticateToken'),
+    authenticateOperatorToken = require('../middlewares/authenticateOperatorToken'),
+    authenticateClientToken = require('../middlewares/authenticateClientToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditId = require('../middlewares/getCreditId'),
     Credit  = require('models').Credit,
@@ -21,7 +22,7 @@ Decimal.config({
     errors: false
 });
 
-router.get('/', function(req, res, next) {
+router.get('/', authenticateOperatorToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
         limit = +req.query.limit || 50;
 
@@ -40,7 +41,8 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.get('/:creditId', getCreditId, function(req, res, next) {
+router.get('/:creditId', authenticateOperatorToken,
+                         getCreditId, function(req, res, next) {
     Credit
         .findById(req.creditId)
         .then(function(credit) {
@@ -57,7 +59,8 @@ router.get('/:creditId', getCreditId, function(req, res, next) {
         });
 });
 
-router.get('/:creditId/info', getCreditId, function(req, res, next) {
+router.get('/:creditId/info', authenticateClientToken, 
+                              getCreditId, function(req, res, next) {
     Credit
         .findById(req.creditId)
         .then(function(credit) {
@@ -121,7 +124,7 @@ router.get('/info/payment', function(req, res, next) {
     return res.json(creditRepaymentInfo);
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', authenticateOperatorToken, function(req, res, next) {
     var creditId;
 
     sequelize.transaction(function(t) {
@@ -188,7 +191,9 @@ router.post('/', function(req, res, next) {
     });
 });
 
-router.patch('/:creditId', getCreditId, prepareUpdateObject, function(req, res, next) {
+router.patch('/:creditId', authenticateOperatorToken, 
+                           getCreditId, 
+                           prepareUpdateObject, function(req, res, next) {
     Credit
         .update(req.updateObj, {
             where: {
@@ -208,7 +213,8 @@ router.patch('/:creditId', getCreditId, prepareUpdateObject, function(req, res, 
         });
 });
 
-router.delete('/:creditId', getCreditId, function(req, res, next) {
+router.delete('/:creditId', authenticateOperatorToken, 
+                            getCreditId, function(req, res, next) {
     Credit
         .destroy({
             where: { id: req.creditId }

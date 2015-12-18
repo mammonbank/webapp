@@ -52,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
                         allowNull: false
                     }
                 });
-                CreditApplication.belongsTo(models.Operator, {
+                CreditApplication.belongsTo(models.BankEmployee, {
                     onDelete: "CASCADE",
                     foreignKey: {
                         allowNull: false

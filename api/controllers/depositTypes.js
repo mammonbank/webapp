@@ -2,6 +2,7 @@
 
 var express = require('express'),
     router = express.Router(),
+    authenticateOverseerToken = require('../middlewares/authenticateOverseerToken'),
     getDepositTypeId = require('../middlewares/getDepositTypeId'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     DepositType = require('models').DepositType,
@@ -68,7 +69,7 @@ router.get('/:depositTypeId', function (req, res, next) {
         });
 });
 
-router.post('/', function (req, res, next) {
+router.post('/', authenticateOverseerToken, function (req, res, next) {
     DepositType
         .create({
             title: req.body.title,
@@ -89,7 +90,9 @@ router.post('/', function (req, res, next) {
         });
 });
 
-router.patch('/:depositTypeId', getDepositTypeId, prepareUpdateObject, function(req, res, next) {
+router.patch('/:depositTypeId', authenticateOverseerToken,
+                                getDepositTypeId, 
+                                prepareUpdateObject, function(req, res, next) {
     DepositType
         .update(req.updateObj, {
             where: {
@@ -109,7 +112,8 @@ router.patch('/:depositTypeId', getDepositTypeId, prepareUpdateObject, function(
         });
 });
 
-router.delete('/:depositTypeId', getDepositTypeId, function(req, res, next) {
+router.delete('/:depositTypeId', authenticateOverseerToken,
+                                 getDepositTypeId, function(req, res, next) {
     DepositType
         .destroy({
             where: { id: req.depositTypeId }

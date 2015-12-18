@@ -2,7 +2,7 @@
 
 var express = require('express'),
     router  = express.Router(),
-    //authenticateToken = require('../middlewares/authenticateToken'),
+    authenticateOverseerToken = require('../middlewares/authenticateOverseerToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getCreditCatId = require('../middlewares/getCreditCatId'),
     CreditCategory  = require('models').CreditCategory,
@@ -69,7 +69,7 @@ router.get('/:creditCatId', getCreditCatId, function(req, res, next) {
         });
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', authenticateOverseerToken, function(req, res, next) {
     CreditCategory
         .create({
             title: req.body.title
@@ -87,7 +87,9 @@ router.post('/', function(req, res, next) {
         });
 });
 
-router.patch('/:creditCatId', getCreditCatId, prepareUpdateObject, function(req, res, next) {
+router.patch('/:creditCatId', authenticateOverseerToken,
+                              getCreditCatId, 
+                              prepareUpdateObject, function(req, res, next) {
     CreditCategory
         .update(req.updateObj, {
             where: {
@@ -107,7 +109,8 @@ router.patch('/:creditCatId', getCreditCatId, prepareUpdateObject, function(req,
         });
 });
 
-router.delete('/:creditCatId', getCreditCatId, function(req, res, next) {
+router.delete('/:creditCatId', authenticateOverseerToken, 
+                               getCreditCatId, function(req, res, next) {
     CreditCategory
         .destroy({
             where: { id: req.creditCatId }

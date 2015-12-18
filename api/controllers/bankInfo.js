@@ -2,13 +2,13 @@
 
 var express = require('express'),
     router  = express.Router(),
-    //authenticateToken = require('../middlewares/authenticateToken'),
+    authenticateOverseerToken = require('../middlewares/authenticateOverseerToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     BankInfo  = require('models').BankInfo,
     Sequelize = require('sequelize'),
     HttpApiError = require('error').HttpApiError;
 
-router.get('/', function(req, res, next) {
+router.get('/', authenticateOverseerToken, function(req, res, next) {
     BankInfo
         .findById(1)
         .then(function(bankInfo) {
@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
         });
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', authenticateOverseerToken, function(req, res, next) {
     BankInfo
         .create({
             baseMoney: req.body.baseMoney,
@@ -43,7 +43,7 @@ router.post('/', function(req, res, next) {
         });
 });
 
-router.patch('/', prepareUpdateObject, function(req, res, next) {
+router.patch('/', authenticateOverseerToken, prepareUpdateObject, function(req, res, next) {
     BankInfo
         .update(req.updateObj, {
             where: {
