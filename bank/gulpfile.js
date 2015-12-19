@@ -41,7 +41,7 @@ gulp.task('js', ['js-index'], () => {
 gulp.task('watch', () => {
     livereload.listen();
     gulp.watch('./public/styles/*.css', ['styles']);
-    gulp.watch('./public/js/*.js', ['js']);
+    gulp.watch('./public/js/**/*.js', ['js-index']);
 });
 
 gulp.task('default', ['styles', 'js', 'watch']);
