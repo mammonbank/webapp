@@ -31,6 +31,34 @@ router.get('/', authenticateOperatorToken, function(req, res, next) {
         });
 });
 
+router.get('/archives', authenticateOperatorToken, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    CreditApplication
+        .findAll({
+            offset: offset,
+            limit: limit,
+            paranoid: false,
+            where: {
+                deleted_at: {
+                    $ne: null
+                }
+            } 
+         })
+        .then(function(creditApps) {
+            res.json({
+                count: creditApps.length,
+                offset: offset,
+                limit: limit,
+                creditApps: creditApps
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
 router.get('/:creditAppId', authenticateOperatorToken,
                             getCreditAppId, function(req, res, next) {
     CreditApplication

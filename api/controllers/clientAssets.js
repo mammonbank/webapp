@@ -34,6 +34,36 @@ router.get('/:clientId/credits', authenticateClientToken,
         });
 });
 
+router.get('/:clientId/archives/credits', authenticateClientToken, 
+                                          getClientId, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    Credit
+        .findAll({ 
+            offset: offset, 
+            limit: limit,
+            paranoid: false,
+            where: {
+                client_id: req.clientId,
+                deleted_at: {
+                    $ne: null
+                }
+            }
+        })
+        .then(function(credits) {
+            res.json({
+                count: credits.length,
+                offset: offset,
+                limit: limit,
+                credits: credits
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
 router.get('/:clientId/credit/applications', authenticateClientToken, 
                                              getClientId, function(req, res, next) {
     var offset = +req.query.offset || 0,
@@ -44,6 +74,36 @@ router.get('/:clientId/credit/applications', authenticateClientToken,
             offset: offset, 
             limit: limit,
             where: { client_id: req.clientId }
+        })
+        .then(function(creditApps) {
+            res.json({
+                count: creditApps.length,
+                offset: offset,
+                limit: limit,
+                creditApps: creditApps
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
+router.get('/:clientId/archives/credit/applications', authenticateClientToken, 
+                                             getClientId, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    CreditApplication
+        .findAll({ 
+            offset: offset, 
+            limit: limit,
+            paranoid: false,
+            where: {
+                client_id: req.clientId,
+                deleted_at: {
+                    $ne: null
+                }
+            }
         })
         .then(function(creditApps) {
             res.json({
@@ -82,6 +142,36 @@ router.get('/:clientId/deposits', authenticateClientToken,
         });
 });
 
+router.get('/:clientId/archives/deposits', authenticateClientToken, 
+                                           getClientId, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    Deposit
+        .findAll({
+            offset: offset, 
+            limit: limit,
+            paranoid: false,
+            where: {
+                client_id: req.clientId,
+                deleted_at: {
+                    $ne: null
+                }
+            }
+        })
+        .then(function(deposits) {
+            res.json({
+                count: deposits.length,
+                offset: offset,
+                limit: limit,
+                deposits: deposits
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
 router.get('/:clientId/deposit/applications', authenticateClientToken, 
                                               getClientId, function(req, res, next) {
     var offset = +req.query.offset || 0,
@@ -92,6 +182,36 @@ router.get('/:clientId/deposit/applications', authenticateClientToken,
             offset: offset, 
             limit: limit,
             where: { client_id: req.clientId }
+        })
+        .then(function(depositApps) {
+            res.json({
+                count: depositApps.length,
+                offset: offset,
+                limit: limit,
+                depositApps: depositApps
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
+router.get('/:clientId/archives/deposit/applications', authenticateClientToken, 
+                                              getClientId, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    DepositApplication
+        .findAll({ 
+            offset: offset, 
+            limit: limit,
+            paranoid: false,
+            where: {
+                client_id: req.clientId,
+                deleted_at: {
+                    $ne: null
+                }
+            }
         })
         .then(function(depositApps) {
             res.json({
