@@ -8,6 +8,10 @@ helper.getMonthsDiff = function(endDate, startDate) {
     return moment(endDate).diff(moment(startDate), 'months', true);
 };
 
+helper.getYearsDiff = function(endDate, startDate) {
+    return moment(endDate).diff(moment(startDate), 'years', false);
+};
+
 helper.addMonthsToDate = function(date, monthsNumber) {
     return moment(date).add(monthsNumber, 'months').toDate();
 };

@@ -1,8 +1,10 @@
 'use strict';
 
-var async = require('async'),
+var _ = require('lodash'),
+    async = require('async'),
     bcrypt = require('bcrypt'),
     config = require('config'),
+    helper = require('helper'),
     debug = require('debug')('mammonbank:api');
 
 /*
@@ -19,7 +21,8 @@ var async = require('async'),
         passportIdNumber,
         mothersMaidenName,
         secret,
-        isConfirmed
+        isConfirmed,
+        creditHistoryCoefficient
     }
 */
 module.exports = function(sequelize, DataTypes) {
@@ -58,8 +61,8 @@ module.exports = function(sequelize, DataTypes) {
                 isDate: true,
                 isAfter: '1900-01-01',
                 isBefore: function(value) {
-                    if (value > Date.now()) {
-                        throw new Error('Date of birth cannot be in the future');
+                    if ( helper.getYearsDiff(Date.now(), value) < 18 ) {
+                        throw new Error('You must be at least 18 years old');
                     }
                 }
             }
@@ -192,6 +195,12 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             defaultValue: false,
             field: 'is_confirmed'
+        },
+        creditHistoryCoefficient: {
+            type: DataTypes.REAL,
+            allowNull: false,
+            defaultValue: 0,
+            field: 'credit_history_coefficient'
         }
     }, {
         tableName: 'clients',
@@ -217,6 +226,11 @@ module.exports = function(sequelize, DataTypes) {
 
                     cb(null, isMatch);
                 });
+            },
+            
+            getCreditHistoryCoefficient: function() {
+                var otherBanksCreditHistoryCoefficient = _.random(-100, 100, true) * 0.7;
+                return this.creditHistoryCoefficient + otherBanksCreditHistoryCoefficient;
             }
         }
     });
