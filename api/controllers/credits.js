@@ -41,6 +41,34 @@ router.get('/', authenticateOperatorToken, function(req, res, next) {
         });
 });
 
+router.get('/archives', authenticateOperatorToken, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    Credit
+        .findAll({
+            offset: offset,
+            limit: limit,
+            paranoid: false,
+            where: {
+                deleted_at: {
+                    $ne: null
+                }
+            } 
+         })
+        .then(function(credits) {
+            res.json({
+                count: credits.length,
+                offset: offset,
+                limit: limit,
+                credits: credits
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
 router.get('/:creditId', authenticateOperatorToken,
                          getCreditId, function(req, res, next) {
     Credit

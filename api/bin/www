@@ -5,7 +5,7 @@ var app = require('../app'),
     models = require('models'),
     config = require('config');
 
-models.sequelize.sync({force: true}).then(function() {
+models.sequelize.sync({force: false}).then(function() {
     //initialize db with necessary data
     models.BankInfo.findOrCreate({
         where: {
@@ -19,6 +19,7 @@ models.sequelize.sync({force: true}).then(function() {
     })
     .then(function(bankInfo) {
         models.BankEmployee.create({
+        //let's make it simple
             username: 'jacoren',
             password: 'waterchip',
             type: 'OVERSEER'

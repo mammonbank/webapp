@@ -40,6 +40,34 @@ router.get('/', authenticateOperatorToken, function(req, res, next) {
         });
 });
 
+router.get('/archives', authenticateOperatorToken, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    Deposit
+        .findAll({
+            offset: offset,
+            limit: limit,
+            paranoid: false,
+            where: {
+                deleted_at: {
+                    $ne: null
+                }
+            } 
+         })
+        .then(function(deposits) {
+            res.json({
+                count: deposits.length,
+                offset: offset,
+                limit: limit,
+                deposits: deposits
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
 router.get('/:depositId', authenticateOperatorToken, 
                           getDepositId, function(req, res, next) {
     Deposit

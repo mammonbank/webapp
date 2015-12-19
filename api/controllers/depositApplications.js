@@ -31,6 +31,34 @@ router.get('/', authenticateOperatorToken, function(req, res, next) {
         });
 });
 
+router.get('/archives', authenticateOperatorToken, function(req, res, next) {
+    var offset = +req.query.offset || 0,
+        limit = +req.query.limit || 50;
+
+    DepositApplication
+        .findAll({
+            offset: offset,
+            limit: limit,
+            paranoid: false,
+            where: {
+                deleted_at: {
+                    $ne: null
+                }
+            } 
+         })
+        .then(function(depositApps) {
+            res.json({
+                count: depositApps.length,
+                offset: offset,
+                limit: limit,
+                depositApps: depositApps
+            });
+        })
+        .catch(function(error) {
+            next(error);
+        });
+});
+
 router.get('/:depositAppId', authenticateOperatorToken, 
                              getDepositAppId, function(req, res, next) {
     DepositApplication
@@ -58,7 +86,7 @@ router.post('/', authenticateClientToken, function(req, res, next) {
     sequelize.transaction(function(t) {
         return BankEmployee.findAll({ where: { type: 'OPERATOR' }, transaction: t })
         .then(function(operators) {
-            if (!operators && operators.length === 0) {
+            if (!operators || operators.length === 0) {
                 throw new Error('No operators found');
             }
             
