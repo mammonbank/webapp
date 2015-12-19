@@ -42,7 +42,7 @@ module.exports = {
         tokenExpirationTime: '6h'
     },
     cron: {
-        isEnabled: true,
+        isEnabled: false,
         times: {
             creditor: '*/10 * * * * *',
             debtor: '*/10 * * * * *'
@@ -50,8 +50,8 @@ module.exports = {
     },
     testcron: {
         times: {
-            creditor: '*/1 * * * * *',
-            debtor: '*/5 * * * * *'
+            creditor: '0,10,20,30,40,50 * * * * *',
+            debtor: '5,15,25,35,45,55 * * * * *'
         }
     }
 };

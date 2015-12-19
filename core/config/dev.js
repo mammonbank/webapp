@@ -50,7 +50,8 @@ module.exports = {
     },
     testcron: {
         times: {
-            creditor: '0,10,20,30,40,50 * * * * *',
+            //creditor: '0,10,20,30,40,50 * * * * *',
+            creditor: '*/1 * * * * *',
             debtor: '5,15,25,35,45,55 * * * * *'
         }
     }
