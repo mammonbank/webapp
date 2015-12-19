@@ -26,6 +26,11 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             field: 'planned_term'
         },
+        repaymentType: {
+            type: DataTypes.ENUM('EQUAL', 'DIFF'),
+            allowNull: false,
+            field: 'repayment_type'
+        },
         isConfirmed: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
