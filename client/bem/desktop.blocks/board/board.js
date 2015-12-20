@@ -11,7 +11,7 @@ provide(BEMDOM.decl('board', {
 
             withdraw.on('click', this.onWithdraw.bind(this));
             deposit.on('click', this.onDeposit.bind(this));
-        }
+        },
         'reload': {
             'yes': function() {
                 this.init();
