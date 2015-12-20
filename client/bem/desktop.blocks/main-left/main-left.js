@@ -5,6 +5,10 @@ provide(BEMDOM.decl('main-left', {
         'js': function() {
             this.page = this.findBlockOutside('page');
             this.content = this.page.findBlockInside('content');
+            this.items = this.findBlocksInside('menu-item');
+            $.each(this.items, function(i, e) {
+                e.on('click', this.onElemSelect.bind(this, e));
+            }.bind(this));
 
             this.bindTo('main', 'click', this.onMain.bind(this));
 
@@ -27,55 +31,85 @@ provide(BEMDOM.decl('main-left', {
         }
     },
 
+    onElemSelect: function(e) {
+        var menu = this.findBlockInside({ block: 'menu-item', modName: 'active', modVal: 'yes' });
+        if (menu)
+            menu.delMod('active');
+
+        e.setMod('active', 'yes');
+    },
+
+    _clear: function() {
+        this.content.delMod('credit');
+        this.content.delMod('deposit');
+        this.content.delMod('page');
+        this.content.delMod('settings');
+        this.content.delMod('reset');
+        this.content.delMod('help');
+    },
+
     onMain: function() {
+        this._clear();
         this.content.setMod('page', 'main');
     },
 
     onCreditNew: function() {
+        this._clear();
         this.content.setMod('credit', 'new');
     },
 
     onCreditAll: function() {
+        this._clear();
         this.content.setMod('credit', 'all');
     },
 
     onCreditActive: function() {
+        this._clear();
         this.content.setMod('credit', 'active');
     },
 
     onCreditArchive: function() {
+        this._clear();
         this.content.setMod('credit', 'archive');
     },
 
     onCreditPay: function() {
+        this._clear();
         this.content.setMod('credit', 'pay');
     },
 
     onDepositNew: function() {
+        this._clear();
         this.content.setMod('deposit', 'new');
     },
 
     onDepositAll: function() {
+        this._clear();
         this.content.setMod('deposit', 'all');
     },
 
     onDepositActive: function() {
+        this._clear();
         this.content.setMod('deposit', 'active');
     },
 
     onDepositArchive: function() {
+        this._clear();
         this.content.setMod('deposit', 'archive');
     },
 
     onSettings: function() {
+        this._clear();
         this.content.setMod('settings', 'yes');
     },
 
     onReset: function() {
+        this._clear();
         this.content.setMod('reset', 'yes');
     },
 
     onHelp: function() {
+        this._clear();
         this.content.setMod('help', 'yes');
     },
 

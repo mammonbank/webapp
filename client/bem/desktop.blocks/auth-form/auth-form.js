@@ -9,9 +9,12 @@ provide(BEMDOM.decl('auth-form', {
             this.password = this.findBlockInside({ block: 'input', modName: 'id', modVal: 'password' });
             this.modal = this.findBlockInside('modal');
 
+            this.token = localStorage.getItem('token');
+            this.clientId = localStorage.getItem('clientId');
+
             this.button.on('click', this.onSubmit.bind(this));
 
-            if (!localStorage.getItem('clientId') || !localStorage.getItem('token')) {
+            if (!this.clientId || !this.token) {
                 this.delMod('hide');
                 this.findBlockOutside('page').findBlockInside('spin').delMod('visible');
             }
@@ -22,7 +25,8 @@ provide(BEMDOM.decl('auth-form', {
         $.ajax({
             url: BEMDOM.url + 'auth/client/step-1',
             method: 'POST',
-            data: { passportIdNumber: this.idNumber.getVal(), password: this.password.getVal() }
+            data: { passportIdNumber: this.idNumber.getVal(), password: this.password.getVal() },
+            headers: { 'Authorization': this.token }
         })
         .done(this.onSuccess.bind(this))
         .fail(this.onFail.bind(this));

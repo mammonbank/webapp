@@ -1,11 +1,12 @@
-modules.define('credit-all', ['i-bem__dom', 'jquery', 'BEMHTML'], function(provide, BEMDOM, $, BEMHTML) {
+modules.define('deposit-all', ['i-bem__dom', 'jquery', 'BEMHTML', 'alertifyjs'], function(provide, BEMDOM, $, BEMHTML) {
 
-provide(BEMDOM.decl('credit-all', {
+provide(BEMDOM.decl('deposit-all', {
     onSetMod: {
         'js': function() {
             alertify.logPosition("bottom right");
+
             $.ajax({
-                url: BEMDOM.url + 'api/client/' + localStorage.getItem('clientId') + '/credit/applications',
+                url: BEMDOM.url + 'api/client/' + localStorage.getItem('clientId') + '/deposit/applications',
                 method: 'GET',
                 headers: { 'Authorization': localStorage.getItem('token') }
             })
@@ -16,7 +17,7 @@ provide(BEMDOM.decl('credit-all', {
 
     onDone: function(data) {
         this.domElem.html('');
-        if (data.creditApps.length === 0) {
+        if (data.depositApps.length === 0) {
             BEMDOM.append(this.domElem, BEMHTML.apply({
                 block: 'info',
                 content: 'Ни одной заявки не найдено.'
@@ -24,10 +25,20 @@ provide(BEMDOM.decl('credit-all', {
             return;
         }
 
-        $.each(data.creditApps, this.addApp.bind(this));
+        $.each(data.depositApps, this.addApp.bind(this));
     },
 
     addApp: function(i, e) {
+        $.ajax({
+            url: BEMDOM.url + 'api/deposit/types/' + e.deposit_type_id,
+            method: 'GET',
+            headers: { 'Authorization': localStorage.getItem('token') }
+        })
+        .done(this.onTypeDone.bind(this, e))
+        .fail(this.onFail.bind(this));
+    },
+
+    onTypeDone: function(e, data) {
         var t = new Date();
         t.setTime(Date.parse(e.created_at));
 
@@ -41,11 +52,11 @@ provide(BEMDOM.decl('credit-all', {
                 },
                 {
                     elem: 'sum',
-                    content: 'Запрошенная сумма: ' + e.plannedSum + ' бел. руб.'
+                    content: 'Первоначальная сумма: ' + e.plannedSum + ' бел. руб.'
                 },
                 {
                     elem: 'term',
-                    content: 'Срок погашения: ' + e.plannedTerm + ' мес.'
+                    content: 'Тип депозита: ' + data.title
                 },
                 {
                     elem: 'confirm',
@@ -56,8 +67,7 @@ provide(BEMDOM.decl('credit-all', {
     },
 
     onFail: function(data) {
-
+        alertify.error('Ошибка получения депозитов');
     }
 }));
-
 });

@@ -8,6 +8,8 @@
 .application__date
 {
     color: #777;
+    float: right;
+    text-align: right;
 }
 
 .application__sum,
