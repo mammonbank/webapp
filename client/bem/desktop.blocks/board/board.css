@@ -1,10 +1,20 @@
 .board
 {
     padding: 20px;
+    position: relative;
 }
 
 .board__account
 {
+    font-size: 18px;
     border-left: 3px solid #ffdb4d;
-    padding: 5px;
+    padding: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.board__withdraw,
+.board__deposit
+{
+    margin-left: 50px;
 }

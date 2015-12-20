@@ -24,3 +24,17 @@
     border-left: 3px solid #ffdb4d;
     margin: 10px 0;
 }
+
+.group__line
+{
+    color: #777;
+    padding: 10px;
+    border-left: 3px solid #ffdb4d;
+    display: inline-block;
+    min-width: 250px;
+}
+
+.group__val
+{
+    display: inline-block;
+}

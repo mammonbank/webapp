@@ -1,4 +1,4 @@
-modules.define('info-bar', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) {
+modules.define('info-bar', ['i-bem__dom', 'jquery', 'alertifyjs'], function(provide, BEMDOM, $) {
 
 provide(BEMDOM.decl('info-bar', {
 
@@ -53,10 +53,13 @@ provide(BEMDOM.decl('info-bar', {
     },
 
     onFail: function(data) {
-        localStorage.removeItem('clientId');
-        localStorage.removeItem('token');
-        // to do modal and redirect
-        window.location.href = '/';
+        alertify.log('Данные устарели, войдите снова.');
+
+        setTimeout(function() {
+            localStorage.removeItem('clientId');
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }, 1500);
     },
 
     onInfoSuccess: function(data) {
@@ -67,7 +70,7 @@ provide(BEMDOM.decl('info-bar', {
     },
 
     onInfoFail: function(data) {
-        // todo modal
+        alertify.error('Ошибка получения данных');
     }
 
 }));

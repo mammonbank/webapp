@@ -11,3 +11,8 @@
 {
     display: none;
 }
+
+.menu-item_active_yes
+{
+    background-color: #ffdb4d;
+}

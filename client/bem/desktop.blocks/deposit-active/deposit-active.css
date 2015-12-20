@@ -1,0 +1,35 @@
+.deposit-active__item
+{
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+}
+
+.deposit-active__date
+{
+    color: #777;
+    margin: 10px;
+}
+
+.deposit-active__type
+{
+    color: #777;
+    margin-left: 20px;
+}
+
+.deposit-active__sum
+{
+    margin: 10px;
+    padding: 5px;
+    border-left: 3px solid #ffdb4d;
+}
+
+.deposit-active__operations
+{
+    text-align: right;
+}
+
+.deposit-active__withdraw
+{
+    margin-right: 20px;
+}

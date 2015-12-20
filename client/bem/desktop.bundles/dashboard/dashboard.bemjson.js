@@ -120,6 +120,7 @@ module.exports = {
                             content: [
                                 {
                                     block: 'menu-item',
+                                    mods: { active: 'yes' },
                                     mix: { block: 'main-left', elem: 'main' },
                                     content: 'Главная'
                                 }
@@ -137,12 +138,12 @@ module.exports = {
                                 {
                                     block: 'menu-item',
                                     mix: { block: 'main-left', elem: 'credit_all' },
-                                    content: 'Текущие Заявки'
+                                    content: 'Заявки в обработке'
                                 },
                                 {
                                     block: 'menu-item',
                                     mix: { block: 'main-left', elem: 'credit_active' },
-                                    content: 'Активные кредиты'
+                                    content: 'Текущие кредиты'
                                 },
                                 {
                                     block: 'menu-item',
@@ -168,12 +169,12 @@ module.exports = {
                                 {
                                     block: 'menu-item',
                                     mix: { block: 'main-left', elem: 'deposit_all' },
-                                    content: 'Текущие Заявки'
+                                    content: 'Заявки в обработке'
                                 },
                                 {
                                     block: 'menu-item',
                                     mix: { block: 'main-left', elem: 'deposit_active' },
-                                    content: 'Активные депозиты'
+                                    content: 'Текущие депозиты'
                                 },
                                 {
                                     block: 'menu-item',

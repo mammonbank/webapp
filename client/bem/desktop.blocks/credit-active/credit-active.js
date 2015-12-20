@@ -1,21 +1,34 @@
-modules.define('credit-active', ['i-bem__dom', 'jquery', 'BEMHTML'], function(provide, BEMDOM, $, BEMHTML) {
+modules.define('credit-active', ['i-bem__dom', 'jquery', 'BEMHTML', 'alertifyjs', 'validator'], function(provide, BEMDOM, $, BEMHTML) {
 
 provide(BEMDOM.decl('credit-active', {
     onSetMod: {
         'js': function() {
             this.clientId = localStorage.getItem('clientId');
             this.token = localStorage.getItem('token');
+            alertify.logPosition("bottom right");
 
-            $.ajax({
-                url: BEMDOM.url + 'api/client/'+this.clientId+'/credits',
-                method: 'GET',
-                headers: { 'Authorization': this.token }
-            })
-            .done(this.onDone.bind(this));
+            this.init();
         }
     },
 
+    init: function() {
+        $.ajax({
+            url: BEMDOM.url + 'api/client/'+this.clientId+'/credits',
+            method: 'GET',
+            headers: { 'Authorization': this.token }
+        })
+        .done(this.onDone.bind(this));
+    },
+
     onDone: function(data) {
+        if (data.credits.length === 0) {
+            BEMDOM.append(this.domElem, BEMHTML.apply({
+                block: 'info',
+                content: 'Ни одного кредита не найдено.'
+            }));
+            return;
+        }
+
         $.each(data.credits, this.addElem.bind(this));
     },
 
@@ -29,37 +42,99 @@ provide(BEMDOM.decl('credit-active', {
     },
 
     onGetType: function(e, data) {
+        var t = new Date(),
+            t2 = new Date();
+        t.setTime(Date.parse(e.startDate));
+        t2.setTime(Date.parse(e.endDate));
+
         BEMDOM.append(this.domElem, BEMHTML.apply({
             block: 'credit-active',
             elem: 'item',
+            mix: {
+                block: 'credit-act-item',
+                mods: { id: e.id }
+            },
             content: [
-                {
-                    elem: 'sum',
-                    content: e.outstandingLoan + ' / ' + e.sum
-                },
                 {
                     elem: 'date',
                     content: [
                         {
                             elem: 'start',
-                            content: 'Дата взятия кредита: ' + e.startDate
+                            content: 'Дата взятия кредита: ' + t.toLocaleString()
                         },
                         {
                             elem: 'end',
-                            content: 'Дата окончания кредита: ' + e.startDate
+                            content: 'Дата окончания кредита: ' + t2.toLocaleString()
                         }
                     ]
                 },
                 {
-                    elem: 'type',
-                    content: e.repaymentType
+                    elem: 'credit-type',
+                    content: 'Тип кредита: ' + data.title
                 },
                 {
-                    elem: 'credit-type',
-                    content: data.title
+                    elem: 'type',
+                    content: 'Тип выплат: ' + e.repaymentType
+                },
+                {
+                    elem: 'sum',
+                    content: 'Сумма кредита: ' + e.sum + ' бел. руб.'
+                },
+                {
+                    block: 'button',
+                    mix: { block: 'credit-active', elem: 'deposit' },
+                    mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'deposit', disabled: true },
+                    text: 'Положить деньги на счет'
+                },
+                {
+                    elem: 'out',
+                    content: 'Осталось погасить: ' + e.outstandingLoan + ' бел. руб.'
                 }
             ]
         }));
+
+        var item = this.findBlockInside({ block: 'credit-act-item', modName: 'id', modVal: e.id }),
+            btn = item.findBlockInside('button');
+
+        btn.on('click', this.onClick.bind(this, e.id));
+    },
+
+    onClick: function(id) {
+        var _this = this;
+
+        alertify
+            .defaultValue('100000')
+            .prompt('Укажите сумму которую хотите снять',
+                function (val, ev) {
+                  ev.preventDefault();
+
+                  var valid = validate({sum: val}, { sum: {numericality:{onlyInteger: true}}});
+
+                    if (!valid) {
+                        alertify.success('Отправлен запрос на снятие: ' + val + ' бел. руб.');
+                        $.ajax({
+                            url: BEMDOM.url + 'api/credits/'+localStorage.getItem('clientId')+'/deposit',
+                            method: 'POST',
+                            data: { sum: val },
+                            headers: { 'Authorization': localStorage.getItem('token') }
+                        })
+                        .done(function() {
+                            alertify.success('Операция успешно завершена');
+                            _this.init();
+                        })
+                        .fail(function() {
+                            alertify.error('Ошибка операции');
+                        });
+                    } else {
+                        alertify.error('Введена некорректная сумма');
+                    }
+
+                }, function(ev) {
+                    ev.preventDefault();
+
+                    alertify.error('Операция отменена');
+                }
+            );
     }
 }));
 

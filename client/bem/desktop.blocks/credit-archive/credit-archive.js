@@ -1,21 +1,34 @@
-modules.define('credit-archive', ['i-bem__dom', 'jquery', 'BEMHTML'], function(provide, BEMDOM, $, BEMHTML) {
+modules.define('credit-archive', ['i-bem__dom', 'jquery', 'BEMHTML', 'alertifyjs', 'validator'], function(provide, BEMDOM, $, BEMHTML) {
 
 provide(BEMDOM.decl('credit-archive', {
     onSetMod: {
         'js': function() {
             this.clientId = localStorage.getItem('clientId');
             this.token = localStorage.getItem('token');
+            alertify.logPosition("bottom right");
 
-            $.ajax({
-                url: BEMDOM.url + 'api/client/'+this.clientId+'/archives/credits',
-                method: 'GET',
-                headers: { 'Authorization': this.token }
-            })
-            .done(this.onDone.bind(this));
+            this.init();
         }
     },
 
+    init: function() {
+        $.ajax({
+            url: BEMDOM.url + 'api/client/'+this.clientId+'/archives/credits',
+            method: 'GET',
+            headers: { 'Authorization': this.token }
+        })
+        .done(this.onDone.bind(this));
+    },
+
     onDone: function(data) {
+        if (data.credits.length === 0) {
+            BEMDOM.append(this.domElem, BEMHTML.apply({
+                block: 'info',
+                content: 'В архиве пусто :('
+            }));
+            return;
+        }
+
         $.each(data.credits, this.addElem.bind(this));
     },
 

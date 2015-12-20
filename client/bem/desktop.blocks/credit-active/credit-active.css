@@ -4,3 +4,27 @@
     padding: 20px;
     margin: 20px;
 }
+
+.credit-active__date
+{
+    color: #777;
+    margin: 5px;
+    line-height: 20px;
+    float: right;
+    text-align: right;
+}
+
+.credit-active__credit-type,
+.credit-active__type,
+.credit-active__sum,
+.credit-active__out
+{
+    margin: 10px;
+    padding: 5px;
+    border-left: 3px solid #ffdb4d;
+}
+
+.credit-active__deposit
+{
+    float: right;
+}

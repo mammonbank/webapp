@@ -1,0 +1,30 @@
+.deposit-new
+{
+    margin: 20px;
+}
+
+.deposit-new__item,
+.deposit-new__step2
+{
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.deposit-new__title
+{
+    font-size: 18px;
+    margin: 10px;
+}
+
+.deposit-new__description
+{
+    color: #777;
+    padding: 10px 15px;
+}
+
+.deposit-new__minSum
+{
+    border-left: 3px solid #ffdb4d;
+    margin: 15px;
+    padding: 5px;
+}

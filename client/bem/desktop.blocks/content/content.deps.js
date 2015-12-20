@@ -11,6 +11,11 @@
         'deposit-active',
         'deposit-archive',
         'application',
-        'board'
+        'board',
+        'info',
+        'validator',
+        'settings',
+        'reset',
+        'help'
     ]
 })

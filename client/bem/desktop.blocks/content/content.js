@@ -72,6 +72,60 @@ provide(BEMDOM.decl('content', {
                     content: []
                 }));
             }
+        },
+        'deposit': {
+            'new': function() {
+                this._clear();
+                BEMDOM.append(this.domElem, BEMHTML.apply({
+                    block: 'deposit-new',
+                    js: true,
+                    content: []
+                }));
+            },
+            'all': function() {
+                this._clear();
+                BEMDOM.append(this.domElem, BEMHTML.apply({
+                    block: 'deposit-all',
+                    js: true,
+                    content: []
+                }));
+            },
+            'active': function() {
+                this._clear();
+                BEMDOM.append(this.domElem, BEMHTML.apply({
+                    block: 'deposit-active',
+                    js: true,
+                    content: []
+                }));
+            },
+            'archive': function() {
+                this._clear();
+                BEMDOM.append(this.domElem, BEMHTML.apply({
+                    block: 'deposit-archive',
+                    js: true,
+                    content: []
+                }));
+            }
+        },
+        'settings': {
+            'yes': function() {
+                this._clear();
+                BEMDOM.append(this.domElem, BEMHTML.apply({
+                    block: 'settings',
+                    js: true,
+                    content: []
+                }));
+            }
+        },
+        'reset': {
+            'yes': function() {
+                this._clear();
+                BEMDOM.append(this.domElem, BEMHTML.apply({
+                    block: 'reset',
+                    js: true,
+                    content: []
+                }));
+            }
         }
     },
 
@@ -87,6 +141,18 @@ provide(BEMDOM.decl('content', {
             content: [
                 {
                     elem: 'account'
+                },
+                {
+                    block: 'button',
+                    mix: { block: 'board', elem: 'withdraw' },
+                    mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'withdraw' },
+                    text: 'Снять деньги со счета'
+                },
+                {
+                    block: 'button',
+                    mix: { block: 'board', elem: 'deposit' },
+                    mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'deposit' },
+                    text: 'Положить деньги на счет'
                 }
             ]
         }));
