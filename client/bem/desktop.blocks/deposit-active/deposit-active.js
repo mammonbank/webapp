@@ -25,7 +25,7 @@ provide(BEMDOM.decl('deposit-active', {
         if (data.deposits.length === 0) {
             BEMDOM.append(this.domElem, BEMHTML.apply({
                 block: 'info',
-                content: 'Ни одного кредита не найдено.'
+                content: 'Ни одного депозита не найдено.'
             }));
             return;
         }
