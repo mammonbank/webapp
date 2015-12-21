@@ -17,6 +17,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
             field: 'title',
+            unique: true,
             validate: {
                 is: /^[0-9а-яА-ЯёЁa-z,.'-]+$/i
             }
