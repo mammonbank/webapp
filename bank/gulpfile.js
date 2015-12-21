@@ -8,13 +8,31 @@ const gulp = require('gulp'),
       uglify = require('gulp-uglify');
 
 
-gulp.task('styles', () => {
-    return gulp.src(['public/styles/reset.css', 'public/styles/**/*.css'])
+gulp.task('styles-index', () => {
+    return gulp.src(['public/styles/reset.css', 
+                     'public/styles/layout.css', 
+                     'public/styles/authform.css'])
                 .pipe(minifyCSS())
                 .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
-                .pipe(concat('all.min.css'))
+                .pipe(concat('index.min.css'))
                 .pipe(gulp.dest('public/build/styles'))
                 .pipe(livereload());
+});
+
+gulp.task('styles-dashboard', () => {
+    return gulp.src(['public/styles/reset.css',
+                     'public/styles/layout.css', 
+                     'public/styles/dashboard.css', 
+                     'public/styles/loader.css'])
+                .pipe(minifyCSS())
+                .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
+                .pipe(concat('dashboard.min.css'))
+                .pipe(gulp.dest('public/build/styles'))
+                .pipe(livereload());
+});
+
+gulp.task('styles', ['styles-index', 'styles-dashboard'], () => {
+     
 });
 
 gulp.task('js-bg', () => {
@@ -41,7 +59,7 @@ gulp.task('js', ['js-index'], () => {
 gulp.task('watch', () => {
     livereload.listen();
     gulp.watch('./public/styles/*.css', ['styles']);
-    gulp.watch('./public/js/*.js', ['js']);
+    gulp.watch('./public/js/**/*.js', ['js-index']);
 });
 
 gulp.task('default', ['styles', 'js', 'watch']);
