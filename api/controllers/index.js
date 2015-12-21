@@ -24,6 +24,8 @@ router.use('/api/deposits', require('./deposits'));
 router.use('/auth/bank', require('./bankAuth'));
 router.use('/api/bank/employees', require('./bankEmployees'));
 
+router.use('/api/bank/employee', require('./bankEmployeeAssets'));
+
 router.get('/', function(req, res) {
     res.json({
         message: 'Welcome to the mammonbank api server'

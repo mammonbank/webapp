@@ -3,6 +3,10 @@
     src: url('../../fonts/SourceSansPro-Light.otf');
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: 'Source Sans Pro', sans-serif;
     opacity: 1;

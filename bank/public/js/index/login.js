@@ -15,13 +15,18 @@ class Index {
     
     static login(username, password) {
         return $.ajax({
-            url: URLS.BANK_LOGIN.URL,
-            method: URLS.BANK_LOGIN.METHOD,
+            url: URLS.BANK_LOGIN,
+            method: 'POST',
             data: {
                 username: username,
                 password: password
             }
         });
+    }
+
+    static saveData(data) {
+        localStorage.setItem('id', data.id);
+        localStorage.setItem('token', data.token);
     }
     
     static init() {
@@ -35,16 +40,20 @@ class Index {
             this.login(formData.username, formData.password)
             .done((data) => {
                 alertify.success("Доступ разрешен");
+
+                this.saveData(data);
+
                 setTimeout(() => {
                     alertify.log("Перенаправляю в кабинет...");
                 }, 500);
                 
                 setTimeout(() => {
                     window.history.pushState("bank_login", "Login", '/');
-                    window.location.replace(URLS.BANK_DASHBOARD.URL);
+                    window.location.replace(URLS.BANK_DASHBOARD);
                 }, 1500);
             })
             .fail((error) => {
+                console.error(error.message);
                 alertify.error("Доступ запрещен");
             })
         });
@@ -52,6 +61,6 @@ class Index {
 }
 
 
-$(function() {
+$(() => {
     Index.init();
 });

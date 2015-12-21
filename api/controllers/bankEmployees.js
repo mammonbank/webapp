@@ -3,6 +3,7 @@
 var express = require('express'),
     router  = express.Router(),
     authenticateOverseerToken = require('../middlewares/authenticateOverseerToken'),
+    authenticateOperatorToken = require('../middlewares/authenticateOperatorToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getBankEmployeeId = require('../middlewares/getBankEmployeeId'),
     BankEmployee  = require('models').BankEmployee,
@@ -48,7 +49,7 @@ router.get('/', authenticateOverseerToken, function(req, res, next) {
         });
 });
 
-router.get('/:bankEmployeeId', authenticateOverseerToken, 
+router.get('/:bankEmployeeId', authenticateOperatorToken,
                                getBankEmployeeId, function(req, res, next) {
     BankEmployee
         .findById(req.bankEmployeeId)
