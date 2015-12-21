@@ -8,6 +8,7 @@ var debug = require('debug')('mammonbank:api'),
     {
         plannedSum,
         plannedTerm,
+        repaymentType,
         isConfirmed
     }
 */
@@ -25,6 +26,11 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false,
             field: 'planned_term'
+        },
+        repaymentType: {
+            type: DataTypes.ENUM('EQUAL', 'DIFF'),
+            allowNull: false,
+            field: 'repayment_type'
         },
         isConfirmed: {
             type: DataTypes.BOOLEAN,

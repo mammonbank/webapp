@@ -114,7 +114,7 @@ function onTick() {
                                 });
                             })
                             .then(function() {
-                                debug('Credit transaction successfully passed', 'CreditId: ', credit.id);
+                                debug('Credit successfully repaid', 'CreditId: ', credit.id);
                                 loop.next();
                             })
                             .catch(function(error) {

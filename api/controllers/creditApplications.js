@@ -116,6 +116,7 @@ router.post('/', authenticateClientToken, function(req, res, next) {
             return CreditApplication.create({
                 plannedSum: req.body.plannedSum,
                 plannedTerm: req.body.plannedTerm,
+                repaymentType: req.body.repaymentType,
                 credit_type_id: req.body.creditTypeId,
                 client_id: req.body.clientId,
                 bank_employee_id: operatorId

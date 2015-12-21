@@ -7,7 +7,7 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     
     <link rel='stylesheet' href='/public/libs/alertify.js/dist/css/alertify.css'>
-    <link rel='stylesheet' href='/public/build/styles/all.min.css'>
+    <link rel='stylesheet' href='/public/build/styles/index.min.css'>
     
     <script src="/public/libs/jquery/dist/jquery.min.js"></script>
     <script src="/public/libs/alertify.js/dist/js/alertify.js"></script>
@@ -23,9 +23,9 @@
         <div class="container">
             <h1>Добро пожаловать</h1>
             
-            <form class="form">
-                <input type="text" placeholder="Пользователь">
-                <input type="password" placeholder="Пароль">
+            <form class="form" id="login-form">
+                <input type="text" name="username" placeholder="Пользователь">
+                <input type="password" name="password" placeholder="Пароль">
                 <button type="submit" id="login-button">Войти</button>
             </form>
         </div>
