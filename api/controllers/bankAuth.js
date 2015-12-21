@@ -36,6 +36,7 @@ router.post('/', function(req, res, next) {
                 });
                 
                 res.json({
+                    id: bankEmployee.id,
                     token: token
                 });
                 

@@ -21,7 +21,7 @@ module.exports = {
         username: env.NODE_DB_USERNAME,
         password: env.NODE_DB_PASSWORD,
         host: env.NODE_DB_HOST || 'localhost',
-        port: NODE_DB_PORT || 5432,
+        port: env.NODE_DB_PORT || 5432,
         dialect: env.NODE_DB_DIALECT || 'postgres',
         pool: {
             max: env.NODE_DB_POOL_MAX || 10,
@@ -43,7 +43,7 @@ module.exports = {
         tokenExpirationTime: '6h'
     },
     cron: {
-        isEnabled: true,
+        isEnabled: false,
         times: {
             creditor: '*/10 * * * * *',
             debtor: '*/10 * * * * *'

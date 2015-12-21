@@ -4,8 +4,8 @@ const gulp = require('gulp'),
       autoprefixer = require('gulp-autoprefixer'),
       rename = require('gulp-rename'),
       livereload = require('gulp-livereload'),
-      babel = require('gulp-babel'),
-      uglify = require('gulp-uglify');
+      //uglify = require('gulp-uglify'),
+      babel = require('gulp-babel');
 
 
 gulp.task('styles-index', () => {
@@ -37,7 +37,7 @@ gulp.task('styles', ['styles-index', 'styles-dashboard'], () => {
 
 gulp.task('js-bg', () => {
     return gulp.src(['public/js/index/background.js'])
-                .pipe(uglify())
+                //.pipe(uglify())
                 .pipe(rename('bg.min.js'))
                 .pipe(gulp.dest('public/build/js/index'));
 });
@@ -47,19 +47,31 @@ gulp.task('js-index', ['js-bg'], () => {
                 .pipe(babel({
                     presets: ['es2015']
                 }))
-                .pipe(uglify())
+                //.pipe(uglify())
                 .pipe(gulp.dest('public/build/js/index'));
 });
 
+gulp.task('js-dashboard', () => {
+    return gulp.src(['public/js/dashboard/viewer.js',
+                     'public/js/dashboard/dataProvider.js',
+                     'public/js/dashboard/init.js'])
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        //.pipe(uglify())
+        .pipe(gulp.dest('public/build/js/dashboard'));
+});
 
-gulp.task('js', ['js-index'], () => {
+
+
+gulp.task('js', ['js-index', 'js-dashboard'], () => {
      
 });
 
 gulp.task('watch', () => {
     livereload.listen();
     gulp.watch('./public/styles/*.css', ['styles']);
-    gulp.watch('./public/js/**/*.js', ['js-index']);
+    gulp.watch('./public/js/**/*.js', ['js']);
 });
 
 gulp.task('default', ['styles', 'js', 'watch']);
