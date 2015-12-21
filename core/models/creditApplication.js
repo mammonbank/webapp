@@ -8,6 +8,7 @@ var debug = require('debug')('mammonbank:api'),
     {
         plannedSum,
         plannedTerm,
+        repaymentType,
         isConfirmed
     }
 */
