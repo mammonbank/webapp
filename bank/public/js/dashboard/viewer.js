@@ -1,11 +1,15 @@
 class Viewer {
-    static renderCreditApps(creditApps) {
-        var html = '<ul>';
-        creditApps.forEach((creditApp) => {
-            html += '<li>' + creditApp.plannedSum + '</li>';
-        });
-        html += '</ul>';
+    static renderWelcomeMsg(bankEmployee) {
+        $('#welcome-msg').html('Добро пожаловать, ' + bankEmployee.username);
+    }
 
-        $('main').append(html);
+    static renderCreditApps(creditApps) {
+        //var html = '<ul>';
+        //creditApps.forEach((creditApp) => {
+        //    html += '<li>' + creditApp.plannedSum + '</li>';
+        //});
+        //html += '</ul>';
+        //
+        //$('main').append(html);
     }
 }

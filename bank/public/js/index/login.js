@@ -52,8 +52,7 @@ class Index {
                     window.location.replace(URLS.BANK_DASHBOARD);
                 }, 1500);
             })
-            .fail((error) => {
-                console.error(error.message);
+            .fail(() => {
                 alertify.error("Доступ запрещен");
             })
         });

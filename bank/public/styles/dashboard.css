@@ -1,0 +1,31 @@
+header,
+main,
+aside,
+footer {
+
+}
+
+body {
+    background: #ebeef0;
+}
+
+header {
+    padding: 0 1em;
+    height: 2.5em;
+    line-height: 2.5em;
+    background: #37444e;
+    color: white;
+}
+
+#logout-btn {
+    float: right;
+    cursor: pointer;
+}
+
+#logout-btn:hover {
+    text-decoration: underline;
+}
+
+aside {
+    float: right;
+}
