@@ -1,0 +1,88 @@
+header,
+main,
+aside,
+footer {
+
+}
+
+body {
+    background: #ebeef0;
+}
+
+header {
+    padding: 0 1em;
+    height: 2.5em;
+    line-height: 2.5em;
+    background: #37444e;
+    color: white;
+}
+
+table {
+    margin: 2em auto;
+    width: 90%;
+    border-collapse: collapse;
+    border: 1px solid white;
+}
+
+table th, table td {
+    border: 1px solid white;
+}
+
+th, td {
+    padding: 5px;
+    text-align: center;
+}
+
+#logout-btn {
+    float: right;
+    cursor: pointer;
+}
+
+#logout-btn:hover {
+    text-decoration: underline;
+}
+
+#currentTime {
+    display: block;
+    text-align: right;
+    padding-right: 1em;
+    border-bottom: 1px solid white;
+}
+
+#bankInfo {
+    font-size: 18px;
+}
+
+#bankInfo span {
+    display: block;
+}
+
+aside {
+    background: #37444e;
+    color: white;
+    padding: 2em 0.5em;
+    float: left;
+    position: absolute;
+    top: 2.5em;
+    bottom: 0;
+    width: 15%;
+    box-sizing: border-box;
+}
+
+#activitiesList li {
+    margin-top: 1em;
+    border-top: 1px solid white;
+}
+
+#activitiesList li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+main {
+    float: right;
+    width: 85%;
+    padding: 0.5em;
+    box-sizing: border-box;
+}

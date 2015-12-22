@@ -2,7 +2,7 @@ const gulp = require('gulp'),
       concat = require('gulp-concat'),
       minifyCSS = require('gulp-minify-css'),
       autoprefixer = require('gulp-autoprefixer'),
-      rename = require('gulp-rename'),
+      //rename = require('gulp-rename'),
       livereload = require('gulp-livereload'),
       //uglify = require('gulp-uglify'),
       babel = require('gulp-babel');
@@ -35,31 +35,28 @@ gulp.task('styles', ['styles-index', 'styles-dashboard'], () => {
      
 });
 
-gulp.task('js-bg', () => {
-    return gulp.src(['public/js/index/background.js'])
-                //.pipe(uglify())
-                .pipe(rename('bg.min.js'))
-                .pipe(gulp.dest('public/build/js/index'));
-});
-
-gulp.task('js-index', ['js-bg'], () => {
-     return gulp.src(['public/js/index/login.js'])
-                .pipe(babel({
-                    presets: ['es2015']
-                }))
-                //.pipe(uglify())
-                .pipe(gulp.dest('public/build/js/index'));
+gulp.task('js-index', () => {
+     return gulp.src(['public/js/index/background.js',
+                      'public/js/index/login.js'])
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        //.pipe(uglify())
+        .pipe(concat('index.js'))
+        .pipe(gulp.dest('public/build/js'));
 });
 
 gulp.task('js-dashboard', () => {
-    return gulp.src(['public/js/dashboard/viewer.js',
+    return gulp.src(['public/js/dashboard/eventer.js',
+                     'public/js/dashboard/viewer.js',
                      'public/js/dashboard/dataProvider.js',
                      'public/js/dashboard/init.js'])
         .pipe(babel({
             presets: ['es2015']
         }))
         //.pipe(uglify())
-        .pipe(gulp.dest('public/build/js/dashboard'));
+        .pipe(concat('dashboard.js'))
+        .pipe(gulp.dest('public/build/js'));
 });
 
 

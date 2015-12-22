@@ -26,4 +26,12 @@ class DataProvider {
             })
         );
     }
+
+    static getBankInfo() {
+        return $.ajax({
+            url: URLS.GET_BANK_INFO,
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
 }

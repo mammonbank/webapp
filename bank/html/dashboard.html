@@ -11,20 +11,49 @@
     
     <script src="/public/libs/jquery/dist/jquery.min.js"></script>
     <script src="/public/libs/alertify.js/dist/js/alertify.js"></script>
+    <script src="/public/libs/moment/min/moment.min.js"></script>
+    <script src="/public/libs/moment/locale/ru.js"></script>
     
     <script src="/public/js/config.js"></script>
-
-    <script src="/public/build/js/dashboard/dataProvider.js"></script>
-    <script src="/public/build/js/dashboard/viewer.js"></script>
-    <script src="/public/build/js/dashboard/init.js"></script>
     
     <title>Маммонбанк</title>
 </head>
 <body>
-
+    <div class="overlay"></div>
     <div class="loader"></div>
 
-    <main></main>
+    <header>
+        <span id="welcome-msg"></span>
+        <span id="logout-btn">Выйти</span>
+    </header>
 
+    <aside>
+        <ul id="activitiesList">
+            <li>Заявки на кредиты</li>
+            <li>Заявки на депозиты</li>
+            <li>Кредиты</li>
+            <li>Депозиты</li>
+            <li>Клиенты</li>
+        </ul>
+    </aside>
+
+    <main>
+        <span id="currentTime"></span>
+
+        <table class="bankInfo">
+            <thead>
+                <tr><th>Денежная база</th><th>Денежная масса</th><th>Коэффициент резервирования</th></tr>
+            </thead>
+            <tbody>
+                <tr><td id="baseMoney"></td><td id="moneySupply"></td><td id="reserveRatio"></td></tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+
+    </footer>
+
+    <script src="/public/build/js/dashboard.js"></script>
 </body>
 </html>
