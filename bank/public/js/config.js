@@ -8,6 +8,7 @@ var CONFIG = {
 var URLS = {
     BANK_LOGIN: CONFIG.BASE_API_URL + '/auth/bank',
     BANK_DASHBOARD: CONFIG.BASE_BANK_URL + '/dashboard',
+    GET_BANK_INFO: CONFIG.BASE_API_URL + '/api/bank/info',
     GET_BANK_EMPLOYEE: CONFIG.BASE_API_URL + '/api/bank/employees/${bankEmployeeId}',
     GET_BANK_EMPLOYEES: CONFIG.BASE_API_URL + '/api/bank/employees',
     GET_BANK_EMPLOYEE_CREDIT_APPS: CONFIG.BASE_API_URL + '/api/bank/employee/${bankEmployeeId}/credit/applications',

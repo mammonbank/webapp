@@ -9,6 +9,7 @@
   "dependencies": {
     "jquery": "~2.1.4",
     "alertify.js": "alertifyjs#~1.0.8",
-    "bootstrap": "~3.3.6"
+    "bootstrap": "~3.3.6",
+    "moment": "~2.10.6"
   }
 }
