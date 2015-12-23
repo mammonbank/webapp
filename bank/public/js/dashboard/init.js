@@ -1,41 +1,36 @@
-var _bankEmployee;
-
 class Dashboard {
-    static getBankEmployee() {
-        return _bankEmployee;
-    };
-
-    static setBankEmployee(bankEmployee) {
-        _bankEmployee = bankEmployee;
-    }
-
     static init() {
         this.bindEvents();
 
         DataProvider.getLaunchData()
-        .then(( bankEmployee, creditApps, depositApps ) => {
+        .then(( bankEmployee, creditCats, creditTypes, depositTypes, clients ) => {
             $('.overlay').hide();
             $('.loader').hide();
             alertify.success("Данные загружены");
 
-            this.setBankEmployee(bankEmployee[0]);
+            DataProvider.saveLaunchData(bankEmployee[0],
+                creditCats[0].creditCats,
+                creditTypes[0].creditTypes,
+                depositTypes[0].depositTypes,
+                clients[0].clients
+            );
 
-            Viewer.renderWelcomeMsg(this.getBankEmployee());
-            Viewer.renderCreditApps(creditApps[0].creditApps);
+            Viewer.renderWelcomeMsg(bankEmployee[0]);
         })
         .then(() => {
-            if (this.getBankEmployee().type === 'OVERSEER') {
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
                 Viewer.renderAside();
                 return DataProvider.getBankInfo();
             }
         })
         .then((bankInfo) => {
             if (!bankInfo) {
-                $('.bankInfo').remove();
+                Viewer.renderInitialForOperator();
                 return;
             }
 
-            Viewer.renderBankInfo(bankInfo);
+            DataProvider.setLocalBankInfo(bankInfo);
+            Viewer.renderInitialForOverseer();
         })
         .fail(() => {
             $('.loader').hide();
@@ -51,6 +46,7 @@ class Dashboard {
 
     static bindEvents() {
         Eventer.bindHeaderEvents();
+        Eventer.bindAsideEvents();
     }
 }
 

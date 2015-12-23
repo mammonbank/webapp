@@ -12,5 +12,10 @@ var URLS = {
     GET_BANK_EMPLOYEE: CONFIG.BASE_API_URL + '/api/bank/employees/${bankEmployeeId}',
     GET_BANK_EMPLOYEES: CONFIG.BASE_API_URL + '/api/bank/employees',
     GET_BANK_EMPLOYEE_CREDIT_APPS: CONFIG.BASE_API_URL + '/api/bank/employee/${bankEmployeeId}/credit/applications',
-    GET_BANK_EMPLOYEE_DEPOSIT_APPS: CONFIG.BASE_API_URL + '/api/bank/employee/${bankEmployeeId}/deposit/applications'
+    GET_BANK_EMPLOYEE_DEPOSIT_APPS: CONFIG.BASE_API_URL + '/api/bank/employee/${bankEmployeeId}/deposit/applications',
+    GET_CREDIT_APPS: CONFIG.BASE_API_URL + '/api/credit/applications?offset=${offset}&limit=${limit}',
+    GET_CREDIT_CATS: CONFIG.BASE_API_URL + '/api/credit/categories',
+    GET_CREDIT_TYPES: CONFIG.BASE_API_URL + '/api/credit/types',
+    GET_DEPOSIT_TYPES: CONFIG.BASE_API_URL + '/api/deposit/types',
+    GET_CLIENTS: CONFIG.BASE_API_URL + '/api/clients'
 };

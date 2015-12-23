@@ -47,9 +47,9 @@ gulp.task('js-index', () => {
 });
 
 gulp.task('js-dashboard', () => {
-    return gulp.src(['public/js/dashboard/eventer.js',
+    return gulp.src(['public/js/dashboard/dataProvider.js',
                      'public/js/dashboard/viewer.js',
-                     'public/js/dashboard/dataProvider.js',
+                     'public/js/dashboard/eventer.js',
                      'public/js/dashboard/init.js'])
         .pipe(babel({
             presets: ['es2015']
