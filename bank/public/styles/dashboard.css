@@ -7,6 +7,7 @@ footer {
 
 body {
     background: #ebeef0;
+    overflow: hidden;
 }
 
 header {
@@ -31,6 +32,14 @@ table th, table td {
 th, td {
     padding: 5px;
     text-align: center;
+}
+
+#welcome-msg {
+    cursor: pointer;
+}
+
+#welcome-msg:hover {
+    text-decoration: underline;
 }
 
 #logout-btn {
@@ -83,6 +92,31 @@ aside {
 main {
     float: right;
     width: 85%;
+    position: absolute;
+    top: 3.5em;
+    bottom: 0;
+    left: 15%;
     padding: 0.5em;
     box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.infoWrapper {
+    background: white;
+    padding: 0.5em;
+    padding-bottom: 2.5em;
+}
+
+.infoTable {
+    margin: 0 auto;
+}
+
+.infoTable, .infoTable th, .infoTable td {
+    border: 1px solid #37444e;
+}
+
+.totalCount {
+    display: block;
+    margin-bottom: 1em;
+    text-align: right;
 }
