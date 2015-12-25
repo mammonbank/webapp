@@ -161,6 +161,7 @@ router.patch('/:creditAppId', authenticateOperatorToken,
 router.delete('/:creditAppId', authenticateOperatorToken, 
                                getCreditAppId, function(req, res, next) {
     var isConfirmed = req.body.isConfirmed || false;
+
     CreditApplication
         .update({
             isConfirmed: isConfirmed
