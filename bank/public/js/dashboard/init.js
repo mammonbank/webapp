@@ -20,16 +20,16 @@ class Dashboard {
         .then(() => {
             if (DataProvider.getBankEmployee().type === 'OVERSEER') {
                 Viewer.renderAside();
-                return DataProvider.getBankInfo();
+                return DataProvider.getAdditionalLaunchDataForOverseer();
             }
         })
-        .then((bankInfo) => {
+        .then((bankInfo, operators) => {
             if (!bankInfo) {
                 Viewer.renderInitialForOperator();
                 return;
             }
-
-            DataProvider.setLocalBankInfo(bankInfo);
+            DataProvider.setLocalBankInfo(bankInfo[0]);
+            DataProvider.setOperators(operators[0].bankEmployees);
             Viewer.renderInitialForOverseer();
         })
         .fail(() => {
@@ -47,6 +47,7 @@ class Dashboard {
     static bindEvents() {
         Eventer.bindHeaderEvents();
         Eventer.bindAsideEvents();
+        Eventer.bindCreditAppsTabEvents();
     }
 }
 

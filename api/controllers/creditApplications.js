@@ -160,9 +160,17 @@ router.patch('/:creditAppId', authenticateOperatorToken,
 
 router.delete('/:creditAppId', authenticateOperatorToken, 
                                getCreditAppId, function(req, res, next) {
+    var isConfirmed = req.body.isConfirmed || false;
     CreditApplication
-        .destroy({
+        .update({
+            isConfirmed: isConfirmed
+        }, {
             where: { id: req.creditAppId }
+        })
+        .then(function() {
+            return CreditApplication.destroy({
+                where: { id: req.creditAppId }
+            });
         })
         .then(function() {
             res.json({
