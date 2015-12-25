@@ -183,4 +183,20 @@ class DataProvider {
             });
         }
     }
+
+    static getCredits(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_CREDITS.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
+
+    static getDeposits(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_DEPOSITS.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
 }

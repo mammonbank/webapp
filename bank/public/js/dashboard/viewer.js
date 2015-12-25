@@ -57,7 +57,7 @@ class Viewer {
                 html += '<tr class="green">';
             //not sure
             } else if ( 0 <= creditHistoryCoefficient && creditHistoryCoefficient < 10 ) {
-                html += '<tr class="yellow">';
+                html += '<tr>';
             //bad client
             } else {
                 html += '<tr class="red">';
@@ -137,6 +137,92 @@ class Viewer {
                 html += '<td class="operatorId underscore" data-operatorid="' + depositApp.bank_employee_id + '">' +
                 DataProvider.getOperators()[depositApp.bank_employee_id].username + '</td>';
             }
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
+
+    static renderCredits(credits) {
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + credits.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Клиент</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата окончания</th>' +
+            '       <th>Тип кредита</th>' +
+            '       <th>Тип выплаты</th>' +
+            '       <th>Сумма кредита</th>' +
+            '       <th>Остаток по кредиту</th>' +
+            '       <th>Кол-во платежей</th>' +
+            '       <th>Последняя дата оплаты</th>' +
+            '       <th>Задолженность по кредиту</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        credits.forEach((credit) => {
+            if ( credit.overdueSum > 0 ) {
+                html += '<tr class="red">';
+            } else {
+                html += '<tr>';
+            }
+
+            html += '<td class="clientId underscore" data-clientid="' + credit.client_id + '">' +
+            DataProvider.getClients()[credit.client_id].lastName +
+            ' ' + DataProvider.getClients()[credit.client_id].firstName +
+            ' ' + DataProvider.getClients()[credit.client_id].patronymic  + '</td>';
+            html += '<td>' + moment(credit.startDate).format('DD-MM-YYYY') + '</td>';
+            html += '<td>' + moment(credit.endDate).format('DD-MM-YYYY') + '</td>';
+
+            html += '<td class="creditTypeId underscore" data-credittypeid="' + credit.credit_type_id + '">' +
+            DataProvider.getCreditTypes()[credit.credit_type_id].title + '</td>';
+            html += '<td>' + (credit.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
+            html += '<td>' + credit.sum + ' BYR</td>';
+            html += '<td>' + credit.outstandingLoan + '</td>';
+            html += '<td>' + credit.numberOfPayments + '</td>';
+            html += '<td>' + (credit.lastPaymentDate != null ? moment( credit.lastPaymentDate ).format('DD-MM-YYYY') : '')   + '</td>';
+            html += '<td>' + credit.overdueSum + ' BYR</td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
+
+    static renderDeposits(deposits) {
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + deposits.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Клиент</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Тип вклада</th>' +
+            '       <th>Сумма вклада</th>' +
+            '       <th>Последняя дата начисления процентов</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        deposits.forEach((deposit) => {
+            html += '<tr>';
+
+            html += '<td class="clientId underscore" data-clientid="' + deposit.client_id + '">' +
+            DataProvider.getClients()[deposit.client_id].lastName +
+            ' ' + DataProvider.getClients()[deposit.client_id].firstName +
+            ' ' + DataProvider.getClients()[deposit.client_id].patronymic  + '</td>';
+            html += '<td>' + moment(deposit.startDate).format('DD-MM-YYYY') + '</td>';
+
+            html += '<td class="depositTypeId underscore" data-deposittypeid="' + deposit.deposit_type_id + '">' +
+            DataProvider.getDepositTypes()[deposit.deposit_type_id].title + '</td>';
+            html += '<td>' + deposit.sum + ' BYR</td>';
+            html += '<td>' + (deposit.lastInterestDate != null ? moment( deposit.lastInterestDate ).format('DD-MM-YYYY') : '')   + '</td>';
 
             html += '</tr>';
         });

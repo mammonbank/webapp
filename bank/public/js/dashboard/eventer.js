@@ -60,6 +60,36 @@ class Eventer {
                     alertify.error("Ошибка");
                 })
         });
+
+        $('#credits').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getCredits(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderCredits(data.credits);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
+
+        $('#deposits').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getDeposits(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderDeposits(data.deposits);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
     }
 
     static bindCreditAppsTabEvents() {
@@ -188,5 +218,9 @@ class Eventer {
                 alertify.error('Ошибка');
             });
         });
+    }
+
+    static bindCreditsTabEvents() {
+
     }
 }
