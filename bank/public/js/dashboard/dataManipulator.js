@@ -38,4 +38,42 @@ class DataManipulator {
             })
         });
     }
+
+    static acceptDepositApp(data) {
+        return $.when(
+            $.ajax({
+                url: URLS.GET_DEPOSIT_APP_BY_ID.replace('${depositAppId}', data.depositAppId),
+                method: 'DELETE',
+                headers: { 'Authorization': DataProvider.getToken() },
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    isConfirmed: true
+                })
+            }),
+            $.ajax({
+                url: URLS.GET_DEPOSITS,
+                method: 'POST',
+                headers: { 'Authorization': DataProvider.getToken() },
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    sum: data.sum,
+                    startDate: new Date(),
+                    depositTypeId: data.depositTypeId,
+                    clientId: data.clientId
+                })
+            })
+        );
+    }
+
+    static declineDepositApp(data) {
+        return $.ajax({
+            url: URLS.GET_DEPOSIT_APP_BY_ID.replace('${depositAppId}', data.depositAppId),
+            method: 'DELETE',
+            headers: { 'Authorization': DataProvider.getToken() },
+            contentType: 'application/json',
+            data: JSON.stringify({
+                isConfirmed: false
+            })
+        });
+    }
 }

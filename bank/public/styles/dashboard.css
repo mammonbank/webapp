@@ -135,11 +135,6 @@ main {
     color: white;
 }
 
-.yellow {
-    background: rgba(255,255,0,.8);
-    color: #000000;
-}
-
 .red {
     background: rgba(244,67,54,.8);
     color: #ffffff;

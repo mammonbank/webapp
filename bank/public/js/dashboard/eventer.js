@@ -46,6 +46,50 @@ class Eventer {
             })
         });
 
+        $('#depositApps').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getDepositApps(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderDepositApps(data.depositApps);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
+
+        $('#credits').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getCredits(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderCredits(data.credits);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
+
+        $('#deposits').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getDeposits(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderDeposits(data.deposits);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
     }
 
     static bindCreditAppsTabEvents() {
@@ -111,5 +155,72 @@ class Eventer {
                 alertify.error('Ошибка');
             });
         });
+    }
+
+    static bindDepositAppsTabEvents() {
+        $('main').on('click', '.acceptdepositapp-button', function() {
+            let isSure = confirm('Вы уверены?');
+            if (!isSure) {
+                return;
+            }
+
+            $('.loader').show();
+            $('.overlay').show();
+
+            DataManipulator.acceptDepositApp({
+                depositAppId: $(this).data('depositappid'),
+                sum: +$(this).data('sum'),
+                depositTypeId: $(this).data('deposittypeid'),
+                clientId: $(this).data('clientid')
+            })
+            .then(() => {
+                return DataProvider.getDepositApps(0, 1111);
+            })
+            .then((data) => {
+                $('main').empty();
+                Viewer.renderDepositApps(data.depositApps);
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.success('Депозит успешно создан');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
+
+        $('main').on('click', '.declinedepositapp-button', function() {
+            let isSure = confirm('Вы уверены?');
+            if (!isSure) {
+                return;
+            }
+
+            $('.loader').show();
+            $('.overlay').show();
+
+            DataManipulator.declineDepositApp({
+                depositAppId: $(this).data('depositappid')
+            })
+            .then(() => {
+                return DataProvider.getDepositApps(0, 1111);
+            })
+            .then((data) => {
+                $('main').empty();
+                Viewer.renderDepositApps(data.depositApps);
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.log('Заявка на депозит отменена');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
+    }
+
+    static bindCreditsTabEvents() {
+
     }
 }

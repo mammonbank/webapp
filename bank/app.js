@@ -13,4 +13,7 @@ app.engine('html', require('ejs').renderFile);
 
 app.use(require('./controllers'));
 
+app.use(require('error/handler/404'));
+app.use(require('error/handler/500'));
+
 module.exports = app;

@@ -164,7 +164,39 @@ class DataProvider {
                 headers: { 'Authorization': this.getToken() }
             });
         }
+    }
 
+    static getDepositApps(offset, limit) {
+        var bankEmployeeType = DataProvider.getBankEmployeeType();
 
+        if (bankEmployeeType === 'operator') {
+            return $.ajax({
+                url: URLS.GET_BANK_EMPLOYEE_DEPOSIT_APPS.replace('${bankEmployeeId}', this.getBankEmployeeId()),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            });
+        } else {
+            return $.ajax({
+                url: URLS.GET_DEPOSIT_APPS.replace('${offset}', offset).replace('${limit}', limit),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            });
+        }
+    }
+
+    static getCredits(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_CREDITS.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
+
+    static getDeposits(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_DEPOSITS.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
     }
 }
