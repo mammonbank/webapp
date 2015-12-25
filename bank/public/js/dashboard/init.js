@@ -48,6 +48,7 @@ class Dashboard {
         Eventer.bindHeaderEvents();
         Eventer.bindAsideEvents();
         Eventer.bindCreditAppsTabEvents();
+        Eventer.bindDepositAppsTabEvents();
     }
 }
 

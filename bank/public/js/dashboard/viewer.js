@@ -95,4 +95,54 @@ class Viewer {
 
         $('main').append(html);
     }
+
+    static renderDepositApps(depositApps) {
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + depositApps.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Клиент</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Тип вклада</th>' +
+            '       <th>Сумма вклада</th>' +
+            '       <th></th>';
+
+        if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+            html += '<th>Оператор</th>';
+        }
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        depositApps.forEach((depositApp) => {
+            html += '<tr>';
+
+            html += '<td class="clientId underscore" data-clientid="' + depositApp.client_id + '">' +
+            DataProvider.getClients()[depositApp.client_id].lastName +
+            ' ' + DataProvider.getClients()[depositApp.client_id].firstName +
+            ' ' + DataProvider.getClients()[depositApp.client_id].patronymic  + '</td>';
+            html += '<td>' + moment(depositApp.created_at).format('DD-MM-YYYY') + '</td>';
+            html += '<td class="creditTypeId underscore" data-credittypeid="' + depositApp.deposit_type_id + '">' +
+            DataProvider.getDepositTypes()[depositApp.deposit_type_id].title + '</td>';
+            html += '<td>' + depositApp.plannedSum + ' BYR</td>';
+
+            html += '<td><a data-depositappid="' + depositApp.id + '" data-sum="' + depositApp.plannedSum +
+            '" data-deposittypeid="' + depositApp.deposit_type_id +
+            '" data-clientid="' + depositApp.client_id +
+            '" class="acceptdepositapp-button decision-button">Принять</a> / ' +
+            '<a data-depositappid="' + depositApp.id +
+            '" class="declinedepositapp-button decision-button">Отклонить</a></td>';
+
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<td class="operatorId underscore" data-operatorid="' + depositApp.bank_employee_id + '">' +
+                DataProvider.getOperators()[depositApp.bank_employee_id].username + '</td>';
+            }
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
 }

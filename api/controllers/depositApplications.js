@@ -158,9 +158,18 @@ router.patch('/:depositAppId', authenticateOperatorToken,
 
 router.delete('/:depositAppId', authenticateOperatorToken, 
                                 getDepositAppId, function(req, res, next) {
+    var isConfirmed = req.body.isConfirmed || false;
+
     DepositApplication
-        .destroy({
+        .update({
+            isConfirmed: isConfirmed
+        }, {
             where: { id: req.depositAppId }
+        })
+        .then(function() {
+            return DepositApplication.destroy({
+                where: { id: req.depositAppId }
+            });
         })
         .then(function() {
             res.json({
