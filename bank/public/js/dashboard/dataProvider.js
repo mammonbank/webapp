@@ -3,7 +3,8 @@ var _bankEmployee,
     _creditCats = {},
     _creditTypes = {},
     _depositTypes = {},
-    _clients = {};
+    _clients = {},
+    _operators = {};
 
 class DataProvider {
     static getBankEmployeeId() {
@@ -78,6 +79,16 @@ class DataProvider {
         return _clients;
     }
 
+    static setOperators(operators) {
+        operators.forEach((operator) => {
+            _operators[operator.id] = operator;
+        });
+    }
+
+    static getOperators() {
+        return _operators;
+    }
+
     static getLaunchData() {
         return $.when(
             $.ajax({
@@ -105,13 +116,19 @@ class DataProvider {
         );
     }
 
-    static saveLaunchData(bankEmployee, creditCats, creditTypes, depositTypes, clients) {
-        this.setBankEmployee(bankEmployee);
-        this.setBankEmployeeType(bankEmployee.type);
-        this.setCreditCats(creditCats);
-        this.setCreditTypes(creditTypes);
-        this.setDepositTypes(depositTypes);
-        this.setClients(clients);
+    static getAdditionalLaunchDataForOverseer() {
+        return $.when(
+            $.ajax({
+                url: URLS.GET_BANK_INFO,
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            }),
+            $.ajax({
+                url: URLS.GET_OPERATORS,
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            })
+        );
     }
 
     static getBankInfo() {
@@ -120,6 +137,15 @@ class DataProvider {
             method: 'GET',
             headers: { 'Authorization': this.getToken() }
         });
+    }
+
+    static saveLaunchData(bankEmployee, creditCats, creditTypes, depositTypes, clients) {
+        this.setBankEmployee(bankEmployee);
+        this.setBankEmployeeType(bankEmployee.type);
+        this.setCreditCats(creditCats);
+        this.setCreditTypes(creditTypes);
+        this.setDepositTypes(depositTypes);
+        this.setClients(clients);
     }
 
     static getCreditApps(offset, limit) {

@@ -48,6 +48,7 @@ gulp.task('js-index', () => {
 
 gulp.task('js-dashboard', () => {
     return gulp.src(['public/js/dashboard/dataProvider.js',
+                     'public/js/dashboard/dataManipulator.js',
                      'public/js/dashboard/viewer.js',
                      'public/js/dashboard/eventer.js',
                      'public/js/dashboard/init.js'])

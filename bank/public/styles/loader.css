@@ -37,6 +37,7 @@
 
 .overlay {
     background: white;
+    opacity: .5;
     position: absolute;
     top: 0;
     bottom: 0;

@@ -32,6 +32,7 @@ table th, table td {
 th, td {
     padding: 5px;
     text-align: center;
+    vertical-align: middle;
 }
 
 #welcome-msg {
@@ -119,4 +120,36 @@ main {
     display: block;
     margin-bottom: 1em;
     text-align: right;
+}
+
+.underscore {
+    cursor: pointer;
+}
+
+.underscore:hover {
+    text-decoration: underline;
+}
+
+.green {
+    background: rgba(76,175,80,.9);
+    color: white;
+}
+
+.yellow {
+    background: rgba(255,255,0,.8);
+    color: #000000;
+}
+
+.red {
+    background: rgba(244,67,54,.8);
+    color: #ffffff;
+}
+
+.decision-button {
+    cursor: pointer;
+
+}
+
+.decision-button:hover {
+    text-decoration: underline;
 }
