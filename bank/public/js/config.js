@@ -17,5 +17,8 @@ var URLS = {
     GET_CREDIT_CATS: CONFIG.BASE_API_URL + '/api/credit/categories',
     GET_CREDIT_TYPES: CONFIG.BASE_API_URL + '/api/credit/types',
     GET_DEPOSIT_TYPES: CONFIG.BASE_API_URL + '/api/deposit/types',
-    GET_CLIENTS: CONFIG.BASE_API_URL + '/api/clients'
+    GET_CLIENTS: CONFIG.BASE_API_URL + '/api/clients',
+    GET_OPERATORS: CONFIG.BASE_API_URL + '/api/bank/employees',
+    GET_CREDIT_APP_BY_ID: CONFIG.BASE_API_URL + '/api/credit/applications/${creditAppId}',
+    GET_CREDITS: CONFIG.BASE_API_URL + '/api/credits'
 };
