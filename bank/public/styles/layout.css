@@ -17,3 +17,15 @@ body {
 canvas {
     display: block;
 }
+
+.title-404 {
+    font-size: 116px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.msg-404 {
+    font-size: 48px;
+    color: #ffffff;
+    text-align: center;
+}
