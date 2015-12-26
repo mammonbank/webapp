@@ -162,25 +162,43 @@ router.delete('/:creditAppId', authenticateOperatorToken,
                                getCreditAppId, function(req, res, next) {
     var isConfirmed = req.body.isConfirmed || false;
 
-    CreditApplication
-        .update({
-            isConfirmed: isConfirmed
-        }, {
-            where: { id: req.creditAppId }
-        })
-        .then(function() {
-            return CreditApplication.destroy({
-                where: { id: req.creditAppId }
-            });
-        })
-        .then(function() {
-            res.json({
-                creditAppId: req.creditAppId
-            });
-        })
-        .catch(function(error) {
-            next(error);
+    sequelize.transaction(function(t) {
+       return CreditApplication
+           .update({
+               isConfirmed: isConfirmed
+           }, {
+               where: { id: req.creditAppId },
+               transaction: t
+           })
+           .then(function() {
+               return CreditApplication.findById(req.creditAppId, { transaction: t });
+           })
+           .then(function(creditApp) {
+               return BankEmployee.findById(creditApp.bank_employee_id, { transaction: t });
+           })
+           .then(function(bankEmployee) {
+               return BankEmployee.update({
+                   numberOfApplications: bankEmployee.numberOfApplications - 1
+               }, {
+                   where: { id: bankEmployee.id },
+                   transaction: t
+               });
+           })
+           .then(function() {
+               return CreditApplication.destroy({
+                   where: { id: req.creditAppId },
+                   transaction: t
+               });
+           });
+    })
+    .then(function() {
+        res.json({
+            creditAppId: req.creditAppId
         });
+    })
+    .catch(function(error) {
+        next(error);
+    });
 });
 
 module.exports = router;

@@ -162,18 +162,26 @@ router.patch('/:clientId', authenticateClientToken,
 
 router.delete('/:clientId', authenticateOperatorToken, 
                             getClientId, function(req, res, next) {
-    Client
-        .destroy({
-            where: { id: req.clientId }
+    sequelize.transaction(function(t) {
+        return Client.destroy({
+            where: { id: req.clientId },
+            transaction: t
         })
         .then(function() {
-            res.json({
-                clientId: req.clientId
+            return ClientAccount.destroy({
+                where: { client_id: req.clientId },
+                transaction: t
             });
-        })
-        .catch(function(error) {
-            next(error);
         });
+    })
+    .then(function() {
+        res.json({
+            clientId: req.clientId
+        });
+    })
+    .catch(function(error) {
+        next(error);
+    });
 });
 
 module.exports = router;

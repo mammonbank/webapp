@@ -76,4 +76,25 @@ class DataManipulator {
             })
         });
     }
+
+    static acceptClient(data) {
+        return $.ajax({
+            url: URLS.GET_CLIENT_BY_ID.replace('${clientId}', data.clientId),
+            method: 'PATCH',
+            headers: { 'Authorization': DataProvider.getToken() },
+            contentType: 'application/json',
+            data: JSON.stringify({
+                isConfirmed: true
+            })
+        });
+    }
+
+    static declineClient(data) {
+        return $.ajax({
+            url: URLS.GET_CLIENT_BY_ID.replace('${clientId}', data.clientId),
+            method: 'DELETE',
+            headers: { 'Authorization': DataProvider.getToken() }
+        });
+    }
+
 }

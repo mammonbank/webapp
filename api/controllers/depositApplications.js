@@ -78,7 +78,7 @@ router.get('/:depositAppId', authenticateOperatorToken,
 });
 
 //find all operators
-//find who has the fewest number of applications (creidit and deposit)
+//find who has the fewest number of applications (credit and deposit)
 //assign application to him
 router.post('/', authenticateClientToken, function(req, res, next) {
     var operatorId;
@@ -160,25 +160,43 @@ router.delete('/:depositAppId', authenticateOperatorToken,
                                 getDepositAppId, function(req, res, next) {
     var isConfirmed = req.body.isConfirmed || false;
 
-    DepositApplication
-        .update({
-            isConfirmed: isConfirmed
-        }, {
-            where: { id: req.depositAppId }
-        })
-        .then(function() {
-            return DepositApplication.destroy({
-                where: { id: req.depositAppId }
+    sequelize.transaction(function(t) {
+        return DepositApplication
+            .update({
+                isConfirmed: isConfirmed
+            }, {
+                where: { id: req.depositAppId },
+                transaction: t
+            })
+            .then(function() {
+                return DepositApplication.findById(req.depositAppId, { transaction: t });
+            })
+            .then(function(depositApp) {
+                return BankEmployee.findById(depositApp.bank_employee_id, { transaction: t });
+            })
+            .then(function(bankEmployee) {
+                return BankEmployee.update({
+                    numberOfApplications: bankEmployee.numberOfApplications - 1
+                }, {
+                    where: { id: bankEmployee.id },
+                    transaction: t
+                });
+            })
+            .then(function() {
+                return DepositApplication.destroy({
+                    where: { id: req.depositAppId },
+                    transaction: t
+                });
             });
-        })
-        .then(function() {
-            res.json({
-                depositAppId: req.depositAppId
-            });
-        })
-        .catch(function(error) {
-            next(error);
+    })
+    .then(function() {
+        res.json({
+            depositAppId: req.depositAppId
         });
+    })
+    .catch(function(error) {
+        next(error);
+    });
 });
 
 module.exports = router;

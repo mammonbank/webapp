@@ -20,7 +20,7 @@ class Viewer {
     }
 
     static renderAside() {
-        $('#activitiesList').append('<li id="aside_operators">' + 'Операторы' + '</li>');
+        $('#activitiesList').append('<li id="operators">' + 'Операторы' + '</li>');
     }
 
     static renderBankInfo(bankInfo) {
@@ -30,6 +30,12 @@ class Viewer {
     }
 
     static renderCreditApps(creditApps) {
+        if (creditApps.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
         let html = '<div class="infoWrapper">' +
             '<span class="totalCount">Всего: ' + creditApps.length + '</span>' +
             '<table class="infoTable">' +
@@ -97,6 +103,12 @@ class Viewer {
     }
 
     static renderDepositApps(depositApps) {
+        if (depositApps.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
         let html = '<div class="infoWrapper">' +
             '<span class="totalCount">Всего: ' + depositApps.length + '</span>' +
             '<table class="infoTable">' +
@@ -147,6 +159,12 @@ class Viewer {
     }
 
     static renderCredits(credits) {
+        if (credits.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
         let html = '<div class="infoWrapper">' +
             '<span class="totalCount">Всего: ' + credits.length + '</span>' +
             '<table class="infoTable">' +
@@ -183,7 +201,7 @@ class Viewer {
             DataProvider.getCreditTypes()[credit.credit_type_id].title + '</td>';
             html += '<td>' + (credit.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
             html += '<td>' + credit.sum + ' BYR</td>';
-            html += '<td>' + credit.outstandingLoan + '</td>';
+            html += '<td>' + credit.outstandingLoan + ' BYR</td>';
             html += '<td>' + credit.numberOfPayments + '</td>';
             html += '<td>' + (credit.lastPaymentDate != null ? moment( credit.lastPaymentDate ).format('DD-MM-YYYY') : '')   + '</td>';
             html += '<td>' + credit.overdueSum + ' BYR</td>';
@@ -197,6 +215,12 @@ class Viewer {
     }
 
     static renderDeposits(deposits) {
+        if (deposits.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
         let html = '<div class="infoWrapper">' +
             '<span class="totalCount">Всего: ' + deposits.length + '</span>' +
             '<table class="infoTable">' +
@@ -228,6 +252,93 @@ class Viewer {
         });
 
         html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
+
+    static renderClients(clients) {
+        if (clients.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + clients.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>ФИО</th>' +
+            '       <th>Дата рождения</th>' +
+            '       <th>Номер телефона</th>' +
+            '       <th>Email</th>' +
+            '       <th>Номер паспорта</th>' +
+            '       <th>Личный (идентификационный) номер</th>' +
+            '       <th>Девичья фамилия матери</th>' +
+            '       <th>Коэффициент кредитной истории</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        clients.forEach((client) => {
+            if ( client.isConfirmed ) {
+                html += '<tr>';
+            } else {
+                html += '<tr class="red">';
+            }
+
+            html += '<td>' + client.lastName + ' ' + client.firstName + ' ' + client.patronymic  + '</td>';
+            html += '<td>' + moment(client.dateOfBirth).format('DD-MM-YYYY') + '</td>';
+
+            html += '<td>' + client.phoneNumber + '</td>';
+            html += '<td>' + client.email + '</td>';
+            html += '<td>' + client.passportNumber + '</td>';
+            html += '<td>' + client.passportIdNumber + '</td>';
+            html += '<td>' + client.mothersMaidenName + '</td>';
+            html += '<td>' + client.creditHistoryCoefficient + '</td>';
+
+            if ( !client.isConfirmed ) {
+                html += '<td><a data-clientid="' + client.id + '" class="acceptclient-button decision-button">Подтвердить</a> / ' +
+                '<a data-clientid="' + client.id + '" class="declineclient-button decision-button">Отклонить</a></td>';
+            }
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
+
+    static renderOperators(operators) {
+        if (operators.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + operators.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Оператор</th>' +
+            '       <th>Кол-во заявок в обработке</th>' +
+            '       <th>Дата создания</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        operators.forEach((operator) => {
+            html += '<tr>';
+
+            html += '<td class="operatorId underscore" data-operatorid="' + operator.id + '">' + operator.username + '</td>';
+            html += '<td>' + operator.numberOfApplications + '</td>';
+            html += '<td>' + moment(operator.created_at).format('DD-MM-YYYY') + '</td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
 
         $('main').append(html);
     }
