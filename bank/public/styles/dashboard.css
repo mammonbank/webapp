@@ -148,3 +148,15 @@ main {
 .decision-button:hover {
     text-decoration: underline;
 }
+
+.form-create {
+    margin-top: 1em;
+}
+
+.title-create {
+    display: block;
+    margin-top: 2em;
+    margin-left: 1em;
+    font-size: 32px;
+    color: #0078e7;
+}

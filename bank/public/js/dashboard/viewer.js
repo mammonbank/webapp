@@ -312,6 +312,25 @@ class Viewer {
     static renderOperators(operators) {
         if (operators.length === 0) {
             let html = '<span>Ничего нет</span>';
+            html += '<div class="infoWrapper"><span class="title-create">Создать нового оператора</span>';
+
+            html += '<form class="pure-form pure-form-aligned form-create">' +
+            '<fieldset>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Идентификатор</label>' +
+            '<input id="operator-username" type="text" placeholder="Идентификатор">' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="password">Пароль</label>' +
+            '<input id="operator-password" type="password" placeholder="Пароль">' +
+            '</div>' +
+            '<div class="pure-controls">' +
+            '<button id="operator-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+            '</div>' +
+            '</fieldset>' +
+            '</form>';
+
+            html += '</div>';
             $('main').append(html);
             return;
         }
@@ -337,8 +356,226 @@ class Viewer {
             html += '</tr>';
         });
 
+        html += '</tbody></table>';
+        html += '<span class="title-create">Создать нового оператора</span>';
+
+        html += '<form class="pure-form pure-form-aligned form-create">' +
+        '<fieldset>' +
+        '<div class="pure-control-group">' +
+        '<label for="name">Идентификатор</label>' +
+        '<input id="operator-username" type="text" placeholder="Идентификатор">' +
+        '</div>' +
+        '<div class="pure-control-group">' +
+        '<label for="password">Пароль</label>' +
+        '<input id="operator-password" type="password" placeholder="Пароль">' +
+        '</div>' +
+        '<div class="pure-controls">' +
+        '<button id="operator-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+        '</div>' +
+        '</fieldset>' +
+        '</form>';
+
+        html += '</div>';
+
+
+        $('main').append(html);
+    }
+
+    static renderCreditAppArchives(creditApps) {
+        if (creditApps.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + creditApps.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Клиент</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата рассмотрения</th>' +
+            '       <th>Тип кредита</th>' +
+            '       <th>Планируемая сумма</th>' +
+            '       <th>Планируемый срок (в месяцах)</th>' +
+            '       <th>Тип выплаты</th>' +
+            '       <th>Статус</th>';
+
+        if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+            html += '<th>Оператор</th>';
+        }
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        creditApps.forEach((creditApp) => {
+            html += '<tr>';
+
+            html += '<td class="clientId underscore" data-clientid="' + creditApp.client_id + '">' +
+            DataProvider.getClients()[creditApp.client_id].lastName +
+            ' ' + DataProvider.getClients()[creditApp.client_id].firstName +
+            ' ' + DataProvider.getClients()[creditApp.client_id].patronymic  + '</td>';
+            html += '<td>' + moment(creditApp.created_at).format('DD-MM-YYYY') + '</td>';
+            html += '<td>' + moment(creditApp.deleted_at).format('DD-MM-YYYY') + '</td>';
+
+            html += '<td class="creditTypeId underscore" data-credittypeid="' + creditApp.credit_type_id + '">' +
+            DataProvider.getCreditTypes()[creditApp.credit_type_id].title + '</td>';
+            html += '<td>' + creditApp.plannedSum + ' BYR</td>';
+            html += '<td>' + creditApp.plannedTerm + '</td>';
+            html += '<td>' + (creditApp.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
+            html += '<td>' + (creditApp.isConfirmed ? 'Принята' : 'Отклонена') + '</td>';
+
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<td class="operatorId underscore" data-operatorid="' + creditApp.bank_employee_id + '">' +
+                DataProvider.getOperators()[creditApp.bank_employee_id].username + '</td>';
+            }
+
+            html += '</tr>';
+        });
+
         html += '</tbody></table></div>';
 
+        $('main').append(html);
+    }
+
+    static renderDepositAppArchives(depositApps) {
+        if (depositApps.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + depositApps.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Клиент</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата рассмотрения</th>' +
+            '       <th>Тип вклада</th>' +
+            '       <th>Сумма вклада</th>' +
+            '       <th>Статус</th>';
+
+        if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+            html += '<th>Оператор</th>';
+        }
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        depositApps.forEach((depositApp) => {
+            html += '<tr>';
+
+            html += '<td class="clientId underscore" data-clientid="' + depositApp.client_id + '">' +
+            DataProvider.getClients()[depositApp.client_id].lastName +
+            ' ' + DataProvider.getClients()[depositApp.client_id].firstName +
+            ' ' + DataProvider.getClients()[depositApp.client_id].patronymic  + '</td>';
+            html += '<td>' + moment(depositApp.created_at).format('DD-MM-YYYY') + '</td>';
+            html += '<td>' + moment(depositApp.deleted_at).format('DD-MM-YYYY') + '</td>';
+            html += '<td class="creditTypeId underscore" data-credittypeid="' + depositApp.deposit_type_id + '">' +
+            DataProvider.getDepositTypes()[depositApp.deposit_type_id].title + '</td>';
+            html += '<td>' + depositApp.plannedSum + ' BYR</td>';
+            html += '<td>' + (depositApp.isConfirmed ? 'Принята' : 'Отклонена') + '</td>';
+
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<td class="operatorId underscore" data-operatorid="' + depositApp.bank_employee_id + '">' +
+                DataProvider.getOperators()[depositApp.bank_employee_id].username + '</td>';
+            }
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
+
+    static renderCreditArchives(credits) {
+        if (credits.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + credits.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Клиент</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата окончания</th>' +
+            '       <th>Тип кредита</th>' +
+            '       <th>Тип выплаты</th>' +
+            '       <th>Сумма кредита</th>' +
+            '       <th>Кол-во платежей</th>' +
+            '       <th>Последняя дата оплаты</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        credits.forEach((credit) => {
+            html += '<tr>';
+
+            html += '<td class="clientId underscore" data-clientid="' + credit.client_id + '">' +
+            DataProvider.getClients()[credit.client_id].lastName +
+            ' ' + DataProvider.getClients()[credit.client_id].firstName +
+            ' ' + DataProvider.getClients()[credit.client_id].patronymic  + '</td>';
+            html += '<td>' + moment(credit.startDate).format('DD-MM-YYYY') + '</td>';
+            html += '<td>' + moment(credit.endDate).format('DD-MM-YYYY') + '</td>';
+
+            html += '<td class="creditTypeId underscore" data-credittypeid="' + credit.credit_type_id + '">' +
+            DataProvider.getCreditTypes()[credit.credit_type_id].title + '</td>';
+            html += '<td>' + (credit.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
+            html += '<td>' + credit.sum + ' BYR</td>';
+            html += '<td>' + credit.numberOfPayments + '</td>';
+            html += '<td>' + (credit.lastPaymentDate != null ? moment( credit.lastPaymentDate ).format('DD-MM-YYYY') : '')   + '</td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
+
+    static renderDepositArchives(deposits) {
+        if (deposits.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + deposits.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Клиент</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата окончания</th>' +
+            '       <th>Тип вклада</th>' +
+            '       <th>Сумма вклада</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        deposits.forEach((deposit) => {
+            html += '<tr>';
+
+            html += '<td class="clientId underscore" data-clientid="' + deposit.client_id + '">' +
+            DataProvider.getClients()[deposit.client_id].lastName +
+            ' ' + DataProvider.getClients()[deposit.client_id].firstName +
+            ' ' + DataProvider.getClients()[deposit.client_id].patronymic  + '</td>';
+            html += '<td>' + moment(deposit.startDate).format('DD-MM-YYYY') + '</td>';
+            html += '<td>' + moment(deposit.deleted_at).format('DD-MM-YYYY') + '</td>';
+
+            html += '<td class="depositTypeId underscore" data-deposittypeid="' + deposit.deposit_type_id + '">' +
+            DataProvider.getDepositTypes()[deposit.deposit_type_id].title + '</td>';
+            html += '<td>' + deposit.sum + ' BYR</td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
 
         $('main').append(html);
     }

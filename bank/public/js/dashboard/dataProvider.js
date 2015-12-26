@@ -8,7 +8,7 @@ var _bankEmployee,
 
 class DataProvider {
     static getBankEmployeeId() {
-        return localStorage.getItem('id');
+        return +localStorage.getItem('id');
     }
 
     static getToken() {
@@ -16,7 +16,7 @@ class DataProvider {
     }
 
     static setBankEmployeeType(type) {
-        localStorage.setItem('type', type.toLowerCase());
+        localStorage.setItem('type', type);
     }
 
     static getBankEmployeeType() {
@@ -151,7 +151,7 @@ class DataProvider {
     static getCreditApps(offset, limit) {
         var bankEmployeeType = DataProvider.getBankEmployeeType();
 
-        if (bankEmployeeType === 'operator') {
+        if (bankEmployeeType === 'OPERATOR') {
             return $.ajax({
                 url: URLS.GET_BANK_EMPLOYEE_CREDIT_APPS.replace('${bankEmployeeId}', this.getBankEmployeeId()),
                 method: 'GET',
@@ -169,7 +169,7 @@ class DataProvider {
     static getDepositApps(offset, limit) {
         var bankEmployeeType = DataProvider.getBankEmployeeType();
 
-        if (bankEmployeeType === 'operator') {
+        if (bankEmployeeType === 'OPERATOR') {
             return $.ajax({
                 url: URLS.GET_BANK_EMPLOYEE_DEPOSIT_APPS.replace('${bankEmployeeId}', this.getBankEmployeeId()),
                 method: 'GET',
@@ -211,6 +211,38 @@ class DataProvider {
     static getOperatorsRemote(offset, limit) {
         return $.ajax({
             url: URLS.GET_OPERATORS.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
+
+    static getCreditAppArchives(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_CREDIT_APP_ARCHIVES.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
+
+    static getDepositAppArchives(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_DEPOSIT_APP_ARCHIVES.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
+
+    static getCreditArchives(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_CREDIT_ARCHIVES.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
+
+    static getDepositArchives(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_DEPOSIT_ARCHIVES.replace('${offset}', offset).replace('${limit}', limit),
             method: 'GET',
             headers: { 'Authorization': this.getToken() }
         });
