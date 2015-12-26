@@ -20,7 +20,7 @@ class Viewer {
     }
 
     static renderAside() {
-        $('#activitiesList').append('<li id="aside_operators">' + 'Операторы' + '</li>');
+        $('#activitiesList').append('<li id="operators">' + 'Операторы' + '</li>');
     }
 
     static renderBankInfo(bankInfo) {
@@ -30,6 +30,12 @@ class Viewer {
     }
 
     static renderCreditApps(creditApps) {
+        if (creditApps.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
         let html = '<div class="infoWrapper">' +
             '<span class="totalCount">Всего: ' + creditApps.length + '</span>' +
             '<table class="infoTable">' +
@@ -97,6 +103,12 @@ class Viewer {
     }
 
     static renderDepositApps(depositApps) {
+        if (depositApps.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
         let html = '<div class="infoWrapper">' +
             '<span class="totalCount">Всего: ' + depositApps.length + '</span>' +
             '<table class="infoTable">' +
@@ -147,6 +159,12 @@ class Viewer {
     }
 
     static renderCredits(credits) {
+        if (credits.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
         let html = '<div class="infoWrapper">' +
             '<span class="totalCount">Всего: ' + credits.length + '</span>' +
             '<table class="infoTable">' +
@@ -197,6 +215,12 @@ class Viewer {
     }
 
     static renderDeposits(deposits) {
+        if (deposits.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
         let html = '<div class="infoWrapper">' +
             '<span class="totalCount">Всего: ' + deposits.length + '</span>' +
             '<table class="infoTable">' +
@@ -233,6 +257,12 @@ class Viewer {
     }
 
     static renderClients(clients) {
+        if (clients.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
         let html = '<div class="infoWrapper">' +
             '<span class="totalCount">Всего: ' + clients.length + '</span>' +
             '<table class="infoTable">' +
@@ -275,6 +305,40 @@ class Viewer {
         });
 
         html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
+
+    static renderOperators(operators) {
+        if (operators.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + operators.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Оператор</th>' +
+            '       <th>Кол-во заявок в обработке</th>' +
+            '       <th>Дата создания</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        operators.forEach((operator) => {
+            html += '<tr>';
+
+            html += '<td class="operatorId underscore" data-operatorid="' + operator.id + '">' + operator.username + '</td>';
+            html += '<td>' + operator.numberOfApplications + '</td>';
+            html += '<td>' + moment(operator.created_at).format('DD-MM-YYYY') + '</td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
 
         $('main').append(html);
     }

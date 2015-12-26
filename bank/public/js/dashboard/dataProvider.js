@@ -207,4 +207,12 @@ class DataProvider {
             headers: { 'Authorization': this.getToken() }
         });
     }
+
+    static getOperatorsRemote(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_OPERATORS.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
 }

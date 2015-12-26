@@ -105,6 +105,29 @@ class Eventer {
                     alertify.error("Ошибка");
                 })
         });
+
+        $('body').on('click', '#operators', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getOperatorsRemote(0, 1111)
+                .then((data) => {
+                    DataProvider.setOperators(data.bankEmployees);
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    var operators = [];
+                    data.bankEmployees.map((bankEmployee) => {
+                        if (bankEmployee.type === 'OPERATOR') {
+                            operators.push(bankEmployee);
+                        }
+                    });
+
+                    Viewer.renderOperators(operators);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
     }
 
     static bindCreditAppsTabEvents() {
@@ -293,6 +316,10 @@ class Eventer {
                 alertify.error('Ошибка');
             });
         });
+    }
+
+    static bindOperatorsTabEvents() {
+
     }
 
 }
