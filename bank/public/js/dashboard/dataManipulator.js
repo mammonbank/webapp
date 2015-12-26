@@ -97,4 +97,18 @@ class DataManipulator {
         });
     }
 
+    static createOperator(username, password) {
+        return $.ajax({
+            url: URLS.GET_OPERATORS,
+            method: 'POST',
+            headers: { 'Authorization': DataProvider.getToken() },
+            contentType: 'application/json',
+            data: JSON.stringify({
+                username: username,
+                password: password,
+                type: 'OPERATOR'
+            })
+        })
+    }
+
 }

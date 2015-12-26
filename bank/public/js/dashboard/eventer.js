@@ -106,6 +106,88 @@ class Eventer {
                 })
         });
 
+        $('#creditAppsArchives').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getCreditAppArchives(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+
+                    if (DataProvider.getBankEmployeeType() === 'OVERSEER') {
+                        Viewer.renderCreditAppArchives(data.creditApps);
+                    } else {
+                        let creditApps = [];
+                        data.creditApps.map((creditApp) => {
+                            if (creditApp.bank_employee_id === DataProvider.getBankEmployeeId()) {
+                                creditApps.push(creditApp);
+                            }
+                        });
+                        Viewer.renderCreditAppArchives(creditApps);
+                    }
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
+
+        $('#depositAppsArchives').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getDepositAppArchives(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+
+                    if (DataProvider.getBankEmployeeType() === 'OVERSEER') {
+                        Viewer.renderDepositAppArchives(data.depositApps);
+                    } else {
+                        let depositApps = [];
+                        data.depositApps.map((depositApp) => {
+                            if (depositApp.bank_employee_id === DataProvider.getBankEmployeeId()) {
+                                depositApps.push(depositApp);
+                            }
+                        });
+                        Viewer.renderDepositAppArchives(depositApps);
+                    }
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
+
+        $('#creditArchives').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getCreditArchives(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderCreditArchives(data.credits);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
+
+        $('#depositArchives').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getDepositArchives(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderDepositArchives(data.deposits);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
+
         $('body').on('click', '#operators', () => {
             $('main').empty();
             $('.loader').show();
@@ -319,7 +401,50 @@ class Eventer {
     }
 
     static bindOperatorsTabEvents() {
+        $('main').on('click', '#operator-create-button', function(e) {
+            e.preventDefault();
+            let username = $('#operator-username').val();
+            let password = $('#operator-password').val();
 
+            if (username === '' || password === '') {
+                alertify.error('Заполните поля');
+                return;
+            }
+
+            let isSure = confirm('Вы уверены?');
+            if (!isSure) {
+                return;
+            }
+
+            $('.loader').show();
+            $('.overlay').show();
+
+            DataManipulator.createOperator(username, password)
+            .then(() => {
+                return DataProvider.getOperatorsRemote(0, 1111);
+            })
+            .then((data) => {
+                $('main').empty();
+                DataProvider.setOperators(data.bankEmployees);
+                let operators = [];
+                data.bankEmployees.map((bankEmployee) => {
+                    if (bankEmployee.type === 'OPERATOR') {
+                        operators.push(bankEmployee);
+                    }
+                });
+
+                Viewer.renderOperators(operators);
+
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.success('Оператор "' + username + '" создан');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
     }
 
 }

@@ -16,7 +16,6 @@ Decimal.config({
     {
         sum,
         startDate,
-        endDate,
         lastInterestDate
     }
 */
@@ -31,14 +30,6 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.DATE,
             allowNull: false,
             field: 'start_date',
-            validate: {
-                isDate: true
-            }
-        },
-        endDate: {
-            type: DataTypes.DATE,
-            allowNull: true,
-            field: 'end_date',
             validate: {
                 isDate: true
             }
