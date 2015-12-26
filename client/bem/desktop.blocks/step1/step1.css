@@ -17,6 +17,11 @@
     padding-right: 20px;
 }
 
+.step1__group .input
+{
+    width: 180px;
+}
+
 .step1__title
 {
     font-size: 18px;

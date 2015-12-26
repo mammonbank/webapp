@@ -9,4 +9,15 @@
     font-size: 17px;
     line-height: 40px;
     padding: 0 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.header__signup,
+.header__dashboard
+{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 40px;
+    padding: 0 20px;
 }

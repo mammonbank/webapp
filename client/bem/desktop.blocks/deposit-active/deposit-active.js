@@ -146,6 +146,8 @@ provide(BEMDOM.decl('deposit-active', {
     },
 
     onDeposit: function(id) {
+        var _this = this;
+
         alertify
             .defaultValue('100000')
             .prompt('Укажите сумму которую хотите положить',

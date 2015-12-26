@@ -1,7 +1,7 @@
 modules.define('jquery__config', function(provide) {
 
 provide({
-    url: '/jquery/dist/jquery.min.js'
+    url: '/libs/jquery/dist/jquery.min.js'
 });
 
 });

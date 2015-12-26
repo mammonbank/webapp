@@ -18,6 +18,18 @@ module.exports = {
                         elem: 'logo',
                         content: 'Mammonbank'
                     }
+                },
+                {
+                    block: 'link',
+                    url: '/signup',
+                    mix: { block: 'header', elem: 'signup' },
+                    content: 'Регистрация'
+                },
+                {
+                    block: 'link',
+                    url: '/dashboard',
+                    mix: { block: 'header', elem: 'dashboard' },
+                    content: 'Личный кабинет'
                 }
             ]
         },
@@ -29,6 +41,7 @@ module.exports = {
         },
         {
             block: 'line',
+            js: true,
             content: [
                 {
                     block: 'box',
@@ -46,7 +59,7 @@ module.exports = {
                             elem: 'button',
                             content: {
                                 block: 'button',
-                                mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action' },
+                                mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action', id: 'credit' },
                                 text: 'Посмотреть'
                             }
                         }
@@ -68,76 +81,21 @@ module.exports = {
                             elem: 'button',
                             content: {
                                 block: 'button',
-                                mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action' },
+                                mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action', id: 'deposit' },
                                 text: 'Посмотреть'
                             }
                         }
                     ]
                 },
                 {
-                    block: 'box',
-                    content: [
-                        {
-                            elem: 'title',
-                            content: 'Кредитный калькулятор'
-                        },
-                        {
-                            elem: 'info',
-                            content: 'Наш банк предлагает самые выгодные кредиты на хороших условиях<br>' +
-                            'Наш банк предлагает самые выгодные кредиты на хороших условиях<br>'
-                        },
-                        {
-                            elem: 'button',
-                            content: {
-                                block: 'button',
-                                mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action' },
-                                text: 'Посмотреть'
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            block: 'line',
-            js: true,
-            content: [
-                {
-                    block: 'box',
-                    content: [
-                        {
-                            elem: 'title',
-                            content: 'Регистрация'
-                        },
-                        {
-                            elem: 'button',
-                            content: {
-                                block: 'button',
-                                mods: { theme: 'islands', size: 'l', type: 'submit', view: 'action', id: 'signup' },
-                                text: 'Зарегистрироваться'
-                            }
-                        }
-                    ]
+                    elem: 'credits',
+                    content: []
                 },
                 {
-                    block: 'box',
-                    content: [
-                        {
-                            elem: 'title',
-                            content: 'Личный кабинет'
-                        },
-                        {
-                            elem: 'button',
-                            content: {
-                                block: 'button',
-                                mods: { theme: 'islands', size: 'l', type: 'submit', view: 'action', id: 'signin' },
-                                text: 'Войти'
-                            }
-                        }
-                    ]
+                    elem: 'deposits',
+                    content: []
                 }
             ]
         }
-
     ]
 };

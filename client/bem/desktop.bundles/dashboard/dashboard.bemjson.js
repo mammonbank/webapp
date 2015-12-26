@@ -132,28 +132,27 @@ module.exports = {
                             content: [
                                 {
                                     block: 'menu-item',
+                                    mods: { user: 'forActive' },
                                     mix: { block: 'main-left', elem: 'credit_new' },
                                     content: 'Подать заявку'
                                 },
                                 {
                                     block: 'menu-item',
+                                    mods: { user: 'forActive' },
                                     mix: { block: 'main-left', elem: 'credit_all' },
                                     content: 'Заявки в обработке'
                                 },
                                 {
                                     block: 'menu-item',
+                                    mods: { user: 'forActive' },
                                     mix: { block: 'main-left', elem: 'credit_active' },
                                     content: 'Текущие кредиты'
                                 },
                                 {
                                     block: 'menu-item',
+                                    mods: { user: 'forActive' },
                                     mix: { block: 'main-left', elem: 'credit_archive' },
                                     content: 'Архив'
-                                },
-                                {
-                                    block: 'menu-item',
-                                    mix: { block: 'main-left', elem: 'credit_pay' },
-                                    content: 'Платежи'
                                 }
                             ]
                         },
@@ -163,21 +162,25 @@ module.exports = {
                             content: [
                                 {
                                     block: 'menu-item',
+                                    mods: { user: 'forActive' },
                                     mix: { block: 'main-left', elem: 'deposit_new' },
                                     content: 'Подать заявку'
                                 },
                                 {
                                     block: 'menu-item',
+                                    mods: { user: 'forActive' },
                                     mix: { block: 'main-left', elem: 'deposit_all' },
                                     content: 'Заявки в обработке'
                                 },
                                 {
                                     block: 'menu-item',
+                                    mods: { user: 'forActive' },
                                     mix: { block: 'main-left', elem: 'deposit_active' },
                                     content: 'Текущие депозиты'
                                 },
                                 {
                                     block: 'menu-item',
+                                    mods: { user: 'forActive' },
                                     mix: { block: 'main-left', elem: 'deposit_archive' },
                                     content: 'Архив'
                                 }
@@ -196,11 +199,6 @@ module.exports = {
                                     block: 'menu-item',
                                     mix: { block: 'main-left', elem: 'reset' },
                                     content: 'Сменить пароль'
-                                },
-                                {
-                                    block: 'menu-item',
-                                    mix: { block: 'main-left', elem: 'help' },
-                                    content: 'Помощь'
                                 },
                                 {
                                     block: 'menu-item',

@@ -158,7 +158,8 @@ module.exports = {
                                 },
                                 {
                                     block: 'input',
-                                    mods: { theme: 'islands', size: 'm', id: 'phoneNumber' }
+                                    mods: { theme: 'islands', size: 'm', id: 'phoneNumber' },
+                                    placeholder: '+375*********'
                                 },
                                 {
                                     block: 'popup',
