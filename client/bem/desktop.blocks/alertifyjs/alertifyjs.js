@@ -3,6 +3,6 @@ modules.define(
     ['loader_type_js'],
     function(provide, loader) {
 
-        loader('/alertifyjs/dist/js/alertify.js',
+        loader('/libs/alertifyjs/dist/js/alertify.js',
             function() { provide(); });
 });

@@ -16,7 +16,6 @@ provide(BEMDOM.decl('main-left', {
             this.bindTo('credit_all', 'click', this.onCreditAll.bind(this));
             this.bindTo('credit_active', 'click', this.onCreditActive.bind(this));
             this.bindTo('credit_archive', 'click', this.onCreditArchive.bind(this));
-            this.bindTo('credit_pay', 'click', this.onCreditPay.bind(this));
 
             this.bindTo('deposit_new', 'click', this.onDepositNew.bind(this));
             this.bindTo('deposit_all', 'click', this.onDepositAll.bind(this));
@@ -25,9 +24,17 @@ provide(BEMDOM.decl('main-left', {
 
             this.bindTo('settings', 'click', this.onSettings.bind(this));
             this.bindTo('reset', 'click', this.onReset.bind(this));
-            this.bindTo('help', 'click', this.onHelp.bind(this));
 
             this.bindTo('logout', 'click', this.onLogout.bind(this));
+        },
+        'user': {
+            'inactive': function() {
+                var blocks = this.findBlocksInside({ block: 'menu-item', modName: 'user', modVal: 'forActive' });
+
+                $.each(blocks, function(i, e) {
+                    e.setMod('disabled');
+                }.bind(this));
+            }
         }
     },
 
@@ -45,7 +52,6 @@ provide(BEMDOM.decl('main-left', {
         this.content.delMod('page');
         this.content.delMod('settings');
         this.content.delMod('reset');
-        this.content.delMod('help');
     },
 
     onMain: function() {
@@ -71,11 +77,6 @@ provide(BEMDOM.decl('main-left', {
     onCreditArchive: function() {
         this._clear();
         this.content.setMod('credit', 'archive');
-    },
-
-    onCreditPay: function() {
-        this._clear();
-        this.content.setMod('credit', 'pay');
     },
 
     onDepositNew: function() {
@@ -106,11 +107,6 @@ provide(BEMDOM.decl('main-left', {
     onReset: function() {
         this._clear();
         this.content.setMod('reset', 'yes');
-    },
-
-    onHelp: function() {
-        this._clear();
-        this.content.setMod('help', 'yes');
     },
 
     onLogout: function() {

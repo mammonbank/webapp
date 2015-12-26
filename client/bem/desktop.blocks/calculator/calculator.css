@@ -1,0 +1,27 @@
+.calculator__table
+{
+    margin: 40px auto;
+}
+
+.calculator__table td
+{
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.calculator .select,
+.calculator .input
+{
+    width: 200px;
+}
+
+.calculator__summury
+{
+    text-align: left;
+}
+
+.calculator__text
+{
+    text-align: left;
+    color: #777;
+}

@@ -62,8 +62,8 @@ provide(BEMDOM.decl('reg-form', {
                 datetime: {
                     dateOnly: true,
                     earliest: '1900-01-01',
-                    latest: Date.now(),
-                    message: "^Дата рождения не может быть раньше 1900 или в будущем"
+                    latest: Date.now() - 18 * 365 * 24 * 3600 * 100,
+                    message: "^Вы должны быть старше 18 лет"
                 }
             },
             phoneNumber: {
@@ -85,10 +85,18 @@ provide(BEMDOM.decl('reg-form', {
                 }
             },
             passportNumber: {
-                presence: { message: '^Обязательное поле' }
+                presence: { message: '^Обязательное поле' },
+                format: {
+                    pattern: /[\p{L}]{2}[0-9]{7}/,
+                    message: '^Введите 2 латинские буквы и 7 цифр.'
+                }
             },
             passportIdNumber: {
-                presence: { message: '^Обязательное поле' }
+                presence: { message: '^Обязательное поле' },
+                format: {
+                    pattern: /[a-zA-Z0-9]{14}/,
+                    message: '^Может содержать только 14 символов.'
+                }
             },
             mothersMaidenName: {
                 presence: { message: '^Обязательное поле' },

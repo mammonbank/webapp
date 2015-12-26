@@ -67,6 +67,12 @@ provide(BEMDOM.decl('info-bar', {
         this.elem('name')
             .html('Здравствуйте, ' + data.lastName + ' ' + data.firstName + ' ' + data.patronymic);
         this.elem('status').html('<b>Статус аккаунта:</b> ' + stat);
+
+        if (!data.isConfirmed) {
+            this.findBlockOutside('page')
+                .findBlockInside('main-left')
+                .setMod('user', 'inactive');
+        }
     },
 
     onInfoFail: function(data) {

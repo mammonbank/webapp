@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static('client/bem/desktop.bundles/'));
-app.use(express.static('client/bem/libs/'));
+app.use(express.static('client/bem/'));
 app.use(favicon(__dirname + '/favicon.ico'));
 
 app.use(require('./controllers'));

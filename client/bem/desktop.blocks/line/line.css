@@ -2,4 +2,71 @@
 {
     text-align: center;
     margin: 50px;
+    position: relative;
+    left: 0;
+    transition: left 0.5s;
+}
+
+.line__credits,
+.line__deposits
+{
+    display: none;
+    position: absolute;
+    left: 125%;
+}
+
+.line__credits_show_yes,
+.line__deposits_show_yes
+{
+    display: block;
+    width: 50%;
+    margin: 30px;
+    margin-left: 70px;
+    top: 0;
+    padding: 30px;
+    border: 5px solid #ffdb4d;
+}
+
+.line_pressed_yes
+{
+    left: -100%;
+}
+
+.line__button
+{
+    position: absolute;
+    top: -60px;
+    left: 0;
+}
+
+.line__calc
+{
+    right: 10px;
+    bottom: 10px;
+    position: absolute;
+}
+
+.line__item
+{
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.line__title
+{
+    font-size: 18px;
+}
+
+.line__description
+{
+    color: #777;
+    text-align: left;
+    margin: 15px 0;
+}
+
+.line__sum
+{
+    text-align: left;
 }

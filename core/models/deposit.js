@@ -24,6 +24,7 @@ module.exports = function (sequelize, DataTypes) {
         sum: {
             type: DataTypes.DECIMAL(12, 2),
             allowNull: false,
+            min: 0,
             field: 'sum'
         },
         startDate: {

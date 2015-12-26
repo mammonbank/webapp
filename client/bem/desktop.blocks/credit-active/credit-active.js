@@ -81,12 +81,6 @@ provide(BEMDOM.decl('credit-active', {
                     content: 'Сумма кредита: ' + e.sum + ' бел. руб.'
                 },
                 {
-                    block: 'button',
-                    mix: { block: 'credit-active', elem: 'deposit' },
-                    mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'deposit', disabled: true },
-                    text: 'Положить деньги на счет'
-                },
-                {
                     elem: 'out',
                     content: 'Осталось погасить: ' + e.outstandingLoan + ' бел. руб.'
                 }

@@ -36,7 +36,7 @@ provide(BEMDOM.decl('one-time-password', {
             page.findBlockInside('main-left').delMod('hide');
             page.findBlockInside('main-right').delMod('hide');
             page.findBlockInside('info-bar').setMod('reload');
-            page.findBlockInside('board').setMod('reload', 'yes');
+            page.findBlockInside('content').setMod('page', 'main');
         }
     },
 
