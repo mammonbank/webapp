@@ -23,5 +23,6 @@ var URLS = {
     GET_CREDIT_APP_BY_ID: CONFIG.BASE_API_URL + '/api/credit/applications/${creditAppId}',
     GET_DEPOSIT_APP_BY_ID: CONFIG.BASE_API_URL + '/api/deposit/applications/${depositAppId}',
     GET_CREDITS: CONFIG.BASE_API_URL + '/api/credits',
-    GET_DEPOSITS: CONFIG.BASE_API_URL + '/api/deposits'
+    GET_DEPOSITS: CONFIG.BASE_API_URL + '/api/deposits',
+    GET_CLIENT_BY_ID: CONFIG.BASE_API_URL + '/api/clients/${clientId}'
 };

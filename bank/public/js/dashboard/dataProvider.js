@@ -199,4 +199,12 @@ class DataProvider {
             headers: { 'Authorization': this.getToken() }
         });
     }
+
+    static getClientsRemote(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_CLIENTS.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
 }

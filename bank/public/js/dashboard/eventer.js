@@ -90,6 +90,21 @@ class Eventer {
                     alertify.error("Ошибка");
                 })
         });
+
+        $('#clients').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getClientsRemote(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderClients(data.clients);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                })
+        });
     }
 
     static bindCreditAppsTabEvents() {
@@ -220,7 +235,64 @@ class Eventer {
         });
     }
 
-    static bindCreditsTabEvents() {
+    static bindClientsTabEvents() {
+        $('main').on('click', '.acceptclient-button', function() {
+            let isSure = confirm('Вы уверены?');
+            if (!isSure) {
+                return;
+            }
 
+            $('.loader').show();
+            $('.overlay').show();
+
+            DataManipulator.acceptClient({
+                clientId: $(this).data('clientid')
+            })
+            .then(() => {
+                return DataProvider.getClientsRemote(0, 1111);
+            })
+            .then((data) => {
+                $('main').empty();
+                Viewer.renderClients(data.clients);
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.success('Новый клиент успешно создан');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
+
+        $('main').on('click', '.declineclient-button', function() {
+            let isSure = confirm('Вы уверены?');
+            if (!isSure) {
+                return;
+            }
+
+            $('.loader').show();
+            $('.overlay').show();
+
+            DataManipulator.declineClient({
+                clientId: $(this).data('clientid')
+            })
+            .then(() => {
+                return DataProvider.getClientsRemote(0, 1111);
+            })
+            .then((data) => {
+                $('main').empty();
+                Viewer.renderClients(data.clients);
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.log('Клиент удален');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
     }
+
 }

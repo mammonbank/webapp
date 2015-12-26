@@ -183,7 +183,7 @@ class Viewer {
             DataProvider.getCreditTypes()[credit.credit_type_id].title + '</td>';
             html += '<td>' + (credit.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
             html += '<td>' + credit.sum + ' BYR</td>';
-            html += '<td>' + credit.outstandingLoan + '</td>';
+            html += '<td>' + credit.outstandingLoan + ' BYR</td>';
             html += '<td>' + credit.numberOfPayments + '</td>';
             html += '<td>' + (credit.lastPaymentDate != null ? moment( credit.lastPaymentDate ).format('DD-MM-YYYY') : '')   + '</td>';
             html += '<td>' + credit.overdueSum + ' BYR</td>';
@@ -223,6 +223,53 @@ class Viewer {
             DataProvider.getDepositTypes()[deposit.deposit_type_id].title + '</td>';
             html += '<td>' + deposit.sum + ' BYR</td>';
             html += '<td>' + (deposit.lastInterestDate != null ? moment( deposit.lastInterestDate ).format('DD-MM-YYYY') : '')   + '</td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
+
+    static renderClients(clients) {
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + clients.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>ФИО</th>' +
+            '       <th>Дата рождения</th>' +
+            '       <th>Номер телефона</th>' +
+            '       <th>Email</th>' +
+            '       <th>Номер паспорта</th>' +
+            '       <th>Личный (идентификационный) номер</th>' +
+            '       <th>Девичья фамилия матери</th>' +
+            '       <th>Коэффициент кредитной истории</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        clients.forEach((client) => {
+            if ( client.isConfirmed ) {
+                html += '<tr>';
+            } else {
+                html += '<tr class="red">';
+            }
+
+            html += '<td>' + client.lastName + ' ' + client.firstName + ' ' + client.patronymic  + '</td>';
+            html += '<td>' + moment(client.dateOfBirth).format('DD-MM-YYYY') + '</td>';
+
+            html += '<td>' + client.phoneNumber + '</td>';
+            html += '<td>' + client.email + '</td>';
+            html += '<td>' + client.passportNumber + '</td>';
+            html += '<td>' + client.passportIdNumber + '</td>';
+            html += '<td>' + client.mothersMaidenName + '</td>';
+            html += '<td>' + client.creditHistoryCoefficient + '</td>';
+
+            if ( !client.isConfirmed ) {
+                html += '<td><a data-clientid="' + client.id + '" class="acceptclient-button decision-button">Подтвердить</a> / ' +
+                '<a data-clientid="' + client.id + '" class="declineclient-button decision-button">Отклонить</a></td>';
+            }
 
             html += '</tr>';
         });
