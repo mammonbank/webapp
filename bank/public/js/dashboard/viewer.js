@@ -312,26 +312,29 @@ class Viewer {
     static renderOperators(operators) {
         if (operators.length === 0) {
             let html = '<span>Ничего нет</span>';
-            html += '<div class="infoWrapper"><span class="title-create">Создать нового оператора</span>';
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<div class="infoWrapper"><span class="title-create">Создать нового оператора</span>';
 
-            html += '<form class="pure-form pure-form-aligned form-create">' +
-            '<fieldset>' +
-            '<div class="pure-control-group">' +
-            '<label for="name">Идентификатор</label>' +
-            '<input id="operator-username" type="text" placeholder="Идентификатор">' +
-            '</div>' +
-            '<div class="pure-control-group">' +
-            '<label for="password">Пароль</label>' +
-            '<input id="operator-password" type="password" placeholder="Пароль">' +
-            '</div>' +
-            '<div class="pure-controls">' +
-            '<button id="operator-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
-            '</div>' +
-            '</fieldset>' +
-            '</form>';
+                html += '<form class="pure-form pure-form-aligned form-create">' +
+                '<fieldset>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Идентификатор</label>' +
+                '<input id="operator-username" type="text" placeholder="Идентификатор">' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="password">Пароль</label>' +
+                '<input id="operator-password" type="password" placeholder="Пароль">' +
+                '</div>' +
+                '<div class="pure-controls">' +
+                '<button id="operator-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+                '</div>' +
+                '</fieldset>' +
+                '</form>';
 
-            html += '</div>';
-            $('main').append(html);
+                html += '</div>';
+                $('main').append(html);
+            }
+
             return;
         }
 
@@ -357,23 +360,26 @@ class Viewer {
         });
 
         html += '</tbody></table>';
-        html += '<span class="title-create">Создать нового оператора</span>';
+        if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+            html += '<span class="title-create">Создать нового оператора</span>';
 
-        html += '<form class="pure-form pure-form-aligned form-create">' +
-        '<fieldset>' +
-        '<div class="pure-control-group">' +
-        '<label for="name">Идентификатор</label>' +
-        '<input id="operator-username" type="text" placeholder="Идентификатор">' +
-        '</div>' +
-        '<div class="pure-control-group">' +
-        '<label for="password">Пароль</label>' +
-        '<input id="operator-password" type="password" placeholder="Пароль">' +
-        '</div>' +
-        '<div class="pure-controls">' +
-        '<button id="operator-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
-        '</div>' +
-        '</fieldset>' +
-        '</form>';
+            html += '<form class="pure-form pure-form-aligned form-create">' +
+            '<fieldset>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Идентификатор</label>' +
+            '<input id="operator-username" type="text" placeholder="Идентификатор">' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="password">Пароль</label>' +
+            '<input id="operator-password" type="password" placeholder="Пароль">' +
+            '</div>' +
+            '<div class="pure-controls">' +
+            '<button id="operator-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+            '</div>' +
+            '</fieldset>' +
+            '</form>';
+        }
+
 
         html += '</div>';
 
@@ -576,6 +582,319 @@ class Viewer {
         });
 
         html += '</tbody></table></div>';
+
+        $('main').append(html);
+    }
+
+    static renderCreditCats(creditCats) {
+        if (creditCats.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<div class="infoWrapper"><span class="title-create">Создать новую кредитную категорию</span>';
+
+                html += '<form class="pure-form pure-form-aligned form-create">' +
+                '<fieldset>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Название</label>' +
+                '<input id="credit-cat-title" type="text">' +
+                '</div>' +
+                '<div class="pure-controls">' +
+                '<button id="credit-cat-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+                '</div>' +
+                '</fieldset>' +
+                '</form>';
+
+                html += '</div>';
+                $('main').append(html);
+            }
+
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + creditCats.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Название</th>' +
+            '       <th>Дата создания</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        creditCats.forEach((creditCat) => {
+            html += '<tr>';
+
+            html += '<td>' + creditCat.title + '</td>';
+            html += '<td>' + moment(creditCat.created_at).format('DD-MM-YYYY') + '</td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+
+        if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+            html += '<span class="title-create">Создать новую кредитную категорию</span>';
+
+            html += '<form class="pure-form pure-form-aligned form-create">' +
+            '<fieldset>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Название</label>' +
+            '<input id="credit-cat-title" type="text">' +
+            '</div>' +
+            '<div class="pure-controls">' +
+            '<button id="credit-cat-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+            '</div>' +
+            '</fieldset>' +
+            '</form>';
+        }
+
+
+        html += '</div>';
+
+
+        $('main').append(html);
+    }
+
+    static renderDepositTypes(depositTypes) {
+        if (depositTypes.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<div class="infoWrapper"><span class="title-create">Создать новый тип депозитов</span>';
+
+                html += '<form class="pure-form pure-form-aligned form-create">' +
+                '<fieldset>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Название</label>' +
+                '<input id="deposit-type-title" type="text">' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Описание</label>' +
+                '<textarea id="deposit-type-description" class="pure-input-1-2"></textarea>' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Процент по вкладу</label>' +
+                '<input id="deposit-type-interest" type="text">' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Минимальная сумма вклада</label>' +
+                '<input id="deposit-type-minSum" type="text">' +
+                '</div>' +
+                '<div class="pure-controls">' +
+                '<button id="deposit-type-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+                '</div>' +
+                '</fieldset>' +
+                '</form>';
+
+                html += '</div>';
+                $('main').append(html);
+            }
+
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + depositTypes.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Название</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Описание</th>' +
+            '       <th>Процент по вкладу</th>' +
+            '       <th>Минимальная сумма вклада</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        depositTypes.forEach((depositType) => {
+            html += '<tr>';
+
+            html += '<td>' + depositType.title + '</td>';
+            html += '<td>' + moment(depositType.created_at).format('DD-MM-YYYY') + '</td>';
+            html += '<td>' + depositType.description + '</td>';
+            html += '<td>' + (depositType.interest * 100) + '%</td>';
+            html += '<td>' + depositType.minSum + ' BYR</td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+        if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+            html += '<span class="title-create">Создать новый тип депозитов</span>';
+
+            html += '<form class="pure-form pure-form-aligned form-create">' +
+            '<fieldset>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Название</label>' +
+            '<input id="deposit-type-title" type="text">' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Описание</label>' +
+            '<textarea id="deposit-type-description" class="pure-input"></textarea>' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Процент по вкладу</label>' +
+            '<input id="deposit-type-interest" type="text" placeholder="0.1">' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Минимальная сумма вклада</label>' +
+            '<input id="deposit-type-minSum" type="text">' +
+            '</div>' +
+            '<div class="pure-controls">' +
+            '<button id="deposit-type-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+            '</div>' +
+            '</fieldset>' +
+            '</form>';
+        }
+
+        html += '</div>';
+
+        $('main').append(html);
+    }
+
+    static renderCreditTypes(creditTypes) {
+        if (creditTypes.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<div class="infoWrapper"><span class="title-create">Создать новый тип кредитов</span>';
+
+                html += '<form class="pure-form pure-form-aligned form-create">' +
+                '<fieldset>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Название</label>' +
+                '<input id="credit-type-title" type="text">' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Описание</label>' +
+                '<textarea id="credit-type-description" class="pure-input"></textarea>' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Минимальная сумма кредита</label>' +
+                '<input id="credit-type-minSum" type="text">' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Максимальная сумма кредита</label>' +
+                '<input id="credit-type-maxSum" type="text">' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Минимальное кол-во месяцев</label>' +
+                '<input id="credit-type-minTerm" type="text">' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Максимальное кол-во месяцев</label>' +
+                '<input id="credit-type-maxTerm" type="text">' +
+                '</div>' +
+                '<div class="pure-control-group">' +
+                '<label for="name">Процент по кредиту</label>' +
+                '<input id="credit-type-interest" type="text">' +
+                '</div>' +
+                '<div class="pure-control-group"><label for="state">Категория</label>' +
+                '<select id="credit-type-catId">';
+
+                for (var creditCatId in DataProvider.getCreditCats()) {
+                    if (DataProvider.getCreditCats().hasOwnProperty(creditCatId)) {
+                        html += '<option value="' + creditCatId + '">' + DataProvider.getCreditCats()[creditCatId].title + '</option>';
+                    }
+                }
+
+                html += '</select></div>' +
+                '<div class="pure-controls">' +
+                '<button id="credit-type-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+                '</div>' +
+                '</fieldset>' +
+                '</form>';
+
+                html += '</div>';
+                $('main').append(html);
+            }
+
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + creditTypes.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>Название</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Описание</th>' +
+            '       <th>Процент по кредиту</th>' +
+            '       <th>Минимальная сумма кредита</th>' +
+            '       <th>Максимальная сумма кредита</th>' +
+            '       <th>Минимальное кол-во месяцев</th>' +
+            '       <th>Максимальное кол-во месяцев</th>' +
+            '       <th>Категория</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        creditTypes.forEach((creditType) => {
+            html += '<tr>';
+
+            html += '<td>' + creditType.title + '</td>';
+            html += '<td>' + moment(creditType.created_at).format('DD-MM-YYYY') + '</td>';
+            html += '<td>' + creditType.description + '</td>';
+            html += '<td>' + (creditType.interest * 100) + '%</td>';
+            html += '<td>' + creditType.minSum + ' BYR</td>';
+            html += '<td>' + creditType.maxSum + ' BYR</td>';
+            html += '<td>' + creditType.term[0] + '</td>';
+            html += '<td>' + creditType.term[1] + '</td>';
+            html += '<td>' + DataProvider.getCreditCats()[creditType.credit_category_id].title + '</td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table>';
+        if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+            html += '<div class="infoWrapper"><span class="title-create">Создать новый тип кредитов</span>';
+
+            html += '<form class="pure-form pure-form-aligned form-create">' +
+            '<fieldset>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Название</label>' +
+            '<input id="credit-type-title" type="text">' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Описание</label>' +
+            '<textarea id="credit-type-description" class="pure-input"></textarea>' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Минимальная сумма кредита</label>' +
+            '<input id="credit-type-minSum" type="text">' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Максимальная сумма кредита</label>' +
+            '<input id="credit-type-maxSum" type="text">' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Минимальное кол-во месяцев</label>' +
+            '<input id="credit-type-minTerm" type="text">' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Максимальное кол-во месяцев</label>' +
+            '<input id="credit-type-maxTerm" type="text">' +
+            '</div>' +
+            '<div class="pure-control-group">' +
+            '<label for="name">Процент по кредиту</label>' +
+            '<input id="credit-type-interest" type="text">' +
+            '</div>' +
+            '<div class="pure-control-group"><label for="state">Категория</label>' +
+            '<select id="credit-type-catId">';
+
+            for (var creditCatId in DataProvider.getCreditCats()) {
+                if (DataProvider.getCreditCats().hasOwnProperty(creditCatId)) {
+                    html += '<option value="' + creditCatId + '">' + DataProvider.getCreditCats()[creditCatId].title + '</option>';
+                }
+            }
+
+            html += '</select></div>' +
+            '<div class="pure-controls">' +
+            '<button id="credit-type-create-button" type="submit" class="pure-button pure-button-primary">Создать</button>' +
+            '</div>' +
+            '</fieldset>' +
+            '</form>';
+        }
+
+        html += '</div>';
 
         $('main').append(html);
     }

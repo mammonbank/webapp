@@ -111,4 +111,49 @@ class DataManipulator {
         })
     }
 
+    static createCreditCat(title) {
+        return $.ajax({
+            url: URLS.GET_CREDIT_CATS,
+            method: 'POST',
+            headers: { 'Authorization': DataProvider.getToken() },
+            contentType: 'application/json',
+            data: JSON.stringify({
+                title: title
+            })
+        })
+    }
+
+    static createDepositType(data) {
+        return $.ajax({
+            url: URLS.GET_DEPOSIT_TYPES,
+            method: 'POST',
+            headers: { 'Authorization': DataProvider.getToken() },
+            contentType: 'application/json',
+            data: JSON.stringify({
+                title: data.title,
+                description: data.description,
+                interest: data.interest,
+                minSum: data.minSum
+            })
+        })
+    }
+
+    static createCreditType(data) {
+        return $.ajax({
+            url: URLS.GET_CREDIT_TYPES,
+            method: 'POST',
+            headers: { 'Authorization': DataProvider.getToken() },
+            contentType: 'application/json',
+            data: JSON.stringify({
+                title: data.title,
+                description: data.description,
+                minSum: data.minSum,
+                maxSum: data.maxSum,
+                term: data.term,
+                interest: data.interest,
+                creditCategoryId: data.creditCategoryId
+            })
+        })
+    }
+
 }
