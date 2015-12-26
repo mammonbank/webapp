@@ -97,15 +97,15 @@ class DataProvider {
                 headers: { 'Authorization': this.getToken() }
             }),
             $.ajax({
-                url: URLS.GET_CREDIT_CATS,
+                url: URLS.GET_CREDIT_CATS.replace('${offset}', 0).replace('${limit}', 50),
                 method: 'GET'
             }),
             $.ajax({
-                url: URLS.GET_CREDIT_TYPES,
+                url: URLS.GET_CREDIT_TYPES.replace('${offset}', 0).replace('${limit}', 50),
                 method: 'GET'
             }),
             $.ajax({
-                url: URLS.GET_DEPOSIT_TYPES,
+                url: URLS.GET_DEPOSIT_TYPES.replace('${offset}', 0).replace('${limit}', 50),
                 method: 'GET'
             }),
             $.ajax({
@@ -245,6 +245,27 @@ class DataProvider {
             url: URLS.GET_DEPOSIT_ARCHIVES.replace('${offset}', offset).replace('${limit}', limit),
             method: 'GET',
             headers: { 'Authorization': this.getToken() }
+        });
+    }
+
+    static getCreditCatsRemote(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_CREDIT_CATS.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET'
+        });
+    }
+
+    static getCreditTypesRemote(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_CREDIT_TYPES.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET'
+        });
+    }
+
+    static getDepositTypesRemote(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_DEPOSIT_TYPES.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET'
         });
     }
 }

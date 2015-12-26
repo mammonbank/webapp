@@ -51,6 +51,9 @@ class Dashboard {
         Eventer.bindDepositAppsTabEvents();
         Eventer.bindClientsTabEvents();
         Eventer.bindOperatorsTabEvents();
+        Eventer.bindStaticCreditCatsTabEvents();
+        Eventer.bindStaticDepositTypesTabEvents();
+        Eventer.bindStaticCreditTypesTabEvents();
     }
 }
 

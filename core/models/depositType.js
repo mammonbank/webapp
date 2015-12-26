@@ -29,6 +29,9 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.DECIMAL(3, 3),
             allowNull: false,
             field: 'interest',
+            validate: {
+                max: 1
+            }
         },
         minSum: {
             type: DataTypes.DECIMAL(12, 2),

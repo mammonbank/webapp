@@ -88,7 +88,7 @@ class Eventer {
                 .fail(() => {
                     $('.loader').hide();
                     alertify.error("Ошибка");
-                })
+                });
         });
 
         $('#clients').on('click', () => {
@@ -103,7 +103,52 @@ class Eventer {
                 .fail(() => {
                     $('.loader').hide();
                     alertify.error("Ошибка");
+                });
+        });
+
+        $('#creditCats').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getCreditCatsRemote(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderCreditCats(data.creditCats);
                 })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                });
+        });
+
+        $('#creditTypes').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getCreditTypesRemote(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderCreditTypes(data.creditTypes);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                });
+        });
+
+        $('#depositTypes').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getDepositTypesRemote(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderDepositTypes(data.depositTypes);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                });
         });
 
         $('#creditAppsArchives').on('click', () => {
@@ -129,7 +174,7 @@ class Eventer {
                 .fail(() => {
                     $('.loader').hide();
                     alertify.error("Ошибка");
-                })
+                });
         });
 
         $('#depositAppsArchives').on('click', () => {
@@ -438,6 +483,153 @@ class Eventer {
                 $('.loader').hide();
                 $('.overlay').hide();
                 alertify.success('Оператор "' + username + '" создан');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
+    }
+
+    static bindStaticCreditCatsTabEvents() {
+        $('main').on('click', '#credit-cat-create-button', function(e) {
+            e.preventDefault();
+            let title = $('#credit-cat-title').val();
+
+            if (title === '') {
+                alertify.error('Заполните поле');
+                return;
+            }
+
+            let isSure = confirm('Вы уверены?');
+            if (!isSure) {
+                return;
+            }
+
+            $('.loader').show();
+            $('.overlay').show();
+
+            DataManipulator.createCreditCat(title)
+                .then(() => {
+                    return DataProvider.getCreditCatsRemote(0, 1111);
+                })
+                .then((data) => {
+                    $('main').empty();
+                    DataProvider.setCreditCats(data.creditCats);
+                    Viewer.renderCreditCats(data.creditCats);
+
+                    $('.loader').hide();
+                    $('.overlay').hide();
+                    alertify.success('Кредитная категория "' + title + '" создана');
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    $('.overlay').hide();
+                    alertify.error('Ошибка');
+                });
+        });
+    }
+
+    //don't know what this function is doing here
+    static isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+
+    static bindStaticDepositTypesTabEvents() {
+        $('main').on('click', '#deposit-type-create-button', function(e) {
+            e.preventDefault();
+            let title = $('#deposit-type-title').val();
+            let description = $('#deposit-type-description').val();
+            let interest = $('#deposit-type-interest').val();
+            let minSum = $('#deposit-type-minSum').val();
+
+            if (title === '' || description == '' || !Eventer.isNumeric(interest) || !Eventer.isNumeric(minSum)) {
+                alertify.error('Заполните поля');
+                return;
+            }
+
+            let isSure = confirm('Вы уверены?');
+            if (!isSure) {
+                return;
+            }
+
+            $('.loader').show();
+            $('.overlay').show();
+
+            DataManipulator.createDepositType({
+                title: title,
+                description: description,
+                interest: interest,
+                minSum: minSum
+            })
+            .then(() => {
+                return DataProvider.getDepositTypesRemote(0, 1111);
+            })
+            .then((data) => {
+                $('main').empty();
+                DataProvider.setDepositTypes(data.depositTypes);
+                Viewer.renderDepositTypes(data.depositTypes);
+
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.success('Новый тип депозитов "' + title + '" создан');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
+    }
+
+    static bindStaticCreditTypesTabEvents() {
+        $('main').on('click', '#credit-type-create-button', function(e) {
+            e.preventDefault();
+            let title = $('#credit-type-title').val();
+            let description = $('#credit-type-description').val();
+            let minSum = $('#credit-type-minSum').val();
+            let maxSum = $('#credit-type-maxSum').val();
+            let minTerm = $('#credit-type-minTerm').val();
+            let maxTerm = $('#credit-type-maxTerm').val();
+            let interest = $('#credit-type-interest').val();
+            let creditCategoryId = $('#credit-type-catId').val();
+
+            if (title === '' || description == '' || !Eventer.isNumeric(minSum) || !Eventer.isNumeric(maxSum) ||
+                !Eventer.isNumeric(minTerm) || !Eventer.isNumeric(maxTerm) || !Eventer.isNumeric(interest) ||
+                !Eventer.isNumeric(creditCategoryId)) {
+                alertify.error('Заполните поля');
+                return;
+            }
+
+            let isSure = confirm('Вы уверены?');
+            if (!isSure) {
+                return;
+            }
+
+            $('.loader').show();
+            $('.overlay').show();
+
+            DataManipulator.createCreditType({
+                title: title,
+                description: description,
+                minSum: minSum,
+                maxSum: maxSum,
+                term: [minTerm, maxTerm],
+                interest: interest,
+                creditCategoryId: creditCategoryId
+            })
+            .then(() => {
+                return DataProvider.getCreditTypesRemote(0, 1111);
+            })
+            .then((data) => {
+                $('main').empty();
+                DataProvider.setCreditTypes(data.creditTypes);
+                Viewer.renderCreditTypes(data.creditTypes);
+
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.success('Новый тип кредитов "' + title + '" создан');
             })
             .fail(() => {
                 $('.loader').hide();

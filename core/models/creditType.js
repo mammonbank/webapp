@@ -4,7 +4,7 @@
     CreditType model fields:
     {
         title,
-        currency,
+        description,
         minSum,
         maxSum,
         term,
