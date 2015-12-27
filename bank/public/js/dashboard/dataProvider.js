@@ -268,4 +268,55 @@ class DataProvider {
             method: 'GET'
         });
     }
+
+    static getAllClientInfo(clientId) {
+        return $.when(
+            $.ajax({
+                url: URLS.GET_CLIENT_CREDIT_APPS.replace('${clientId}', clientId).replace('${offset}', 0).replace('${limit}', 1111),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            }),
+            $.ajax({
+                url: URLS.GET_CLIENT_CREDIT_ARCHIVES_APPS.replace('${clientId}', clientId).replace('${offset}', 0).replace('${limit}', 1111),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            }),
+            $.ajax({
+                url: URLS.GET_CLIENT_DEPOSIT_APPS.replace('${clientId}', clientId).replace('${offset}', 0).replace('${limit}', 1111),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            }),
+            $.ajax({
+                url: URLS.GET_CLIENT_DEPOSIT_ARCHIVES_APPS.replace('${clientId}', clientId).replace('${offset}', 0).replace('${limit}', 1111),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            }),
+            $.ajax({
+                url: URLS.GET_CLIENT_CREDITS.replace('${clientId}', clientId).replace('${offset}', 0).replace('${limit}', 1111),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            }),
+            $.ajax({
+                url: URLS.GET_CLIENT_CREDIT_ARCHIVES.replace('${clientId}', clientId).replace('${offset}', 0).replace('${limit}', 1111),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            }),
+            $.ajax({
+                url: URLS.GET_CLIENT_DEPOSITS.replace('${clientId}', clientId).replace('${offset}', 0).replace('${limit}', 1111),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            }),
+            $.ajax({
+                url: URLS.GET_CLIENT_DEPOSITS_ARCHIVES.replace('${clientId}', clientId).replace('${offset}', 0).replace('${limit}', 1111),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            }),
+            $.ajax({
+                url: URLS.GET_CLIENT_ACCOUNT.replace('${clientId}', clientId),
+                method: 'GET',
+                headers: { 'Authorization': this.getToken() }
+            })
+        );
+    }
+
 }

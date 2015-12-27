@@ -15,7 +15,7 @@ var debug = require('debug')('mammonbank:api'),
 module.exports = function(sequelize, DataTypes) {
     var CreditApplication = sequelize.define('CreditApplication', {
         plannedSum: {
-            type: DataTypes.DECIMAL(12, 2),
+            type: DataTypes.DECIMAL(16, 2),
             allowNull: false,
             field: 'planned_sum',
             validate: {
@@ -72,8 +72,8 @@ module.exports = function(sequelize, DataTypes) {
                 var self = this;
                 this.getCreditType()
                     .then(function(creditType) {
-                        var minMonths = creditType.term[0],
-                            maxMonths = creditType.term[1],
+                        var minMonths = creditType.minTerm,
+                            maxMonths = creditType.maxTerm,
                             isValid = !!( _.inRange(self.plannedSum, creditType.minSum, creditType.maxSum) &&
                                  _.inRange(self.plannedTerm, minMonths, maxMonths) );
                         
