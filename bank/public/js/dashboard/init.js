@@ -54,6 +54,7 @@ class Dashboard {
         Eventer.bindStaticDepositTypesTabEvents();
         Eventer.bindStaticCreditTypesTabEvents();
         Eventer.bindGeneralTabEvents();
+        Eventer.bindSearchButtonEvents();
     }
 }
 

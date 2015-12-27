@@ -683,4 +683,35 @@ class Eventer {
         });
     }
 
+    static bindSearchButtonEvents() {
+        $('#search-form').on('submit', function(e) {
+            e.preventDefault();
+        });
+
+        $('#search-input').on('keypress', function(e) {
+            if ($(this).val() === '' && e.keyCode === 13) {
+                alertify.error('Заполните поле');
+                return;
+            }
+
+            $('.loader').show();
+            $('.overlay').show();
+
+            DataProvider.searchClients($(this).val() + String.fromCharCode(e.keyCode))
+            .then((data) => {
+                $('main').empty();
+                Viewer.renderClients(data.clients);
+
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.success('Данные загружены');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
+    }
+
 }
