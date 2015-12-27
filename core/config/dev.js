@@ -12,7 +12,7 @@ module.exports = {
             'http://localhost:3001',
             'http://localhost:3002',
             'http://mammonbank.tk',
-            'http://admin-mammonbank.tk',
+            'http://178.62.142.246',
             'http://api-mammonbank.com'
         ]
     },
@@ -43,7 +43,7 @@ module.exports = {
         tokenExpirationTime: '6h'
     },
     cron: {
-        isEnabled: false,
+        isEnabled: true,
         times: {
             creditor: '*/10 * * * * *',
             debtor: '*/10 * * * * *'

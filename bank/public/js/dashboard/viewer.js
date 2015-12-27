@@ -669,7 +669,7 @@ class Viewer {
                 '</div>' +
                 '<div class="pure-control-group">' +
                 '<label for="name">Описание</label>' +
-                '<textarea id="deposit-type-description" class="pure-input-1-2"></textarea>' +
+                '<textarea id="deposit-type-description" class="pure-input"></textarea>' +
                 '</div>' +
                 '<div class="pure-control-group">' +
                 '<label for="name">Процент по вкладу</label>' +
@@ -836,8 +836,8 @@ class Viewer {
             html += '<td>' + (creditType.interest * 100) + '%</td>';
             html += '<td>' + creditType.minSum + ' BYR</td>';
             html += '<td>' + creditType.maxSum + ' BYR</td>';
-            html += '<td>' + creditType.term[0] + '</td>';
-            html += '<td>' + creditType.term[1] + '</td>';
+            html += '<td>' + creditType.minTerm + '</td>';
+            html += '<td>' + creditType.maxTerm + '</td>';
             html += '<td>' + DataProvider.getCreditCats()[creditType.credit_category_id].title + '</td>';
 
             html += '</tr>';

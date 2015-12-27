@@ -7,7 +7,8 @@
         description,
         minSum,
         maxSum,
-        term,
+        minTerm,
+        maxTerm,
         interest
     }
 */
@@ -38,10 +39,21 @@ module.exports = function(sequelize, DataTypes) {
             field: 'max_sum'
         },
         //in months
-        term: {
-            type: DataTypes.RANGE(DataTypes.INTEGER),
+        minTerm: {
+            type: DataTypes.INTEGER,
             allowNull: false,
-            field: 'term'
+            field: 'min_term',
+            validate: {
+                min: 0
+            }
+        },
+        maxTerm: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            field: 'max_term',
+            validate: {
+                min: 0
+            }
         },
         interest: {
             type: DataTypes.DECIMAL(3, 3),

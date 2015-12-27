@@ -4,10 +4,6 @@ class Dashboard {
 
         DataProvider.getLaunchData()
         .then(( bankEmployee, creditCats, creditTypes, depositTypes, clients ) => {
-            $('.overlay').hide();
-            $('.loader').hide();
-            alertify.success("Данные загружены");
-
             DataProvider.saveLaunchData(bankEmployee[0],
                 creditCats[0].creditCats,
                 creditTypes[0].creditTypes,
@@ -16,6 +12,9 @@ class Dashboard {
             );
 
             Viewer.renderWelcomeMsg(bankEmployee[0]);
+            $('.overlay').hide();
+            $('.loader').hide();
+            alertify.success("Данные загружены");
         })
         .then(() => {
             if (DataProvider.getBankEmployee().type === 'OVERSEER') {

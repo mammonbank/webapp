@@ -615,7 +615,8 @@ class Eventer {
                 description: description,
                 minSum: minSum,
                 maxSum: maxSum,
-                term: [minTerm, maxTerm],
+                minTerm: minTerm,
+                maxTerm: maxTerm,
                 interest: interest,
                 creditCategoryId: creditCategoryId
             })

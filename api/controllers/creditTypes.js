@@ -76,7 +76,8 @@ router.post('/', authenticateOverseerToken, function(req, res, next) {
             description: req.body.description,
             minSum: req.body.minSum,
             maxSum: req.body.maxSum,
-            term: req.body.term,
+            minTerm: req.body.minTerm,
+            maxTerm: req.body.maxTerm,
             interest: req.body.interest,
             credit_category_id: req.body.creditCategoryId
         })

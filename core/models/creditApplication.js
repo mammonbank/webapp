@@ -72,8 +72,8 @@ module.exports = function(sequelize, DataTypes) {
                 var self = this;
                 this.getCreditType()
                     .then(function(creditType) {
-                        var minMonths = creditType.term[0],
-                            maxMonths = creditType.term[1],
+                        var minMonths = creditType.minTerm,
+                            maxMonths = creditType.maxTerm,
                             isValid = !!( _.inRange(self.plannedSum, creditType.minSum, creditType.maxSum) &&
                                  _.inRange(self.plannedTerm, minMonths, maxMonths) );
                         

@@ -149,7 +149,8 @@ class DataManipulator {
                 description: data.description,
                 minSum: data.minSum,
                 maxSum: data.maxSum,
-                term: data.term,
+                minTerm: data.minTerm,
+                maxTerm: data.maxTerm,
                 interest: data.interest,
                 creditCategoryId: data.creditCategoryId
             })
