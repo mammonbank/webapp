@@ -34,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         minSum: {
-            type: DataTypes.DECIMAL(12, 2),
+            type: DataTypes.DECIMAL(16, 2),
             allowNull: false,
             field: 'min_sum',
             //rounding issues

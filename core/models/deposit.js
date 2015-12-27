@@ -22,7 +22,7 @@ Decimal.config({
 module.exports = function (sequelize, DataTypes) {
     var Deposit = sequelize.define('Deposit', {
         sum: {
-            type: DataTypes.DECIMAL(12, 2),
+            type: DataTypes.DECIMAL(16, 2),
             allowNull: false,
             min: 0,
             field: 'sum'

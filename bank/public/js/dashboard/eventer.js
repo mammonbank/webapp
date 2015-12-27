@@ -640,4 +640,47 @@ class Eventer {
         });
     }
 
+    static bindGeneralTabEvents() {
+        $('main').on('click', '.clientId', function() {
+            $('.loader').show();
+            $('.overlay').show();
+            let clientId = $(this).data('clientid');
+
+            DataProvider.getAllClientInfo(clientId)
+            .then((creditApps,
+                   creditAppsArchives,
+                   depositApps,
+                   depositAppsArchives,
+                   credits,
+                   creditsArchives,
+                   deposits,
+                   depositsArchives,
+                   clientAccount
+                ) => {
+                $('main').empty();
+                Viewer.renderClientInfo({
+                    creditApps: creditApps[0].creditApps,
+                    creditAppsArchives: creditAppsArchives[0].creditApps,
+                    depositApps: depositApps[0].depositApps,
+                    depositAppsArchives: depositAppsArchives[0].depositApps,
+                    credits: credits[0].credits,
+                    creditsArchives: creditsArchives[0].credits,
+                    deposits: deposits[0].deposits,
+                    depositsArchives: depositsArchives[0].deposits,
+                    clientAccount: clientAccount[0].clientAccount,
+                    clientId: clientId
+                });
+
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.success('Данные загружены');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
+    }
+
 }

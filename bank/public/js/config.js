@@ -28,5 +28,15 @@ var URLS = {
     GET_CREDIT_APP_ARCHIVES: CONFIG.BASE_API_URL + '/api/credit/applications/archives?offset=${offset}&limit=${limit}',
     GET_DEPOSIT_APP_ARCHIVES: CONFIG.BASE_API_URL + '/api/deposit/applications/archives?offset=${offset}&limit=${limit}',
     GET_CREDIT_ARCHIVES: CONFIG.BASE_API_URL + '/api/credits/archives?offset=${offset}&limit=${limit}',
-    GET_DEPOSIT_ARCHIVES: CONFIG.BASE_API_URL + '/api/deposits/archives?offset=${offset}&limit=${limit}'
+    GET_DEPOSIT_ARCHIVES: CONFIG.BASE_API_URL + '/api/deposits/archives?offset=${offset}&limit=${limit}',
+
+    GET_CLIENT_ACCOUNT: CONFIG.BASE_API_URL + '/api/client/accounts/${clientId}',
+    GET_CLIENT_CREDIT_APPS: CONFIG.BASE_API_URL + '/api/client/${clientId}/credit/applications?offset=${offset}&limit=${limit}',
+    GET_CLIENT_CREDIT_ARCHIVES_APPS: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/credit/applications?offset=${offset}&limit=${limit}',
+    GET_CLIENT_DEPOSIT_APPS: CONFIG.BASE_API_URL + '/api/client/${clientId}/deposit/applications?offset=${offset}&limit=${limit}',
+    GET_CLIENT_DEPOSIT_ARCHIVES_APPS: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/deposit/applications?offset=${offset}&limit=${limit}',
+    GET_CLIENT_CREDITS: CONFIG.BASE_API_URL + '/api/client/${clientId}/credits/?offset=${offset}&limit=${limit}',
+    GET_CLIENT_CREDIT_ARCHIVES: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/credits?offset=${offset}&limit=${limit}',
+    GET_CLIENT_DEPOSITS: CONFIG.BASE_API_URL + '/api/client/${clientId}/deposits/?offset=${offset}&limit=${limit}',
+    GET_CLIENT_DEPOSITS_ARCHIVES: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/deposits/?offset=${offset}&limit=${limit}'
 };

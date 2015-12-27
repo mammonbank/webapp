@@ -12,7 +12,7 @@ var debug = require('debug')('mammonbank:api');
 module.exports = function(sequelize, DataTypes) {
     var DepositApplication = sequelize.define('DepositApplication', {
         plannedSum: {
-            type: DataTypes.DECIMAL(12, 2),
+            type: DataTypes.DECIMAL(16, 2),
             allowNull: false,
             field: 'planned_sum',
             validate: {

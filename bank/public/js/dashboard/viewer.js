@@ -75,7 +75,7 @@ class Viewer {
             ' ' + DataProvider.getClients()[creditApp.client_id].patronymic  + '</td>';
             html += '<td>' + creditHistoryCoefficient + '</td>';
             html += '<td>' + moment(creditApp.created_at).format('DD-MM-YYYY') + '</td>';
-            html += '<td class="creditTypeId underscore" data-credittypeid="' + creditApp.credit_type_id + '">' +
+            html += '<td>' +
                 DataProvider.getCreditTypes()[creditApp.credit_type_id].title + '</td>';
             html += '<td>' + creditApp.plannedSum + ' BYR</td>';
             html += '<td>' + creditApp.plannedTerm + '</td>';
@@ -90,7 +90,7 @@ class Viewer {
             '" class="declinecreditapp-button decision-button">Отклонить</a></td>';
 
             if (DataProvider.getBankEmployee().type === 'OVERSEER') {
-                html += '<td class="operatorId underscore" data-operatorid="' + creditApp.bank_employee_id + '">' +
+                html += '<td>' +
                 DataProvider.getOperators()[creditApp.bank_employee_id].username + '</td>';
             }
 
@@ -134,7 +134,7 @@ class Viewer {
             ' ' + DataProvider.getClients()[depositApp.client_id].firstName +
             ' ' + DataProvider.getClients()[depositApp.client_id].patronymic  + '</td>';
             html += '<td>' + moment(depositApp.created_at).format('DD-MM-YYYY') + '</td>';
-            html += '<td class="creditTypeId underscore" data-credittypeid="' + depositApp.deposit_type_id + '">' +
+            html += '<td>' +
             DataProvider.getDepositTypes()[depositApp.deposit_type_id].title + '</td>';
             html += '<td>' + depositApp.plannedSum + ' BYR</td>';
 
@@ -146,7 +146,7 @@ class Viewer {
             '" class="declinedepositapp-button decision-button">Отклонить</a></td>';
 
             if (DataProvider.getBankEmployee().type === 'OVERSEER') {
-                html += '<td class="operatorId underscore" data-operatorid="' + depositApp.bank_employee_id + '">' +
+                html += '<td>' +
                 DataProvider.getOperators()[depositApp.bank_employee_id].username + '</td>';
             }
 
@@ -197,7 +197,7 @@ class Viewer {
             html += '<td>' + moment(credit.startDate).format('DD-MM-YYYY') + '</td>';
             html += '<td>' + moment(credit.endDate).format('DD-MM-YYYY') + '</td>';
 
-            html += '<td class="creditTypeId underscore" data-credittypeid="' + credit.credit_type_id + '">' +
+            html += '<td>' +
             DataProvider.getCreditTypes()[credit.credit_type_id].title + '</td>';
             html += '<td>' + (credit.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
             html += '<td>' + credit.sum + ' BYR</td>';
@@ -243,7 +243,7 @@ class Viewer {
             ' ' + DataProvider.getClients()[deposit.client_id].patronymic  + '</td>';
             html += '<td>' + moment(deposit.startDate).format('DD-MM-YYYY') + '</td>';
 
-            html += '<td class="depositTypeId underscore" data-deposittypeid="' + deposit.deposit_type_id + '">' +
+            html += '<td>' +
             DataProvider.getDepositTypes()[deposit.deposit_type_id].title + '</td>';
             html += '<td>' + deposit.sum + ' BYR</td>';
             html += '<td>' + (deposit.lastInterestDate != null ? moment( deposit.lastInterestDate ).format('DD-MM-YYYY') : '')   + '</td>';
@@ -286,7 +286,8 @@ class Viewer {
                 html += '<tr class="red">';
             }
 
-            html += '<td>' + client.lastName + ' ' + client.firstName + ' ' + client.patronymic  + '</td>';
+            html += '<td class="clientId underscore" data-clientid="' + client.id + '">' + client.lastName +
+            ' ' + client.firstName + ' ' + client.patronymic  + '</td>';
             html += '<td>' + moment(client.dateOfBirth).format('DD-MM-YYYY') + '</td>';
 
             html += '<td>' + client.phoneNumber + '</td>';
@@ -352,7 +353,7 @@ class Viewer {
         operators.forEach((operator) => {
             html += '<tr>';
 
-            html += '<td class="operatorId underscore" data-operatorid="' + operator.id + '">' + operator.username + '</td>';
+            html += '<td>' + operator.username + '</td>';
             html += '<td>' + operator.numberOfApplications + '</td>';
             html += '<td>' + moment(operator.created_at).format('DD-MM-YYYY') + '</td>';
 
@@ -424,7 +425,7 @@ class Viewer {
             html += '<td>' + moment(creditApp.created_at).format('DD-MM-YYYY') + '</td>';
             html += '<td>' + moment(creditApp.deleted_at).format('DD-MM-YYYY') + '</td>';
 
-            html += '<td class="creditTypeId underscore" data-credittypeid="' + creditApp.credit_type_id + '">' +
+            html += '<td>' +
             DataProvider.getCreditTypes()[creditApp.credit_type_id].title + '</td>';
             html += '<td>' + creditApp.plannedSum + ' BYR</td>';
             html += '<td>' + creditApp.plannedTerm + '</td>';
@@ -432,7 +433,7 @@ class Viewer {
             html += '<td>' + (creditApp.isConfirmed ? 'Принята' : 'Отклонена') + '</td>';
 
             if (DataProvider.getBankEmployee().type === 'OVERSEER') {
-                html += '<td class="operatorId underscore" data-operatorid="' + creditApp.bank_employee_id + '">' +
+                html += '<td>' +
                 DataProvider.getOperators()[creditApp.bank_employee_id].username + '</td>';
             }
 
@@ -478,13 +479,13 @@ class Viewer {
             ' ' + DataProvider.getClients()[depositApp.client_id].patronymic  + '</td>';
             html += '<td>' + moment(depositApp.created_at).format('DD-MM-YYYY') + '</td>';
             html += '<td>' + moment(depositApp.deleted_at).format('DD-MM-YYYY') + '</td>';
-            html += '<td class="creditTypeId underscore" data-credittypeid="' + depositApp.deposit_type_id + '">' +
+            html += '<td>' +
             DataProvider.getDepositTypes()[depositApp.deposit_type_id].title + '</td>';
             html += '<td>' + depositApp.plannedSum + ' BYR</td>';
             html += '<td>' + (depositApp.isConfirmed ? 'Принята' : 'Отклонена') + '</td>';
 
             if (DataProvider.getBankEmployee().type === 'OVERSEER') {
-                html += '<td class="operatorId underscore" data-operatorid="' + depositApp.bank_employee_id + '">' +
+                html += '<td>' +
                 DataProvider.getOperators()[depositApp.bank_employee_id].username + '</td>';
             }
 
@@ -529,7 +530,7 @@ class Viewer {
             html += '<td>' + moment(credit.startDate).format('DD-MM-YYYY') + '</td>';
             html += '<td>' + moment(credit.endDate).format('DD-MM-YYYY') + '</td>';
 
-            html += '<td class="creditTypeId underscore" data-credittypeid="' + credit.credit_type_id + '">' +
+            html += '<td>' +
             DataProvider.getCreditTypes()[credit.credit_type_id].title + '</td>';
             html += '<td>' + (credit.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
             html += '<td>' + credit.sum + ' BYR</td>';
@@ -574,7 +575,7 @@ class Viewer {
             html += '<td>' + moment(deposit.startDate).format('DD-MM-YYYY') + '</td>';
             html += '<td>' + moment(deposit.deleted_at).format('DD-MM-YYYY') + '</td>';
 
-            html += '<td class="depositTypeId underscore" data-deposittypeid="' + deposit.deposit_type_id + '">' +
+            html += '<td>' +
             DataProvider.getDepositTypes()[deposit.deposit_type_id].title + '</td>';
             html += '<td>' + deposit.sum + ' BYR</td>';
 
@@ -896,6 +897,376 @@ class Viewer {
 
         html += '</div>';
 
+        $('main').append(html);
+    }
+
+    static renderClientInfo(data) {
+        let html = '<div class="infoWrapper"><span class="title-create">' +
+            DataProvider.getClients()[data.clientId].lastName + ' ' +
+            DataProvider.getClients()[data.clientId].firstName + ' ' +
+            DataProvider.getClients()[data.clientId].patronymic + '</span>';
+
+        html += '<h2>На счету: ' + data.clientAccount.amount + ' BYR</h2>';
+
+        html += '<h2>Активные кредиты</h2>';
+        if (data.credits.length === 0) {
+            html += '<span>Ничего нет</span>';
+        } else {
+            html += '<span class="totalCount">Всего: ' + data.credits.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата окончания</th>' +
+            '       <th>Тип кредита</th>' +
+            '       <th>Тип выплаты</th>' +
+            '       <th>Сумма кредита</th>' +
+            '       <th>Остаток по кредиту</th>' +
+            '       <th>Кол-во платежей</th>' +
+            '       <th>Последняя дата оплаты</th>' +
+            '       <th>Задолженность по кредиту</th>';
+
+            html += '   </tr>' +
+            '</thead><tbody>';
+
+            data.credits.forEach((credit) => {
+                if ( credit.overdueSum > 0 ) {
+                    html += '<tr class="red">';
+                } else {
+                    html += '<tr>';
+                }
+
+                html += '<td>' + moment(credit.startDate).format('DD-MM-YYYY') + '</td>';
+                html += '<td>' + moment(credit.endDate).format('DD-MM-YYYY') + '</td>';
+
+                html += '<td>' +
+                DataProvider.getCreditTypes()[credit.credit_type_id].title + '</td>';
+                html += '<td>' + (credit.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
+                html += '<td>' + credit.sum + ' BYR</td>';
+                html += '<td>' + credit.outstandingLoan + ' BYR</td>';
+                html += '<td>' + credit.numberOfPayments + '</td>';
+                html += '<td>' + (credit.lastPaymentDate != null ? moment( credit.lastPaymentDate ).format('DD-MM-YYYY') : '')   + '</td>';
+                html += '<td>' + credit.overdueSum + ' BYR</td>';
+
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+        }
+
+        html += '<h2>Активные депозиты</h2>';
+        if (data.deposits.length === 0) {
+            html += '<span>Ничего нет</span>';
+        } else {
+            html += '<span class="totalCount">Всего: ' + data.deposits.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Тип вклада</th>' +
+            '       <th>Сумма вклада</th>' +
+            '       <th>Последняя дата начисления процентов</th>';
+
+            html += '   </tr>' +
+            '</thead><tbody>';
+
+            data.deposits.forEach((deposit) => {
+                html += '<tr>';
+
+                html += '<td>' + moment(deposit.startDate).format('DD-MM-YYYY') + '</td>';
+
+                html += '<td>' +
+                DataProvider.getDepositTypes()[deposit.deposit_type_id].title + '</td>';
+                html += '<td>' + deposit.sum + ' BYR</td>';
+                html += '<td>' + (deposit.lastInterestDate != null ? moment( deposit.lastInterestDate ).format('DD-MM-YYYY') : '')   + '</td>';
+
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+        }
+
+
+        html += '<h2>Активные заявки на кредиты</h2>';
+        if (data.creditApps.length === 0) {
+            html += '<span>Ничего нет</span>';
+        } else {
+            html += '<span class="totalCount">Всего: ' + data.creditApps.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr>' +
+            '       <th>Коэффициент кредитного риска</th>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Тип кредита</th>' +
+            '       <th>Планируемая сумма</th>' +
+            '       <th>Планируемый срок (в месяцах)</th>' +
+            '       <th>Тип выплаты</th>' +
+            '       <th></th>';
+
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<th>Оператор</th>';
+            }
+
+            html += '   </tr>' +
+            '</thead><tbody>';
+
+            data.creditApps.forEach((creditApp) => {
+                let creditHistoryCoefficient = DataProvider.getClients()[creditApp.client_id].creditHistoryCoefficient;
+                //good client
+                if ( creditHistoryCoefficient >= 10 ) {
+                    html += '<tr class="green">';
+                    //not sure
+                } else if ( 0 <= creditHistoryCoefficient && creditHistoryCoefficient < 10 ) {
+                    html += '<tr>';
+                    //bad client
+                } else {
+                    html += '<tr class="red">';
+                }
+
+                html += '<td>' + creditHistoryCoefficient + '</td>';
+                html += '<td>' + moment(creditApp.created_at).format('DD-MM-YYYY') + '</td>';
+                html += '<td>' +
+                DataProvider.getCreditTypes()[creditApp.credit_type_id].title + '</td>';
+                html += '<td>' + creditApp.plannedSum + ' BYR</td>';
+                html += '<td>' + creditApp.plannedTerm + '</td>';
+                html += '<td>' + (creditApp.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
+
+                html += '<td><a data-creditappid="' + creditApp.id + '" data-sum="' + creditApp.plannedSum +
+                '"  data-repaymenttype="' + creditApp.repaymentType + '" data-term="' +
+                creditApp.plannedTerm + '" data-credittypeid="' + creditApp.credit_type_id +
+                '" data-clientid="' + creditApp.client_id +
+                '" class="acceptcreditapp-button decision-button">Принять</a> / ' +
+                '<a data-creditappid="' + creditApp.id +
+                '" class="declinecreditapp-button decision-button">Отклонить</a></td>';
+
+                if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                    html += '<td>' +
+                    DataProvider.getOperators()[creditApp.bank_employee_id].username + '</td>';
+                }
+
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+        }
+
+
+        html += '<h2>Активные заявки на депозиты</h2>';
+        if (data.depositApps.length === 0) {
+            html += '<span>Ничего нет</span>';
+        } else {
+            html += '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + data.depositApps.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Тип вклада</th>' +
+            '       <th>Сумма вклада</th>' +
+            '       <th></th>';
+
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<th>Оператор</th>';
+            }
+
+            html += '   </tr>' +
+            '</thead><tbody>';
+
+            data.depositApps.forEach((depositApp) => {
+                html += '<tr>';
+
+                html += '<td>' + moment(depositApp.created_at).format('DD-MM-YYYY') + '</td>';
+                html += '<td>' +
+                DataProvider.getDepositTypes()[depositApp.deposit_type_id].title + '</td>';
+                html += '<td>' + depositApp.plannedSum + ' BYR</td>';
+
+                html += '<td><a data-depositappid="' + depositApp.id + '" data-sum="' + depositApp.plannedSum +
+                '" data-deposittypeid="' + depositApp.deposit_type_id +
+                '" data-clientid="' + depositApp.client_id +
+                '" class="acceptdepositapp-button decision-button">Принять</a> / ' +
+                '<a data-depositappid="' + depositApp.id +
+                '" class="declinedepositapp-button decision-button">Отклонить</a></td>';
+
+                if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                    html += '<td>' +
+                    DataProvider.getOperators()[depositApp.bank_employee_id].username + '</td>';
+                }
+
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+        }
+
+        html += '<span class="title-create">Архивы</span>';
+
+        html += '<h2>Кредиты</h2>';
+        if (data.creditsArchives.length === 0) {
+            html += '<span>Ничего нет</span>';
+        } else {
+            html += '<span class="totalCount">Всего: ' + data.creditsArchives.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата окончания</th>' +
+            '       <th>Тип кредита</th>' +
+            '       <th>Тип выплаты</th>' +
+            '       <th>Сумма кредита</th>' +
+            '       <th>Кол-во платежей</th>' +
+            '       <th>Последняя дата оплаты</th>';
+
+            html += '   </tr>' +
+            '</thead><tbody>';
+
+            data.creditsArchives.forEach((credit) => {
+                html += '<tr>';
+
+                html += '<td class="clientId underscore" data-clientid="' + credit.client_id + '">' +
+                DataProvider.getClients()[credit.client_id].lastName +
+                ' ' + DataProvider.getClients()[credit.client_id].firstName +
+                ' ' + DataProvider.getClients()[credit.client_id].patronymic  + '</td>';
+                html += '<td>' + moment(credit.startDate).format('DD-MM-YYYY') + '</td>';
+                html += '<td>' + moment(credit.endDate).format('DD-MM-YYYY') + '</td>';
+
+                html += '<td>' +
+                DataProvider.getCreditTypes()[credit.credit_type_id].title + '</td>';
+                html += '<td>' + (credit.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
+                html += '<td>' + credit.sum + ' BYR</td>';
+                html += '<td>' + credit.numberOfPayments + '</td>';
+                html += '<td>' + (credit.lastPaymentDate != null ? moment( credit.lastPaymentDate ).format('DD-MM-YYYY') : '')   + '</td>';
+
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+        }
+
+        html += '<h2>Депозиты</h2>';
+        if (data.depositsArchives.length === 0) {
+            html += '<span>Ничего нет</span>';
+        } else {
+            html += '<span class="totalCount">Всего: ' + data.depositsArchives.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата окончания</th>' +
+            '       <th>Тип вклада</th>' +
+            '       <th>Сумма вклада</th>';
+
+            html += '   </tr>' +
+            '</thead><tbody>';
+
+            data.depositsArchives.forEach((deposit) => {
+                html += '<tr>';
+
+                html += '<td>' + moment(deposit.startDate).format('DD-MM-YYYY') + '</td>';
+                html += '<td>' + moment(deposit.deleted_at).format('DD-MM-YYYY') + '</td>';
+
+                html += '<td>' +
+                DataProvider.getDepositTypes()[deposit.deposit_type_id].title + '</td>';
+                html += '<td>' + deposit.sum + ' BYR</td>';
+
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+        }
+
+
+        html += '<h2>Заявки на кредиты</h2>';
+        if (data.creditAppsArchives.length === 0) {
+            html += '<span>Ничего нет</span>';
+        } else {
+            html += '<span class="totalCount">Всего: ' + data.creditAppsArchives.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата рассмотрения</th>' +
+            '       <th>Тип кредита</th>' +
+            '       <th>Планируемая сумма</th>' +
+            '       <th>Планируемый срок (в месяцах)</th>' +
+            '       <th>Тип выплаты</th>' +
+            '       <th>Статус</th>';
+
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<th>Оператор</th>';
+            }
+
+            html += '   </tr>' +
+            '</thead><tbody>';
+
+            data.creditAppsArchives.forEach((creditApp) => {
+                html += '<tr>';
+
+                html += '<td>' + moment(creditApp.created_at).format('DD-MM-YYYY') + '</td>';
+                html += '<td>' + moment(creditApp.deleted_at).format('DD-MM-YYYY') + '</td>';
+
+                html += '<td>' +
+                DataProvider.getCreditTypes()[creditApp.credit_type_id].title + '</td>';
+                html += '<td>' + creditApp.plannedSum + ' BYR</td>';
+                html += '<td>' + creditApp.plannedTerm + '</td>';
+                html += '<td>' + (creditApp.repaymentType === 'EQUAL' ? 'Аннуитетный' : 'Дифференцированный') + '</td>';
+                html += '<td>' + (creditApp.isConfirmed ? 'Принята' : 'Отклонена') + '</td>';
+
+                if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                    html += '<td>' +
+                    DataProvider.getOperators()[creditApp.bank_employee_id].username + '</td>';
+                }
+
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+        }
+
+
+        html += '<h2>Заявки на депозиты</h2>';
+        if (data.depositAppsArchives.length === 0) {
+            html += '<span>Ничего нет</span>';
+        } else {
+            html += '<span class="totalCount">Всего: ' + data.depositAppsArchives.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr>' +
+            '       <th>Дата создания</th>' +
+            '       <th>Дата рассмотрения</th>' +
+            '       <th>Тип вклада</th>' +
+            '       <th>Сумма вклада</th>' +
+            '       <th>Статус</th>';
+
+            if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                html += '<th>Оператор</th>';
+            }
+
+            html += '   </tr>' +
+            '</thead><tbody>';
+
+            data.depositAppsArchives.forEach((depositApp) => {
+                html += '<tr>';
+
+                html += '<td>' + moment(depositApp.created_at).format('DD-MM-YYYY') + '</td>';
+                html += '<td>' + moment(depositApp.deleted_at).format('DD-MM-YYYY') + '</td>';
+                html += '<td>' +
+                DataProvider.getDepositTypes()[depositApp.deposit_type_id].title + '</td>';
+                html += '<td>' + depositApp.plannedSum + ' BYR</td>';
+                html += '<td>' + (depositApp.isConfirmed ? 'Принята' : 'Отклонена') + '</td>';
+
+                if (DataProvider.getBankEmployee().type === 'OVERSEER') {
+                    html += '<td>' +
+                    DataProvider.getOperators()[depositApp.bank_employee_id].username + '</td>';
+                }
+
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+        }
+
+
+        html += '</div>';
         $('main').append(html);
     }
 }

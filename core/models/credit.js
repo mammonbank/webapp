@@ -30,7 +30,7 @@ Decimal.config({
 module.exports = function(sequelize, DataTypes) {
     var Credit = sequelize.define('Credit', {
         sum: {
-            type: DataTypes.DECIMAL(12, 2),
+            type: DataTypes.DECIMAL(16, 2),
             allowNull: false,
             field: 'sum',
             validate: {
@@ -38,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
             }
         },
         outstandingLoan: {
-            type: DataTypes.DECIMAL(12, 2),
+            type: DataTypes.DECIMAL(16, 2),
             allowNull: false,
             field: 'outstanding_loan',
             //rounding issues
@@ -84,7 +84,7 @@ module.exports = function(sequelize, DataTypes) {
             }
         },
         overdueSum: {
-            type: DataTypes.DECIMAL(12, 2),
+            type: DataTypes.DECIMAL(16, 2),
             allowNull: false,
             field: 'overdue_sum',
             validate: {
