@@ -1,4 +1,4 @@
-modules.define('calculator', ['i-bem__dom', 'jquery', 'BEMHTML', 'alertifyjs', 'validator'], function(provide, BEMDOM, $, BEMHTML) {
+modules.define('calculator', ['i-bem__dom', 'jquery', 'BEMHTML', 'alertifyjs', 'validator', 'moment'], function(provide, BEMDOM, $, BEMHTML) {
 
 provide(BEMDOM.decl('calculator', {
     onSetMod: {
@@ -86,7 +86,11 @@ provide(BEMDOM.decl('calculator', {
 
     onDone: function(data) {
         this.elem('result').html('');
+        this.table = [];
         alertify.success('Расчет завершен');
+
+        $.each(data.payments, this.addResult.bind(this));
+
         BEMDOM.append(this.elem('result'), BEMHTML.apply({
             block: 'calculator',
             elem: 'table',
@@ -110,28 +114,28 @@ provide(BEMDOM.decl('calculator', {
                         {
                             elem: 'line-static-fee',
                             tag: 'th',
-                            content: 'staticFee'
+                            content: 'Основной долг'
                         },
                         {
                             elem: 'line-percent-fee',
                             tag: 'th',
-                            content: 'percentFee'
+                            content: 'Начисленные проценты'
                         },
                         {
                             elem: 'line-total-fee',
                             tag: 'th',
-                            content: 'totalFee'
+                            content: 'Сумма платежа'
                         },
                         {
                             elem: 'line-loan',
                             tag: 'th',
-                            content: 'outstandingLoan'
+                            content: 'Остаток задолженности'
                         }
                     ]
-                }
+                },
+                this.table
             ]
         }));
-        $.each(data.payments, this.addResult.bind(this));
 
         BEMDOM.append(this.elem('result'), BEMHTML.apply({
             block: 'calculator',
@@ -139,22 +143,22 @@ provide(BEMDOM.decl('calculator', {
             content: [
                 {
                     elem: 'text',
-                    content: data.totalFee
+                    content: 'общая сумма платежа: ' + data.totalFee + ' BYR'
                 },
                 {
                     elem: 'text',
-                    content: data.totalPercentFee
+                    content: 'общая сумма начисленных процентов: ' + data.totalPercentFee + ' BYR'
                 },
                 {
                     elem: 'text',
-                    content: data.preferredIncome
+                    content: 'предпочтительный доход: ' + data.preferredIncome + ' BYR'
                 }
             ]
         }));
     },
 
     addResult: function(i, data) {
-        BEMDOM.append(this.elem('table'), BEMHTML.apply({
+        this.table.push(BEMHTML.apply({
             block: 'calculator',
             elem: 'line',
             tag: 'tr',
@@ -167,7 +171,7 @@ provide(BEMDOM.decl('calculator', {
                 {
                     elem: 'line-date',
                     tag: 'td',
-                    content: data.paymentDate
+                    content: moment(data.paymentDate).format('DD-MM-YYYY')
                 },
                 {
                     elem: 'line-static-fee',

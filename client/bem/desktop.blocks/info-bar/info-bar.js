@@ -72,6 +72,10 @@ provide(BEMDOM.decl('info-bar', {
             this.findBlockOutside('page')
                 .findBlockInside('main-left')
                 .setMod('user', 'inactive');
+        } else {
+            this.findBlockOutside('page')
+                .findBlockInside('main-left')
+                .setMod('user', 'active');
         }
     },
 
