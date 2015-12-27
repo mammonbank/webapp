@@ -38,5 +38,7 @@ var URLS = {
     GET_CLIENT_CREDITS: CONFIG.BASE_API_URL + '/api/client/${clientId}/credits/?offset=${offset}&limit=${limit}',
     GET_CLIENT_CREDIT_ARCHIVES: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/credits?offset=${offset}&limit=${limit}',
     GET_CLIENT_DEPOSITS: CONFIG.BASE_API_URL + '/api/client/${clientId}/deposits/?offset=${offset}&limit=${limit}',
-    GET_CLIENT_DEPOSITS_ARCHIVES: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/deposits/?offset=${offset}&limit=${limit}'
+    GET_CLIENT_DEPOSITS_ARCHIVES: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/deposits/?offset=${offset}&limit=${limit}',
+
+    SEARCH_CLIENTS: CONFIG.BASE_API_URL + '/api/search/clients?q=${searchQuery}'
 };

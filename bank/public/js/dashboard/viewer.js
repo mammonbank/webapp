@@ -12,7 +12,7 @@ class Viewer {
     }
 
     static renderInitialForOperator() {
-        $('main').html('Йоу');
+        $('main').html('');
     }
 
     static renderWelcomeMsg(bankEmployee) {
@@ -1122,10 +1122,6 @@ class Viewer {
             data.creditsArchives.forEach((credit) => {
                 html += '<tr>';
 
-                html += '<td class="clientId underscore" data-clientid="' + credit.client_id + '">' +
-                DataProvider.getClients()[credit.client_id].lastName +
-                ' ' + DataProvider.getClients()[credit.client_id].firstName +
-                ' ' + DataProvider.getClients()[credit.client_id].patronymic  + '</td>';
                 html += '<td>' + moment(credit.startDate).format('DD-MM-YYYY') + '</td>';
                 html += '<td>' + moment(credit.endDate).format('DD-MM-YYYY') + '</td>';
 

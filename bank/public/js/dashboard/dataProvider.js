@@ -319,4 +319,12 @@ class DataProvider {
         );
     }
 
+    static searchClients(searchQuery) {
+        return $.ajax({
+            url: URLS.SEARCH_CLIENTS.replace('${searchQuery}', searchQuery),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        })
+    }
+
 }
