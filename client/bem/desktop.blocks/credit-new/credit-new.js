@@ -85,7 +85,8 @@ provide(BEMDOM.decl('credit-new', {
                     maxSum: e.maxSum,
                     minSum: e.minSum,
                     interest: e.interest,
-                    term: e.term
+                    minTerm: e.minTerm,
+                    maxTerm: e.maxTerm
                 },
                 content: [
                     { elem: 'title', content: e.title },

@@ -44,12 +44,12 @@ provide(BEMDOM.decl('calculator', {
             return;
         }
 
-        if ((Date.parse(endDate) - Date.parse(startDate)) < (this.params.data.term[0] * 30 * 24 * 60 * 60 * 1000)) {
+        if ((Date.parse(endDate) - Date.parse(startDate)) < (this.params.data.minTerm * 30 * 24 * 60 * 60 * 1000)) {
             alertify.error('Срок кредита слишком мал для выбранного типа');
             return;
         }
 
-        if ((Date.parse(endDate) - Date.parse(startDate)) > (this.params.data.term[1] * 30 * 24 * 60 * 60 * 1000)) {
+        if ((Date.parse(endDate) - Date.parse(startDate)) > (this.params.data.maxTerm * 30 * 24 * 60 * 60 * 1000)) {
             alertify.error('Срок кредита слишком большой для выбранного типа');
             return;
         }

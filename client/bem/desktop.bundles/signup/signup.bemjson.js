@@ -215,7 +215,7 @@ module.exports = {
                                 {
                                     block: 'label',
                                     for: 'passportNumber',
-                                    content: 'Номер пасспорта:'
+                                    content: 'Номер паспорта:'
                                 },
                                 {
                                     block: 'input',

@@ -1,4 +1,4 @@
-modules.define('auth-form', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) {
+modules.define('auth-form', ['i-bem__dom', 'jquery', 'keyboard__codes'], function(provide, BEMDOM, $, keyCodes) {
 
 provide(BEMDOM.decl('auth-form', {
 
@@ -13,11 +13,18 @@ provide(BEMDOM.decl('auth-form', {
             this.clientId = localStorage.getItem('clientId');
 
             this.button.on('click', this.onSubmit.bind(this));
+            this.bindTo('keydown', this._onKeyDown);
 
             if (!this.clientId || !this.token) {
                 this.delMod('hide');
                 this.findBlockOutside('page').findBlockInside('spin').delMod('visible');
             }
+        }
+    },
+
+    _onKeyDown: function(e) {
+        if((e.keyCode === keyCodes.ENTER) && !e.shiftKey) {
+            this.onSubmit();
         }
     },
 

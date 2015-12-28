@@ -93,11 +93,11 @@ provide(BEMDOM.decl('line', {
                     },
                     {
                         elem: 'sum',
-                        content: 'Сумма кредита: ' + e.minSum + ' - ' + e.maxSum + ' бел. руб.'
+                        content: 'Сумма кредита: ' + e.minSum + ' - ' + e.maxSum + ' BYR'
                     },
                     {
                         elem: 'sum',
-                        content: 'Срок кредита: ' + e.term[0] + ' - ' + e.term[1] + ' месяца(ев).'
+                        content: 'Срок кредита: ' + e.minTerm + ' - ' + e.maxTerm + ' месяца(ев).'
                     },
                     {
                         block: 'button',
@@ -177,7 +177,7 @@ provide(BEMDOM.decl('line', {
                 },
                 {
                     elem: 'sum',
-                    content: 'Начальная сумма: ' + e.minSum + ' бел. руб.'
+                    content: 'Начальная сумма: ' + e.minSum + ' BYR'
                 }
             ]
         }));
@@ -219,9 +219,9 @@ provide(BEMDOM.decl('line', {
                     block: 'group',
                     mix: { block: 'calculator', elem: 'text' },
                     content: 'Согласно выбранному типу: ' + data.title + '<br>'+
-                    'Минимальная сумма: ' + data.minSum + ' бел. руб.<br>'+
-                    'Максимальная сумма: ' + data.maxSum + ' бел. руб.<br>'+
-                    'Срок на кредит: от ' + data.term[0] + ' до ' + data.term[1] + ' месяца(ев).'
+                    'Минимальная сумма: ' + data.minSum + ' BYR<br>'+
+                    'Максимальная сумма: ' + data.maxSum + ' BYR<br>'+
+                    'Срок на кредит: от ' + data.minTerm + ' до ' + data.maxTerm + ' месяца(ев).'
                 },
                 {
                     block: 'group',
