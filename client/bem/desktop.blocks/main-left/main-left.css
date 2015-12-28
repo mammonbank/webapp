@@ -16,3 +16,8 @@
 {
     background-color: #ffdb4d;
 }
+
+.main-left__reset
+{
+    display: none;
+}

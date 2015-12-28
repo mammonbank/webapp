@@ -46,6 +46,8 @@ provide(BEMDOM.decl('one-time-password', {
             page.findBlockInside('info-bar').setMod('reload');
             page.findBlockInside('content').setMod('page', 'main');
         }
+
+        this.unbindFrom('keydown', this._onKeyDown);
     },
 
     onFail: function(data) {

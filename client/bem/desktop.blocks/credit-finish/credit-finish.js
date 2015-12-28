@@ -8,6 +8,7 @@ provide(BEMDOM.decl('credit-finish', {
             this.button = this.findBlockInside('button');
             this.plannedSum = this.findBlockInside({ block: 'input', modName: 'id', modVal: 'plannedSum' });
             this.plannedTerm = this.findBlockInside({ block: 'input', modName: 'id', modVal: 'plannedTerm' });
+            this.cType = this.findBlockInside('select');
             alertify.logPosition("bottom right");
 
             this.button.on('click', this.onClick.bind(this));
@@ -20,6 +21,11 @@ provide(BEMDOM.decl('credit-finish', {
     },
 
     submit: function() {
+        var cType = 'DIFF';
+        if (this.cType === 2) {
+            cType = 'EQUAL';
+        }
+
         $.ajax({
             url: BEMDOM.url + 'api/credit/applications',
             method: 'POST',
@@ -27,7 +33,8 @@ provide(BEMDOM.decl('credit-finish', {
                 plannedSum: this.plannedSum.getVal(),
                 plannedTerm: this.plannedTerm.getVal(),
                 creditTypeId: this.params.typeId,
-                clientId: localStorage.getItem('clientId')
+                clientId: localStorage.getItem('clientId'),
+                repaymentType: cType
             },
             headers: { 'Authorization': localStorage.getItem('token') }
         })
@@ -47,6 +54,9 @@ provide(BEMDOM.decl('credit-finish', {
 
     onFail: function(data) {
         alertify.error('Ошибка отправки заявки');
+        if (data.responseJSON) {
+            alertify.error(data.responseJSON.message);
+        }
     }
 
 }));

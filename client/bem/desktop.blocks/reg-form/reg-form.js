@@ -1,6 +1,6 @@
 modules.define(
     'reg-form',
-    ['BEMHTML', 'i-bem__dom', 'jquery', 'keyboard__codes', 'moment', 'validator'],
+    ['BEMHTML', 'i-bem__dom', 'jquery', 'keyboard__codes', 'moment', 'validator', 'alertifyjs'],
     function(provide, BEMHTML, BEMDOM, $, keyCodes) {
 
 provide(BEMDOM.decl('reg-form', {
@@ -15,6 +15,8 @@ provide(BEMDOM.decl('reg-form', {
 
                 this.button.on('click', this.onSubmit.bind(this));
                 this.bindTo('keydown', this._onKeyDown);
+
+                alertify.logPosition("bottom right");
             }
         }
     },
@@ -41,7 +43,7 @@ provide(BEMDOM.decl('reg-form', {
 
         var constraints = {
             lastName: {
-                presence: { message: '^Обязательное поле' },
+                presence: { message: '^Поле Фамилия обязательное' },
                 format: {
                     pattern: "^[а-яА-ЯёЁa-z,.'-]+$",
                     flags: "i",
@@ -49,7 +51,7 @@ provide(BEMDOM.decl('reg-form', {
                 }
             },
             firstName: {
-                presence: { message: '^Обязательное поле' },
+                presence: { message: '^Поле Имя обязательное' },
                 format: {
                     pattern: "^[а-яА-ЯёЁa-z,.'-]+$",
                     flags: "i",
@@ -57,7 +59,7 @@ provide(BEMDOM.decl('reg-form', {
                 }
             },
             patronymic: {
-                presence: { message: '^Обязательное поле' },
+                presence: { message: '^Поле Отчества обязательное' },
                 format: {
                     pattern: "^[а-яА-ЯёЁa-z,.'-]+$",
                     flags: "i",
@@ -65,7 +67,7 @@ provide(BEMDOM.decl('reg-form', {
                 }
             },
             dateOfBirth: {
-                presence: { message: '^Обязательное поле' },
+                presence: { message: '^Заполните дату рождения' },
                 datetime: {
                     dateOnly: true,
                     earliest: '1900-01-01',
@@ -74,14 +76,14 @@ provide(BEMDOM.decl('reg-form', {
                 }
             },
             phoneNumber: {
-                presence: { message: '^Обязательное поле' }
+                presence: { message: '^Введите телефон' }
             },
             email: {
-                presence: { message: '^Обязательное поле' },
+                presence: { message: '^Введите почту' },
                 email: { mesage: "^Введите существующий email" }
             },
             password: {
-                presence: { message: '^Обязательное поле' },
+                presence: { message: '^Поле Пароль обязательное' },
                 format: {
                     pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[а-яА-ЯёЁa-zA-Z\d]{8,}$/,
                     message: "^Пароль должен содержать хотя бы одну цифру и заглавную букву"
@@ -92,21 +94,21 @@ provide(BEMDOM.decl('reg-form', {
                 }
             },
             passportNumber: {
-                presence: { message: '^Обязательное поле' },
+                presence: { message: '^Введите номер паспорта' },
                 format: {
                     pattern: /[a-zA-z]{2}[0-9]{7}$/,
                     message: '^Введите 2 латинские буквы и 7 цифр.'
                 }
             },
             passportIdNumber: {
-                presence: { message: '^Обязательное поле' },
+                presence: { message: '^Введите личный (идентификационный) номер' },
                 format: {
                     pattern: /[a-zA-Z0-9]{14}$/,
                     message: '^Может содержать только 14 символов.'
                 }
             },
             mothersMaidenName: {
-                presence: { message: '^Обязательное поле' },
+                presence: { message: '^Секретная фраза обязательна' },
                 format: {
                     pattern: "^[а-яА-ЯёЁa-z,.'-]+$",
                     flags: "i",
@@ -134,17 +136,19 @@ provide(BEMDOM.decl('reg-form', {
 
         var that = this;
         $.each(isValid, function(key, val) {
-            var input = that.step1.findBlockInside({ block: 'input', modName: 'id', modVal: key }),
-                popup = input.params.popup;
+            // var input = that.step1.findBlockInside({ block: 'input', modName: 'id', modVal: key }),
+            //     popup = input.params.popup;
 
-            if (!popup) {
-                popup = input.findBlockOutside('line2').findBlockInside('popup');
-                input.params.popup = popup;
-            }
+            // if (!popup) {
+            //     popup = input.findBlockOutside('line2').findBlockInside('popup');
+            //     input.params.popup = popup;
+            // }
 
-            popup.setContent(isValid[key][0]);
-            popup.setAnchor(input);
-            popup.setMod('visible', true);
+            // popup.setContent(isValid[key][0]);
+            // popup.setAnchor(input);
+            // popup.setMod('visible', true);
+
+            alertify.error(isValid[key][0]);
         });
 
         return false;
@@ -174,14 +178,19 @@ provide(BEMDOM.decl('reg-form', {
     },
 
     onSuccess: function(data) {
+        this.unbindFrom('keydown', this._onKeyDown);
+
         this.step1.setMod('hide', 'yes');
         this.img = this.qr.findBlockInside('image');
         this.img.domElem.attr('src', data.key.google_auth_qr);
         this.qr.params.clientId = data.clientId;
         this.qr.delMod('hide');
+        this.qr.setMod('show', 'yes');
     },
 
     onFail: function(data) {
+        console.log(data);
+        alertify.error(data.responseJSON.message);
         // modal + data.message
     }
 }));
