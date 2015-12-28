@@ -45,15 +45,17 @@ module.exports = {
     cron: {
         isEnabled: true,
         times: {
-            creditor: '*/10 * * * * *',
-            debtor: '*/10 * * * * *'
+            creditor: '00 00 00 1 * *',
+            debtor: '00 00 00 15 * *'
         }
     },
     testcron: {
         times: {
-            //creditor: '0,10,20,30,40,50 * * * * *',
-            creditor: '0,10,20,30,40,50 * * * * *',
-            debtor: '5,15,25,35,45,55 * * * * *'
+            creditor: '0,30 * * * * *',
+            debtor: '15,45 * * * * *'
         }
+    },
+    external: {
+        clientScoringServiceLink: 'http://mammonwebapi.azurewebsites.net/?clientLink='
     }
 };

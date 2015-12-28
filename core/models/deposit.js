@@ -24,8 +24,10 @@ module.exports = function (sequelize, DataTypes) {
         sum: {
             type: DataTypes.DECIMAL(16, 2),
             allowNull: false,
-            min: 0,
-            field: 'sum'
+            field: 'sum',
+            validate: {
+                min: 0
+            }
         },
         startDate: {
             type: DataTypes.DATE,
