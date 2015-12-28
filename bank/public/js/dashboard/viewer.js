@@ -274,7 +274,8 @@ class Viewer {
             '       <th>Номер паспорта</th>' +
             '       <th>Личный (идентификационный) номер</th>' +
             '       <th>Девичья фамилия матери</th>' +
-            '       <th>Коэффициент кредитной истории</th>';
+            '       <th>Коэффициент кредитной истории</th>' +
+            '       <th>Скоринговая система</th>';
 
         html += '   </tr>' +
         '</thead><tbody>';
@@ -301,6 +302,9 @@ class Viewer {
                 html += '<td><a data-clientid="' + client.id + '" class="acceptclient-button decision-button">Подтвердить</a> / ' +
                 '<a data-clientid="' + client.id + '" class="declineclient-button decision-button">Отклонить</a></td>';
             }
+
+            html += '<td><a target="_blank" href="' + URLS.GET_CLIENT_SCORING_SERVICE_RESULT.replace('${clientId}', client.id) +
+            '">Ссылка</a></td>';
 
             html += '</tr>';
         });
@@ -907,6 +911,7 @@ class Viewer {
             DataProvider.getClients()[data.clientId].patronymic + '</span>';
 
         html += '<h2>На счету: ' + data.clientAccount.amount + ' BYR</h2>';
+        html += '<p><a target="_blank" class="scoring_link" href="' + URLS.GET_CLIENT_SCORING_SERVICE_RESULT.replace('${clientId}', data.clientId) + '">Результат скоринга</a></p>';
 
         html += '<h2>Активные кредиты</h2>';
         if (data.credits.length === 0) {

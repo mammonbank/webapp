@@ -85,8 +85,7 @@ banklogic.getCreditDifferentiatedRepaymentInfo = function(info) {
         outstandingLoan = Math.round(new Decimal(info.sum).minus(staticFee).toNumber()),
         paymentDate = helper.addMonthsToDate(info.startDate, 1),
         percentFee = Math.round(this.getPercentFee(info.sum, info.interest, paymentDate)),
-        totalFee = new Decimal(0),
-        totalPercentFee = new Decimal(0);
+        totalFee = new Decimal(0);
 
     creditRepaymentInfo.sum = info.sum;
     creditRepaymentInfo.startDate = info.startDate;
@@ -121,11 +120,10 @@ banklogic.getCreditDifferentiatedRepaymentInfo = function(info) {
         totalFee = Math.round(
             new Decimal(totalFee).plus(creditRepaymentInfo.payments[i].totalFee).toNumber()
         );
-        totalPercentFee = Math.round(new Decimal(totalPercentFee).plus(percentFee).toNumber());
     }
     
     creditRepaymentInfo.totalFee = totalFee;
-    creditRepaymentInfo.totalPercentFee = totalPercentFee;
+    creditRepaymentInfo.totalPercentFee = new Decimal(totalFee).minus(info.sum);
     creditRepaymentInfo.preferredIncome = Math.round(new Decimal(creditRepaymentInfo.payments[0].totalFee)
         .times(1.3)
         .toNumber());

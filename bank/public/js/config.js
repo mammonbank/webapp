@@ -3,7 +3,7 @@ var CONFIG = {
         window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://api-mammonbank.com',
     BASE_BANK_URL :
         window.location.hostname === 'localhost' ? 'http://localhost:3002' : 'https://178.62.142.246'
-}
+};
 
 var URLS = {
     BANK_LOGIN: CONFIG.BASE_API_URL + '/auth/bank',
@@ -40,5 +40,8 @@ var URLS = {
     GET_CLIENT_DEPOSITS: CONFIG.BASE_API_URL + '/api/client/${clientId}/deposits/?offset=${offset}&limit=${limit}',
     GET_CLIENT_DEPOSITS_ARCHIVES: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/deposits/?offset=${offset}&limit=${limit}',
 
-    SEARCH_CLIENTS: CONFIG.BASE_API_URL + '/api/search/clients?q=${searchQuery}'
+    SEARCH_CLIENTS: CONFIG.BASE_API_URL + '/api/search/clients?q=${searchQuery}',
+
+    GET_CLIENT_SCORING_SERVICE_RESULT: 'http://mammonwebapi.azurewebsites.net/scoringsystem/getscores?clientId=${clientId}',
+    GET_CLIENT_SCORING_SERVICE_ANSWERS: 'http://mammonwebapi.azurewebsites.net/scoringsystem/getanswers?clientId=${clientId}'
 };
