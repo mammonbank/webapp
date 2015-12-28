@@ -78,11 +78,11 @@ provide(BEMDOM.decl('credit-active', {
                 },
                 {
                     elem: 'sum',
-                    content: 'Сумма кредита: ' + e.sum + ' бел. руб.'
+                    content: 'Сумма кредита: ' + e.sum + ' BYR'
                 },
                 {
                     elem: 'out',
-                    content: 'Осталось погасить: ' + e.outstandingLoan + ' бел. руб.'
+                    content: 'Осталось погасить: ' + e.outstandingLoan + ' BYR'
                 }
             ]
         }));
@@ -105,7 +105,7 @@ provide(BEMDOM.decl('credit-active', {
                   var valid = validate({sum: val}, { sum: {numericality:{onlyInteger: true}}});
 
                     if (!valid) {
-                        alertify.success('Отправлен запрос на снятие: ' + val + ' бел. руб.');
+                        alertify.success('Отправлен запрос на снятие: ' + val + ' BYR');
                         $.ajax({
                             url: BEMDOM.url + 'api/credits/'+localStorage.getItem('clientId')+'/deposit',
                             method: 'POST',

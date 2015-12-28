@@ -1,7 +1,8 @@
-modules.define('one-time-password', ['i-bem__dom', 'jquery'], function(provide, BEMDOM, $) {
+modules.define('one-time-password',
+    ['i-bem__dom', 'jquery', 'keyboard__codes'],
+    function(provide, BEMDOM, $, keyCodes) {
 
 provide(BEMDOM.decl('one-time-password', {
-
     onSetMod: {
         'js': function() {
             this.pwd = this.findBlockInside('input');
@@ -12,6 +13,13 @@ provide(BEMDOM.decl('one-time-password', {
             this.clientId = localStorage.getItem('clientId');
 
             this.button.on('click', this.onSubmit.bind(this));
+            this.bindTo('keydown', this._onKeyDown);
+        }
+    },
+
+    _onKeyDown: function(e) {
+        if((e.keyCode === keyCodes.ENTER) && !e.shiftKey) {
+            this.onSubmit();
         }
     },
 

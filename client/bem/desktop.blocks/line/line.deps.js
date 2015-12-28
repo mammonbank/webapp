@@ -25,6 +25,7 @@
         },
         'calculator',
         'validator',
-        'group'
+        'group',
+        'moment'
     ]
 })

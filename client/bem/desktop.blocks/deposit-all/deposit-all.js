@@ -52,7 +52,7 @@ provide(BEMDOM.decl('deposit-all', {
                 },
                 {
                     elem: 'sum',
-                    content: 'Первоначальная сумма: ' + e.plannedSum + ' бел. руб.'
+                    content: 'Первоначальная сумма: ' + e.plannedSum + ' BYR'
                 },
                 {
                     elem: 'term',

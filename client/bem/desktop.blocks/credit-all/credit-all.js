@@ -41,7 +41,7 @@ provide(BEMDOM.decl('credit-all', {
                 },
                 {
                     elem: 'sum',
-                    content: 'Запрошенная сумма: ' + e.plannedSum + ' бел. руб.'
+                    content: 'Запрошенная сумма: ' + e.plannedSum + ' BYR'
                 },
                 {
                     elem: 'term',

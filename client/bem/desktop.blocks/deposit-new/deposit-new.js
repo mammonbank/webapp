@@ -40,7 +40,7 @@ provide(BEMDOM.decl('deposit-new', {
             content: [
                 { elem: 'title', content: data.title },
                 { elem: 'description', content: data.description },
-                { elem: 'minSum', content: data.minSum + ' бел. руб.' },
+                { elem: 'minSum', content: data.minSum + ' BYR' },
                 {
                     block: 'button',
                     mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action' },

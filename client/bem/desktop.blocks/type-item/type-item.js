@@ -21,7 +21,8 @@ provide(BEMDOM.decl('type-item', {
                 maxSum: this.params.maxSum,
                 minSum: this.params.minSum,
                 interest: this.params.interest,
-                term: this.params.term
+                minTerm: this.params.minTerm,
+                maxTerm: this.params.maxTerm
             },
             content: [
                 {
@@ -52,7 +53,7 @@ provide(BEMDOM.decl('type-item', {
                         {
                             elem: 'text',
                             content: 'Срок на погашение кредита может быть в диапазоне:<br>' +
-                                this.params.term[0] + ' - ' + this.params.term[1] + ' месяца(ев)'
+                                this.params.minTerm + ' - ' + this.params.maxTerm + ' месяца(ев)'
                         },
                         {
                             block: 'label',

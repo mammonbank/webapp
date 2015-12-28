@@ -1,7 +1,7 @@
 modules.define(
     'reg-form',
-    ['BEMHTML', 'i-bem__dom', 'jquery', 'moment', 'validator'],
-    function(provide, BEMHTML, BEMDOM, $) {
+    ['BEMHTML', 'i-bem__dom', 'jquery', 'keyboard__codes', 'moment', 'validator'],
+    function(provide, BEMHTML, BEMDOM, $, keyCodes) {
 
 provide(BEMDOM.decl('reg-form', {
 
@@ -14,7 +14,14 @@ provide(BEMDOM.decl('reg-form', {
                 this.qr = this.findBlockInside('qr');
 
                 this.button.on('click', this.onSubmit.bind(this));
+                this.bindTo('keydown', this._onKeyDown);
             }
+        }
+    },
+
+    _onKeyDown: function(e) {
+        if((e.keyCode === keyCodes.ENTER) && !e.shiftKey) {
+            this.onSubmit();
         }
     },
 
@@ -87,14 +94,14 @@ provide(BEMDOM.decl('reg-form', {
             passportNumber: {
                 presence: { message: '^Обязательное поле' },
                 format: {
-                    pattern: /[\p{L}]{2}[0-9]{7}/,
+                    pattern: /[a-zA-z]{2}[0-9]{7}$/,
                     message: '^Введите 2 латинские буквы и 7 цифр.'
                 }
             },
             passportIdNumber: {
                 presence: { message: '^Обязательное поле' },
                 format: {
-                    pattern: /[a-zA-Z0-9]{14}/,
+                    pattern: /[a-zA-Z0-9]{14}$/,
                     message: '^Может содержать только 14 символов.'
                 }
             },

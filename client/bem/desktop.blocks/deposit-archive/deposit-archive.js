@@ -68,7 +68,7 @@ provide(BEMDOM.decl('deposit-archive', {
                 },
                 {
                     elem: 'sum',
-                    content: 'На счету депозита: ' + e.sum + ' бел. руб.'
+                    content: 'На счету депозита: ' + e.sum + ' BYR'
                 }
             ]
         }));

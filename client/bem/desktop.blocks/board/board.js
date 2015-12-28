@@ -29,7 +29,7 @@ provide(BEMDOM.decl('board', {
     },
 
     onDone: function(data) {
-        this.elem('account').html('У вас на счету: ' + data.clientAccount.amount + ' бел. руб.');
+        this.elem('account').html('У вас на счету: ' + data.clientAccount.amount + ' BYR');
     },
 
     onWithdraw: function() {
@@ -44,7 +44,7 @@ provide(BEMDOM.decl('board', {
                   var valid = validate({sum: val}, { sum: {numericality:{onlyInteger: true}}});
 
                     if (!valid) {
-                        alertify.success('Отправлен запрос на снятие: ' + val + ' бел. руб.');
+                        alertify.log('Отправлен запрос на снятие: ' + val + ' BYR');
                         $.ajax({
                             url: BEMDOM.url + 'api/client/accounts/'+localStorage.getItem('clientId')+'/withdraw',
                             method: 'POST',
@@ -82,7 +82,7 @@ provide(BEMDOM.decl('board', {
                   var valid = validate({sum: val}, { sum: {numericality:{onlyInteger: true}}});
 
                     if (!valid) {
-                        alertify.success('Отправлен запрос на снятие: ' + val + ' бел. руб.');
+                        alertify.log('Отправлен запрос на снятие: ' + val + ' BYR');
                         $.ajax({
                             url: BEMDOM.url + 'api/client/accounts/'+localStorage.getItem('clientId')+'/deposit',
                             method: 'POST',

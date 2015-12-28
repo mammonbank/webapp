@@ -78,7 +78,7 @@ provide(BEMDOM.decl('deposit-active', {
                 },
                 {
                     elem: 'sum',
-                    content: 'На счету депозита: ' + e.sum + ' бел. руб.'
+                    content: 'На счету депозита: ' + e.sum + ' BYR'
                 },
                 {
                     elem: 'operations',
@@ -119,7 +119,7 @@ provide(BEMDOM.decl('deposit-active', {
                   var valid = validate({sum: val}, { sum: {numericality:{onlyInteger: true}}});
 
                     if (!valid) {
-                        alertify.success('Отправлен запрос на снятие: ' + val + ' бел. руб.');
+                        alertify.success('Отправлен запрос на снятие: ' + val + ' BYR');
                         $.ajax({
                             url: BEMDOM.url + 'api/deposits/'+localStorage.getItem('clientId')+'/withdraw/'+id,
                             method: 'POST',
@@ -157,7 +157,7 @@ provide(BEMDOM.decl('deposit-active', {
                   var valid = validate({sum: val}, { sum: {numericality:{onlyInteger: true}}});
 
                     if (!valid) {
-                        alertify.success('Отправлен запрос на снятие: ' + val + ' бел. руб.');
+                        alertify.success('Отправлен запрос на снятие: ' + val + ' BYR');
                         $.ajax({
                             url: BEMDOM.url + 'api/deposits/'+localStorage.getItem('clientId')+'/deposit/'+id,
                             method: 'POST',
