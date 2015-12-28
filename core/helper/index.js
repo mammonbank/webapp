@@ -25,7 +25,7 @@ helper.getDaysInMonth = function(month, year) {
     return new Date(year, month, 0).getDate();  
 };
 
-helper.getRandomString = function(length){
+helper.getRandomString = function(length) {
     var result = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 

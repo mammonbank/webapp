@@ -202,10 +202,10 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: 0,
             field: 'credit_history_coefficient'
         },
-		  scoringFormId: {
-		  type: DataTypes.STRING,
-        allowNull: false,
-        field: 'scoring_form_id'
+        scoringFormId: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            field: 'scoring_form_id'
         }
     }, {
         tableName: 'clients',
