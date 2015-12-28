@@ -1,17 +1,18 @@
 'use strict';
 
 var express = require('express'),
-    router  = express.Router(),
+    router = express.Router(),
     authenticateOperatorToken = require('../middlewares/authenticateOperatorToken'),
     authenticateClientToken = require('../middlewares/authenticateClientToken'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getClientId = require('../middlewares/getClientId'),
-    Client  = require('models').Client,
+    Client = require('models').Client,
     ClientAccount = require('models').ClientAccount,
     Sequelize = require('models').Sequelize,
     sequelize = require('models').sequelize,
     HttpApiError = require('error').HttpApiError,
-    speakeasy = require('speakeasy');
+    speakeasy = require('speakeasy'),
+    helper = require('helper');
 
 router.get('/', authenticateOperatorToken, function(req, res, next) {
     var offset = +req.query.offset || 0,
@@ -94,7 +95,8 @@ router.post('/', function(req, res, next) {
             password: req.body.password,
             passportNumber: req.body.passportNumber,
             passportIdNumber: req.body.passportIdNumber,
-            mothersMaidenName: req.body.mothersMaidenName
+            mothersMaidenName: req.body.mothersMaidenName,
+            scoringFormId: helper.getRandomString(20)
         }, { transaction: t })
         //second - generate secret key (used in 2fa)
         .then(function(client) {

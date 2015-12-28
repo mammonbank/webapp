@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 var moment = require('moment'),
     helper = {};
@@ -23,6 +23,17 @@ helper.isLeapYear = function(year) {
 //Month is 1 based
 helper.getDaysInMonth = function(month, year) {
     return new Date(year, month, 0).getDate();  
+};
+
+helper.getRandomString = function(length){
+    var result = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for(var i = 0; i < length; i++ ){
+        result += possible.charAt(Math.floor(Math.random() * possible.length));
+	 }
+	 
+    return result;
 };
 
 helper.syncLoop = function(iterations, process, exit) {
