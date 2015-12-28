@@ -52,6 +52,29 @@ provide(BEMDOM.decl('type-item', {
                     content: [
                         {
                             elem: 'text',
+                            content: 'Пожулйста выберите тип кредита.'
+                        },
+                        {
+                            block: 'label',
+                            content: 'Тип кредита'
+                        },
+                        {
+                            block: 'select',
+                            mods: { mode: 'radio', theme: 'islands', size: 'm' },
+                            name: 'select2',
+                            val: 1,
+                            options: [
+                                { val: 1, text: 'дифференцированный' },
+                                { val: 2, text: 'аннуитетный' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    block: 'group',
+                    content: [
+                        {
+                            elem: 'text',
                             content: 'Срок на погашение кредита может быть в диапазоне:<br>' +
                                 this.params.minTerm + ' - ' + this.params.maxTerm + ' месяца(ев)'
                         },
