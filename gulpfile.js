@@ -7,8 +7,10 @@ gulp.task('clientAssets', function() {
         .pipe(gulp.dest('/var/www/mammonbank.tk/public'));
 });
 
-gulp.task('watch', function() {
-    gulp.watch('./client/public/**/*', ['clientAssets']);
+gulp.task('bankAssets', function() {
+    gulp.src('./bank/public/**/')
+        .pipe(gulp.dest('/var/www/admin-mammonbank.tk/public'));
 });
 
-gulp.task('default', ['clientAssets', 'watch']);
+gulp.task('default', ['clientAssets', 'bankAssets']);
+
