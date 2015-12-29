@@ -64,7 +64,7 @@ provide(BEMDOM.decl('deposit-active', {
                     content: [
                         {
                             elem: 'start',
-                            content: 'Дата создания депозита: ' + t
+                            content: 'Дата создания депозита: ' + t.toLocaleString()
                         },
                         {
                             elem: 'end',

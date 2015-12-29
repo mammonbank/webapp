@@ -14,3 +14,11 @@
     border-left: 3px solid #ffdb4d;
     padding: 10px;
 }
+
+.type-item__interest,
+.type-item__sum,
+.type-item__time
+{
+    color: #777;
+    margin: 5px 0;
+}

@@ -49,12 +49,12 @@ provide(BEMDOM.decl('deposit-new', {
             ]
         }));
         var item = this.findBlockInside({ block: 'deposit-item', modName: 'id', modVal: data.id });
-        item.findBlockInside('button').on('click', this.onClick.bind(this, data.id));
+        item.findBlockInside('button').on('click', this.onClick.bind(this, data));
     },
 
-    onClick: function(id) {
+    onClick: function(data) {
         this.domElem.html('');
-        this.setMod('type-id', id);
+        this.setMod('type-id', data.id);
 
         BEMDOM.append(this.domElem, BEMHTML.apply({
             block: 'deposit-new',
@@ -69,7 +69,7 @@ provide(BEMDOM.decl('deposit-new', {
                     content: [
                         {
                             elem: 'text',
-                            content: 'text:'
+                            content: data.description + '<br>Минимальный взнос: ' + data.minSum
                         },
                         {
                             block: 'label',
@@ -90,13 +90,18 @@ provide(BEMDOM.decl('deposit-new', {
             ]
         }));
 
-        this.bindTo('create', 'click', this.onCreate.bind(this));
+        this.bindTo('create', 'click', this.onCreate.bind(this, data.minSum));
     },
 
-    onCreate: function() {
+    onCreate: function(minSum) {
         var plannedSum = this.findBlockInside({ block: 'input', modName: 'id', modVal: 'depositSum' }).getVal();
 
         // валидация
+        plannedSum = parseInt(plannedSum);
+        if (plannedSum < minSum || plannedSum === NaN) {
+            alertify.error('Неверное значение суммы');
+            return;
+        }
 
         $.ajax({
             url: BEMDOM.url + 'api/deposit/applications',

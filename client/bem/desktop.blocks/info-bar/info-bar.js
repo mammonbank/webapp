@@ -63,19 +63,20 @@ provide(BEMDOM.decl('info-bar', {
     },
 
     onInfoSuccess: function(data) {
-        var stat = data.isConfirmed ? 'Подтвержденный' : 'Ожидает проверки';
+        var stat = data.isConfirmed ? 'Подтвержденный' : 'Ожидает проверки',
+            page = this.findBlockOutside('page'),
+            mLeft = page.findBlockInside('main-left');
         this.elem('name')
             .html('Здравствуйте, ' + data.lastName + ' ' + data.firstName + ' ' + data.patronymic);
         this.elem('status').html('<b>Статус аккаунта:</b> ' + stat);
 
+        mLeft.findBlockInside('link')
+            .setUrl('http://mammonwebapi.azurewebsites.net/?clientLink=' + data.scoringFormId);
+
         if (!data.isConfirmed) {
-            this.findBlockOutside('page')
-                .findBlockInside('main-left')
-                .setMod('user', 'inactive');
+            mLeft.setMod('user', 'inactive');
         } else {
-            this.findBlockOutside('page')
-                .findBlockInside('main-left')
-                .setMod('user', 'active');
+            mLeft.setMod('user', 'active');
         }
     },
 

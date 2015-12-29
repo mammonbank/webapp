@@ -197,6 +197,16 @@ module.exports = {
                                 },
                                 {
                                     block: 'menu-item',
+                                    mods : { type : 'link' },
+                                    content : {
+                                        block : 'link',
+                                        target: '_blank',
+                                        url : '',
+                                        content : 'Пройти анкетирование'
+                                    }
+                                },
+                                {
+                                    block: 'menu-item',
                                     mix: { block: 'main-left', elem: 'reset' },
                                     content: 'Сменить пароль'
                                 },

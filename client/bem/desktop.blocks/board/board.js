@@ -6,11 +6,11 @@ provide(BEMDOM.decl('board', {
             alertify.logPosition("bottom right");
             this.init();
 
-            var withdraw = this.findBlockInside({ block: 'button', modName: 'id', modVal: 'withdraw' }),
-                deposit = this.findBlockInside({ block: 'button', modName: 'id', modVal: 'deposit' });
+            this.withdraw = this.findBlockInside({ block: 'button', modName: 'id', modVal: 'withdraw' }),
+            this.deposit = this.findBlockInside({ block: 'button', modName: 'id', modVal: 'deposit' });
 
-            withdraw.on('click', this.onWithdraw.bind(this));
-            deposit.on('click', this.onDeposit.bind(this));
+            this.withdraw.on('click', this.onWithdraw.bind(this));
+            this.deposit.on('click', this.onDeposit.bind(this));
         },
         'reload': {
             'yes': function() {
@@ -21,11 +21,25 @@ provide(BEMDOM.decl('board', {
 
     init: function() {
         $.ajax({
+            url: BEMDOM.url + 'api/clients/' + localStorage.getItem('clientId'),
+            method: 'GET',
+            headers: { 'Authorization': localStorage.getItem('token') }
+        })
+        .done(this.onInfoSuccess.bind(this));
+
+        $.ajax({
             url: BEMDOM.url + 'api/client/accounts/' + localStorage.getItem('clientId'),
             method: 'GET',
             headers: { 'Authorization': localStorage.getItem('token') }
         })
         .done(this.onDone.bind(this));
+    },
+
+    onInfoSuccess: function(data) {
+        if (data.isConfirmed) {
+            this.withdraw.delMod('disabled');
+            this.deposit.delMod('disabled');
+        }
     },
 
     onDone: function(data) {
@@ -65,7 +79,7 @@ provide(BEMDOM.decl('board', {
                 }, function(ev) {
                     ev.preventDefault();
 
-                    alertify.error('Операция отменена');
+                    alertify.log('Операция отменена');
                 }
             );
     },
@@ -103,7 +117,7 @@ provide(BEMDOM.decl('board', {
                 }, function(ev) {
                     ev.preventDefault();
 
-                    alertify.error('Операция отменена');
+                    alertify.log('Операция отменена');
                 }
             );
     }
