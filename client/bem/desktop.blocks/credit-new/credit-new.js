@@ -91,6 +91,9 @@ provide(BEMDOM.decl('credit-new', {
                 content: [
                     { elem: 'title', content: e.title },
                     { elem: 'description', content: e.description },
+                    { elem: 'interest', content: 'процент: ' + (e.interest*100) + '%' },
+                    { elem: 'sum', content: 'сумма: ' + e.minSum + ' - ' + e.maxSum + ' BYR' },
+                    { elem: 'time', content: 'срок: ' + e.minTerm + ' - ' + e.maxTerm + ' месяца(ев)' },
                     {
                         block: 'button',
                         mods: { theme: 'islands', size: 'l', type: 'submit', view: 'action' },

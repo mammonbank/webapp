@@ -86,49 +86,6 @@ provide(BEMDOM.decl('credit-active', {
                 }
             ]
         }));
-
-        var item = this.findBlockInside({ block: 'credit-act-item', modName: 'id', modVal: e.id }),
-            btn = item.findBlockInside('button');
-
-        btn.on('click', this.onClick.bind(this, e.id));
-    },
-
-    onClick: function(id) {
-        var _this = this;
-
-        alertify
-            .defaultValue('100000')
-            .prompt('Укажите сумму которую хотите снять',
-                function (val, ev) {
-                  ev.preventDefault();
-
-                  var valid = validate({sum: val}, { sum: {numericality:{onlyInteger: true}}});
-
-                    if (!valid) {
-                        alertify.success('Отправлен запрос на снятие: ' + val + ' BYR');
-                        $.ajax({
-                            url: BEMDOM.url + 'api/credits/'+localStorage.getItem('clientId')+'/deposit',
-                            method: 'POST',
-                            data: { sum: val },
-                            headers: { 'Authorization': localStorage.getItem('token') }
-                        })
-                        .done(function() {
-                            alertify.success('Операция успешно завершена');
-                            _this.init();
-                        })
-                        .fail(function() {
-                            alertify.error('Ошибка операции');
-                        });
-                    } else {
-                        alertify.error('Введена некорректная сумма');
-                    }
-
-                }, function(ev) {
-                    ev.preventDefault();
-
-                    alertify.error('Операция отменена');
-                }
-            );
     }
 }));
 

@@ -16,6 +16,14 @@
         'validator',
         'settings',
         'reset',
-        'help'
+        'help',
+        {
+            block: 'select',
+            mods: {
+                mode: 'radio',
+                theme: 'islands',
+                size: 'm'
+            }
+        }
     ]
 })

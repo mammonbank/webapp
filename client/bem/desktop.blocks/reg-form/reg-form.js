@@ -76,7 +76,11 @@ provide(BEMDOM.decl('reg-form', {
                 }
             },
             phoneNumber: {
-                presence: { message: '^Введите телефон' }
+                presence: { message: '^Введите телефон' },
+                format: {
+                    pattern: /^\+?[0-9]{12,}$/,
+                    message: "^Введите номер в формате +375*********"
+                }
             },
             email: {
                 presence: { message: '^Введите почту' },
@@ -104,7 +108,7 @@ provide(BEMDOM.decl('reg-form', {
                 presence: { message: '^Введите личный (идентификационный) номер' },
                 format: {
                     pattern: /[a-zA-Z0-9]{14}$/,
-                    message: '^Может содержать только 14 символов.'
+                    message: '^Личный (идентификационный) номер должен содержать 14 символов.'
                 }
             },
             mothersMaidenName: {
@@ -112,7 +116,7 @@ provide(BEMDOM.decl('reg-form', {
                 format: {
                     pattern: "^[а-яА-ЯёЁa-z,.'-]+$",
                     flags: "i",
-                    message: "^Поле не может содержать цифры и спец символы"
+                    message: "^Секретная фраза не может содержать цифры и спец символы"
                 }
             }
         };

@@ -5,7 +5,7 @@ modules.define('credit-finish',
 provide(BEMDOM.decl('credit-finish', {
     onSetMod: {
         'js': function() {
-            this.button = this.findBlockInside('button');
+            this.button = this.findBlockInside({ block: 'button', modName: 'view', modVal: 'action' });
             this.plannedSum = this.findBlockInside({ block: 'input', modName: 'id', modVal: 'plannedSum' });
             this.plannedTerm = this.findBlockInside({ block: 'input', modName: 'id', modVal: 'plannedTerm' });
             this.cType = this.findBlockInside('select');
@@ -16,6 +16,17 @@ provide(BEMDOM.decl('credit-finish', {
     },
 
     onClick: function() {
+        this.sum = parseInt(this.plannedSum.getVal());
+        this.term = parseInt(this.plannedTerm.getVal());
+        if (this.sum > this.params.maxSum || this.sum < this.params.minSum || this.sum === NaN) {
+            alertify.error('Неверное значение суммы');
+            return;
+        }
+
+        if (this.term < this.params.minTerm || this.term > this.params.maxTerm || this.term === NaN) {
+            alertify.error('Неверное значение срока');
+            return;
+        }
         // валидация
         this.submit();
     },
@@ -30,8 +41,8 @@ provide(BEMDOM.decl('credit-finish', {
             url: BEMDOM.url + 'api/credit/applications',
             method: 'POST',
             data: {
-                plannedSum: this.plannedSum.getVal(),
-                plannedTerm: this.plannedTerm.getVal(),
+                plannedSum: this.sum,
+                plannedTerm: this.term,
                 creditTypeId: this.params.typeId,
                 clientId: localStorage.getItem('clientId'),
                 repaymentType: cType

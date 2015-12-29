@@ -52,16 +52,16 @@ provide(BEMDOM.decl('type-item', {
                     content: [
                         {
                             elem: 'text',
-                            content: 'Пожулйста выберите тип кредита.'
+                            content: 'Пожулйста выберите вид оплаты кредита.'
                         },
                         {
                             block: 'label',
-                            content: 'Тип кредита'
+                            content: 'Вид оплаты'
                         },
                         {
                             block: 'select',
                             mods: { mode: 'radio', theme: 'islands', size: 'm' },
-                            name: 'select2',
+                            name: 'select3',
                             val: 1,
                             options: [
                                 { val: 1, text: 'дифференцированный' },

@@ -145,13 +145,13 @@ provide(BEMDOM.decl('content', {
                 {
                     block: 'button',
                     mix: { block: 'board', elem: 'withdraw' },
-                    mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'withdraw' },
+                    mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'withdraw', disabled: true },
                     text: 'Снять деньги со счета'
                 },
                 {
                     block: 'button',
                     mix: { block: 'board', elem: 'deposit' },
-                    mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'deposit' },
+                    mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'deposit', disabled: true },
                     text: 'Положить деньги на счет'
                 }
             ]
