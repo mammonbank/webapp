@@ -153,11 +153,11 @@ provide(BEMDOM.decl('line', {
         BEMDOM.append(this.elem('deposits'), BEMHTML.apply({
             block: 'button',
             mix: { block: 'line', elem: 'button' },
-            mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'back' },
+            mods: { theme: 'islands', size: 's', type: 'submit', view: 'action', id: 'backd' },
             text: 'Вернуться'
         }));
         setTimeout(function() {
-            this.findBlockInside({ block: 'button', modName: 'id', modVal: 'back' })
+            this.findBlockInside({ block: 'button', modName: 'id', modVal: 'backd' })
                 .on('click', this.onBackClick.bind(this));
         }.bind(this), 500);
     },
