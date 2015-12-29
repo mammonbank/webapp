@@ -22,6 +22,8 @@ provide(BEMDOM.decl('deposit-active', {
     },
 
     onDone: function(data) {
+        this.domElem.html('');
+
         if (data.deposits.length === 0) {
             BEMDOM.append(this.domElem, BEMHTML.apply({
                 block: 'info',
@@ -50,7 +52,7 @@ provide(BEMDOM.decl('deposit-active', {
             t3 = new Date();
         t.setTime(Date.parse(e.startDate));
         var e2 = e.endDate ? t2.setTime(Date.parse(e.endDate)) : 'бессрочно';
-        var e3 = e.lastInterestDate ? t2.setTime(Date.parse(e.lastInterestDate)) : '-';
+        var e3 = e.lastInterestDate ? t3.setTime(Date.parse(e.lastInterestDate)) : '-';
 
         BEMDOM.append(this.domElem, BEMHTML.apply({
             block: 'deposit-active',
@@ -141,7 +143,7 @@ provide(BEMDOM.decl('deposit-active', {
                 }, function(ev) {
                     ev.preventDefault();
 
-                    alertify.error('Операция отменена');
+                    alertify.log('Операция отменена');
                 }
             );
     },
@@ -179,7 +181,7 @@ provide(BEMDOM.decl('deposit-active', {
                 }, function(ev) {
                     ev.preventDefault();
 
-                    alertify.error('Операция отменена');
+                    alertify.log('Операция отменена');
                 }
             );
     },

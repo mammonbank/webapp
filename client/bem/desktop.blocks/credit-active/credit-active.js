@@ -21,6 +21,8 @@ provide(BEMDOM.decl('credit-active', {
     },
 
     onDone: function(data) {
+        this.domElem.html('');
+
         if (data.credits.length === 0) {
             BEMDOM.append(this.domElem, BEMHTML.apply({
                 block: 'info',

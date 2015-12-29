@@ -75,7 +75,7 @@ provide(BEMDOM.decl('credit-archive', {
                 },
                 {
                     elem: 'field',
-                    content: 'Название типа кредита' + data.title
+                    content: 'Название типа кредита: ' + data.title
                 },
                 {
                     elem: 'field',
