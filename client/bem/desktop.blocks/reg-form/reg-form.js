@@ -159,7 +159,11 @@ provide(BEMDOM.decl('reg-form', {
     },
 
     onSubmit: function() {
-        if (!this.validate()) { return; }
+        this.button.setMod('disabled');
+        if (!this.validate()) {
+            this.button.delMod('disabled');
+            return;
+        }
 
         $.ajax({
             url: BEMDOM.url + 'api/clients',
@@ -195,6 +199,7 @@ provide(BEMDOM.decl('reg-form', {
     onFail: function(data) {
         console.log(data);
         alertify.error(data.responseJSON.message);
+        this.button.delMod('disabled');
         // modal + data.message
     }
 }));

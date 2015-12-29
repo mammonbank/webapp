@@ -32,10 +32,12 @@ provide(BEMDOM.decl('credit-active', {
         }
 
         $.each(data.credits, this.addElem.bind(this));
-        if (this.findBlockOutside('content').hasMod('credit', 'active')) {
-            setTimeout(function() {
-                this.init.bind(this);
-            }.bind(this), 5000);
+        var page = this.findBlockOutside('page'),
+            content = page && page.findBlockInside('content');
+        if (content) {
+            if (content.hasMod('credit', 'active')) {
+                setTimeout(this.init.bind(this), 5000);
+            }
         }
     },
 
@@ -90,6 +92,10 @@ provide(BEMDOM.decl('credit-active', {
                 {
                     elem: 'out',
                     content: 'Осталось погасить: ' + e.outstandingLoan + ' BYR'
+                },
+                {
+                    elem: 'loan',
+                    content: 'Задолжность: ' + e.overdueSum + ' BYR'
                 }
             ]
         }));

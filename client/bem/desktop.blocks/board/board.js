@@ -44,6 +44,14 @@ provide(BEMDOM.decl('board', {
 
     onDone: function(data) {
         this.elem('account').html('У вас на счету: ' + data.clientAccount.amount + ' BYR');
+
+        var page = this.findBlockOutside('page'),
+            content = page && page.findBlockInside('content');
+        if (content) {
+            if (content.hasMod('page', 'main')) {
+                setTimeout(this.init.bind(this), 5000);
+            }
+        }
     },
 
     onWithdraw: function() {

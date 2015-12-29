@@ -28,6 +28,7 @@ provide(BEMDOM.decl('credit-finish', {
             return;
         }
         // валидация
+        this.button.setMod('disabled');
         this.submit();
     },
 
@@ -64,6 +65,7 @@ provide(BEMDOM.decl('credit-finish', {
     },
 
     onFail: function(data) {
+        this.button.delMod('disabled');
         alertify.error('Ошибка отправки заявки');
         if (data.responseJSON) {
             alertify.error(data.responseJSON.message);

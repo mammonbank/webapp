@@ -39,11 +39,9 @@ provide(BEMDOM.decl('deposit-archive', {
 
     onGetType: function(e, data) {
         var t = new Date(),
-            t2 = new Date(),
-            t3 = new Date();
+            t2 = new Date();
         t.setTime(Date.parse(e.startDate));
-        t2.setTime(Date.parse(e.endDate));
-        t3.setTime(Date.parse(e.lastPaymentDate));
+        t2.setTime(Date.parse(e.deleted_at));
 
         BEMDOM.append(this.domElem, BEMHTML.apply({
             block: 'credit-archive',
@@ -55,31 +53,19 @@ provide(BEMDOM.decl('deposit-archive', {
                 },
                 {
                     elem: 'field',
-                    content: 'Дата создания кредита: ' + t.toLocaleString()
+                    content: 'Дата создания депозита: ' + t.toLocaleString()
                 },
                 {
                     elem: 'field',
-                    content: 'Дата окончания кредита: ' + t2.toLocaleString()
+                    content: 'Дата окончания депозита: ' + t2.toLocaleString()
                 },
                 {
                     elem: 'field',
-                    content: 'Дата последней оплаты кредита: ' + t3.toLocaleString()
+                    content: 'Название типа депозита' + data.title
                 },
                 {
                     elem: 'field',
-                    content: 'Кол-во платежей: ' + e.numberOfPayments
-                },
-                {
-                    elem: 'field',
-                    content: 'Название типа кредита' + data.title
-                },
-                {
-                    elem: 'field',
-                    content: 'Тип оплаты: ' + e.repaymentType === 'DIFF' ? 'Дифференцированный' : 'Аннуитетный'
-                },
-                {
-                    elem: 'field',
-                    content: 'Процентная ставка: ' + data.interest * 100 + '%'
+                    content: 'Процентная ставка по депозиту: ' + data.interest * 100 + '%'
                 }
             ]
         }));

@@ -48,6 +48,7 @@ provide(BEMDOM.decl('credit-archive', {
         t.setTime(Date.parse(e.startDate));
         t2.setTime(Date.parse(e.endDate));
         t3.setTime(Date.parse(e.lastPaymentDate));
+        var type = e.repaymentType === 'DIFF' ? 'Дифференцированный' : 'Аннуитетный';
 
         BEMDOM.append(this.domElem, BEMHTML.apply({
             block: 'credit-archive',
@@ -79,7 +80,7 @@ provide(BEMDOM.decl('credit-archive', {
                 },
                 {
                     elem: 'field',
-                    content: 'Тип оплаты: ' + e.repaymentType === 'DIFF' ? 'Дифференцированный' : 'Аннуитетный'
+                    content: 'Тип оплаты: ' + type
                 },
                 {
                     elem: 'field',

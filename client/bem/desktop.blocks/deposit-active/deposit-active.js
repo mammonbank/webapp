@@ -33,10 +33,12 @@ provide(BEMDOM.decl('deposit-active', {
         }
 
         $.each(data.deposits, this.addElem.bind(this));
-        if (this.findBlockOutside('content').hasMod('deposit', 'active')) {
-            setTimeout(function() {
-                this.init.bind(this);
-            }.bind(this), 5000);
+        var page = this.findBlockOutside('page'),
+            content = page && page.findBlockInside('content');
+        if (content) {
+            if (content.hasMod('deposit', 'active')) {
+                setTimeout(this.init.bind(this), 5000);
+            }
         }
     },
 
@@ -72,16 +74,12 @@ provide(BEMDOM.decl('deposit-active', {
                         {
                             elem: 'start',
                             content: 'Дата создания депозита: ' + t.toLocaleString()
-                        },
-                        {
-                            elem: 'end',
-                            content: 'Дата окончания депозита: ' + e2.toLocaleString()
                         }
                     ]
                 },
                 {
                     elem: 'type',
-                    content: 'Последнее пополнение: ' + e3.toLocaleString()
+                    content: 'Последнее пополнение: ' + t3.toLocaleString()
                 },
                 {
                     elem: 'sum',

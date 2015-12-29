@@ -17,6 +17,7 @@ provide(BEMDOM.decl('qr', {
     },
 
     onSubmit: function() {
+        this.button.setMod('disabled');
         $.ajax({
             url: BEMDOM.url + 'auth/client/step-2',
             method: 'POST',
@@ -39,6 +40,7 @@ provide(BEMDOM.decl('qr', {
 
     onFail: function(data) {
         alertify.error('Неверный код');
+        this.button.delMod('disabled');
         console.log('fail', data);
     }
 }));

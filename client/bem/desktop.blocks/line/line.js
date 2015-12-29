@@ -219,6 +219,7 @@ provide(BEMDOM.decl('line', {
                     block: 'group',
                     mix: { block: 'calculator', elem: 'text' },
                     content: 'Согласно выбранному типу: ' + data.title + '<br>'+
+                    'Ставка по кредиту: ' + (data.interest * 100 ) + ' %<br>'+
                     'Минимальная сумма: ' + data.minSum + ' BYR<br>'+
                     'Максимальная сумма: ' + data.maxSum + ' BYR<br>'+
                     'Срок на кредит: от ' + data.minTerm + ' до ' + data.maxTerm + ' месяца(ев).'
