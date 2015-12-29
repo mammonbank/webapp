@@ -320,7 +320,7 @@ router.patch('/:depositId', authenticateOperatorToken,
         });
 });
 //debug purpuses
-router.delete('/:depositId', authenticateOperatorToken, 
+router.delete('/:depositId', authenticateClientToken, 
                              getDepositId, function(req, res, next) {
     Deposit
         .destroy({

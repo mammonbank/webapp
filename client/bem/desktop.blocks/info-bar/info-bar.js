@@ -71,7 +71,7 @@ provide(BEMDOM.decl('info-bar', {
         this.elem('status').html('<b>Статус аккаунта:</b> ' + stat);
 
         mLeft.findBlockInside('link')
-            .setUrl(data.scoringFormId);
+            .setUrl('http://mammonwebapi.azurewebsites.net/?clientLink=' + data.scoringFormId);
 
         if (!data.isConfirmed) {
             mLeft.setMod('user', 'inactive');
