@@ -303,7 +303,7 @@ class Viewer {
                 '<a data-clientid="' + client.id + '" class="declineclient-button decision-button">Отклонить</a></td>';
             }
 
-            html += '<td><a target="_blank" href="' + URLS.GET_CLIENT_SCORING_SERVICE_RESULT.replace('${clientId}', client.id) +
+            html += '<td><a target="_blank" href="' + URLS.GET_CLIENT_SCORING_SERVICE.replace('${clientLink}', client.scoringFormId) +
             '">Ссылка</a></td>';
 
             html += '</tr>';
@@ -912,6 +912,7 @@ class Viewer {
 
         html += '<h2>На счету: ' + data.clientAccount.amount + ' BYR</h2>';
         html += '<p><a target="_blank" class="scoring_link" href="' + URLS.GET_CLIENT_SCORING_SERVICE_RESULT.replace('${clientId}', data.clientId) + '">Результат скоринга</a></p>';
+        html += '<p><a target="_blank" class="scoring_link" href="' + URLS.GET_CLIENT_SCORING_SERVICE_ANSWERS.replace('${clientId}', data.clientId) + '">Ответы скоринга</a></p>';
 
         html += '<h2>Активные кредиты</h2>';
         if (data.credits.length === 0) {
