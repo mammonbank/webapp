@@ -1,7 +1,6 @@
 'use strict';
 
 var express = require('express'),
-    config = require('config'),
     router = express.Router(),
     authenticateOperatorToken = require('../middlewares/authenticateOperatorToken'),
     authenticateClientToken = require('../middlewares/authenticateClientToken'),
@@ -97,7 +96,7 @@ router.post('/', function(req, res, next) {
             passportNumber: req.body.passportNumber,
             passportIdNumber: req.body.passportIdNumber,
             mothersMaidenName: req.body.mothersMaidenName,
-            scoringFormId: config.external.clientScoringServiceLink + helper.getRandomString(20)
+            scoringFormId: helper.getRandomString(20)
         }, { transaction: t })
         //second - generate secret key (used in 2fa)
         .then(function(client) {
