@@ -29,7 +29,8 @@
     text-align: right;
 }
 
-.deposit-active__withdraw
+.deposit-active__withdraw,
+.deposit-active__deposit
 {
     margin-right: 20px;
 }

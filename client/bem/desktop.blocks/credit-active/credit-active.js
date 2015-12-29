@@ -32,7 +32,11 @@ provide(BEMDOM.decl('credit-active', {
         }
 
         $.each(data.credits, this.addElem.bind(this));
-        setTimeout(this.init.bind(this), 5000);
+        if (this.findBlockOutside('content').hasMod('credit', 'active')) {
+            setTimeout(function() {
+                this.init.bind(this);
+            }.bind(this), 5000);
+        }
     },
 
     addElem: function(i, e) {

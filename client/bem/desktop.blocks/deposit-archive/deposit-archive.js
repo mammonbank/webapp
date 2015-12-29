@@ -30,7 +30,7 @@ provide(BEMDOM.decl('deposit-archive', {
 
     addElem: function(i, e) {
         $.ajax({
-            url: BEMDOM.url + 'api/deposit/types/' + e.credit_type_id,
+            url: BEMDOM.url + 'api/deposit/types/' + e.deposit_type_id,
             method: 'GET',
             headers: { 'Authorization': this.token }
         })

@@ -33,7 +33,11 @@ provide(BEMDOM.decl('deposit-active', {
         }
 
         $.each(data.deposits, this.addElem.bind(this));
-        setTimeout(this.init.bind(this), 5000);
+        if (this.findBlockOutside('content').hasMod('deposit', 'active')) {
+            setTimeout(function() {
+                this.init.bind(this);
+            }.bind(this), 5000);
+        }
     },
 
     addElem: function(i, e) {
@@ -97,6 +101,12 @@ provide(BEMDOM.decl('deposit-active', {
                             mix: { block: 'deposit-active', elem: 'deposit' },
                             mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action', id: 'deposit' },
                             text: 'Положить'
+                        },
+                        {
+                            block: 'button',
+                            mix: { block: 'deposit-active', elem: 'close' },
+                            mods: { theme: 'islands', size: 'm', type: 'submit', view: 'action', id: 'close' },
+                            text: 'Закрыть'
                         }
                     ]
                 }
@@ -104,10 +114,12 @@ provide(BEMDOM.decl('deposit-active', {
         }));
         var btns = this.findBlockInside({ block: 'deposit-btns', modName: 'id', modVal: e.id }),
             withdraw = btns.findBlockInside({ block: 'button', modName: 'id', modVal: 'withdraw' }),
-            deposit = btns.findBlockInside({ block: 'button', modName: 'id', modVal: 'deposit' });
+            deposit = btns.findBlockInside({ block: 'button', modName: 'id', modVal: 'deposit' }),
+            close = btns.findBlockInside({ block: 'button', modName: 'id', modVal: 'close' });
 
         withdraw.on('click', this.onWithdraw.bind(this, e.id));
         deposit.on('click', this.onDeposit.bind(this, e.id));
+        close.on('click', this.onClose.bind(this, e.id));
     },
 
     onWithdraw: function(id) {
@@ -184,6 +196,27 @@ provide(BEMDOM.decl('deposit-active', {
                     alertify.log('Операция отменена');
                 }
             );
+    },
+
+    onClose: function(id) {
+        var _this = this;
+
+        alertify.confirm("Вы действительно хотите закрыть депозит?", function () {
+            $.ajax({
+                url: BEMDOM.url + 'api/deposits/'+id,
+                method: 'DELETE',
+                headers: { 'Authorization': localStorage.getItem('token') }
+            })
+            .done(function() {
+                alertify.success('Операция успешно завершена');
+                _this.init();
+            })
+            .fail(function() {
+                alertify.error('Ошибка операции');
+            });
+        }, function() {
+            alertify.log('Операция отменена');
+        });
     },
 
     onFail: function() {
