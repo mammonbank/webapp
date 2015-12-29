@@ -42,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
         tableName: 'bank_employees',
         underscored: true,
         timestamps: true,
-        paranoid: true,
+        paranoid: false,
         
         classMethods: {
             associate: function(models) {

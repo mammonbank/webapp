@@ -7,7 +7,10 @@ var express = require('express'),
     prepareUpdateObject = require('../middlewares/prepareUpdateObject'),
     getBankEmployeeId = require('../middlewares/getBankEmployeeId'),
     BankEmployee  = require('models').BankEmployee,
+    CreditApplication = require('models').CreditApplication,
+    DepositApplication = require('models').DepositApplication,
     Sequelize = require('models').Sequelize,
+    sequelize = require('models').sequelize,
     HttpApiError = require('error').HttpApiError;
 
 router.get('/', authenticateOverseerToken, function(req, res, next) {
@@ -113,18 +116,93 @@ router.patch('/:bankEmployeeId', authenticateOverseerToken,
 
 router.delete('/:bankEmployeeId', authenticateOverseerToken, 
                                   getBankEmployeeId, function(req, res, next) {
-    BankEmployee
-        .destroy({
-            where: { id: req.bankEmployeeId }
+    if (req.bankEmployeeId === 1) {
+        return res.status(400).json({
+            message: 'You have no power here'
+        });
+    }
+
+    var operatorId,
+        totalApps = 0,
+        isLast = false;
+    //really, really crazy stuff...
+    sequelize.transaction(function(t) {
+        return CreditApplication.findAll({
+            where: { bank_employee_id: req.bankEmployeeId },
+            transaction: t
         })
-        .then(function() {
-            res.json({
-                bankEmployeeId: req.bankEmployeeId
+        .then(function(creditApps) {
+            totalApps += creditApps.length;
+            return BankEmployee.findAll({
+                where: { type: 'OPERATOR' },
+                transaction: t
             });
         })
-        .catch(function(error) {
-            next(error);
+        .then(function(operators) {
+            if (operators.length === 1) {
+                isLast = true;
+            }
+            operatorId = operators[0].id;
+            return CreditApplication.update({
+                bank_employee_id: operatorId
+            }, {
+                where: {
+                    //extremely simple
+                    bank_employee_id: req.bankEmployeeId
+                },
+                transaction: t
+            });
+        })
+        .then(function() {
+            return DepositApplication.findAll({
+                where: { bank_employee_id: req.bankEmployeeId },
+                transaction: t
+            });
+        })
+        .then(function(depositApps) {
+            totalApps += depositApps.length;
+            return DepositApplication.update({
+                bank_employee_id: operatorId
+            }, {
+                where: {
+                    bank_employee_id: req.bankEmployeeId
+                },
+                transaction: t
+            });
+        })
+        .then(function() {
+            return BankEmployee.findById(operatorId, { transaction: t });
+        })
+        .then(function(operator) {
+            return BankEmployee.update({
+                numberOfApplications: operator.numberOfApplications + totalApps
+            }, {
+                where: {
+                    id: operatorId
+                },
+                transaction: t
+            });
+        })
+        .then(function() {
+            if (isLast) {
+                return BankEmployee.findById(operatorId, { transaction: t });
+            } else {
+                return BankEmployee.destroy({
+                    where: { id: req.bankEmployeeId },
+                    transaction: t
+                });
+            }
         });
+    })
+    .then(function() {
+        res.json({
+            bankEmployeeId: req.bankEmployeeId
+        });
+    })
+    .catch(function(error) {
+        next(error);
+    });
+
 });
 
 module.exports = router;

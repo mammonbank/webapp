@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
         //baseMoney += deposit * reserveRatio
         //acts as banks' reserves
         baseMoney: {
-            type: DataTypes.DECIMAL(16, 2),
+            type: DataTypes.DECIMAL(18, 2),
             allowNull: false,
             field: 'base_money',
             validate: {
@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
         //moneySupply -= credit
         //acts as banks' lending money
         moneySupply: {
-            type: DataTypes.DECIMAL(16, 2),
+            type: DataTypes.DECIMAL(18, 2),
             allowNull: false,
             field: 'money_supply',
             validate: {

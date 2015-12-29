@@ -39,10 +39,13 @@ var URLS = {
     GET_CLIENT_CREDIT_ARCHIVES: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/credits?offset=${offset}&limit=${limit}',
     GET_CLIENT_DEPOSITS: CONFIG.BASE_API_URL + '/api/client/${clientId}/deposits/?offset=${offset}&limit=${limit}',
     GET_CLIENT_DEPOSITS_ARCHIVES: CONFIG.BASE_API_URL + '/api/client/${clientId}/archives/deposits/?offset=${offset}&limit=${limit}',
+    GET_CLIENTS_ARCHIVES: CONFIG.BASE_API_URL + '/api/clients/archives?offset=${offset}&limit=${limit}',
 
     SEARCH_CLIENTS: CONFIG.BASE_API_URL + '/api/search/clients?q=${searchQuery}',
 
     GET_CLIENT_SCORING_SERVICE: 'http://mammonwebapi.azurewebsites.net/?clientLink=${clientLink}',
     GET_CLIENT_SCORING_SERVICE_RESULT: 'http://mammonwebapi.azurewebsites.net/scoringsystem/getscores?clientId=${clientId}',
-    GET_CLIENT_SCORING_SERVICE_ANSWERS: 'http://mammonwebapi.azurewebsites.net/scoringsystem/getanswers?clientId=${clientId}'
+    GET_CLIENT_SCORING_SERVICE_ANSWERS: 'http://mammonwebapi.azurewebsites.net/scoringsystem/getanswers?clientId=${clientId}',
+
+    GET_OPERATOR_BY_ID: CONFIG.BASE_API_URL + '/api/bank/employees/${operatorId}'
 };

@@ -319,6 +319,14 @@ class DataProvider {
         );
     }
 
+    static getClientsRemoteArchives(offset, limit) {
+        return $.ajax({
+            url: URLS.GET_CLIENTS_ARCHIVES.replace('${offset}', offset).replace('${limit}', limit),
+            method: 'GET',
+            headers: { 'Authorization': this.getToken() }
+        });
+    }
+
     static searchClients(searchQuery) {
         return $.ajax({
             url: URLS.SEARCH_CLIENTS.replace('${searchQuery}', searchQuery),

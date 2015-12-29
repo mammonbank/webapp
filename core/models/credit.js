@@ -122,8 +122,8 @@ module.exports = function(sequelize, DataTypes) {
                         var minMonths = creditType.minTerm,
                             maxMonths = creditType.maxTerm,
                             months = helper.getMonthsDiff(self.endDate, self.startDate),
-                            isValid = !!( _.inRange(self.sum, creditType.minSum, creditType.maxSum) &&
-                                 _.inRange(months, minMonths, maxMonths) );
+                            isValid = !!( _.inRange(self.sum, creditType.minSum, creditType.maxSum + 1) &&
+                                 _.inRange(months, minMonths, maxMonths + 1) );
                         
                         cb(null, isValid);
                     })

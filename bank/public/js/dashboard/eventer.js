@@ -233,6 +233,21 @@ class Eventer {
                 })
         });
 
+        $('#clientsArchives').on('click', () => {
+            $('main').empty();
+            $('.loader').show();
+            DataProvider.getClientsRemoteArchives(0, 1111)
+                .then((data) => {
+                    $('.loader').hide();
+                    alertify.success("Данные загружены");
+                    Viewer.renderClientsArchives(data.clients);
+                })
+                .fail(() => {
+                    $('.loader').hide();
+                    alertify.error("Ошибка");
+                });
+        });
+
         $('body').on('click', '#operators', () => {
             $('main').empty();
             $('.loader').show();
@@ -416,7 +431,12 @@ class Eventer {
         });
 
         $('main').on('click', '.declineclient-button', function() {
-            let isSure = confirm('Вы уверены?');
+            let isSure = confirm('Вы уверены, что хотите отклонить клиента?');
+            if (!isSure) {
+                return;
+            }
+
+            isSure = confirm('Точно уверены?');
             if (!isSure) {
                 return;
             }
@@ -483,6 +503,44 @@ class Eventer {
                 $('.loader').hide();
                 $('.overlay').hide();
                 alertify.success('Оператор "' + username + '" создан');
+            })
+            .fail(() => {
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.error('Ошибка');
+            });
+        });
+
+        $('main').on('click', '.delete-operator', function() {
+            let isSure = confirm('Вы уверены, что хотите удалить оператора?');
+            if (!isSure) {
+                return;
+            }
+
+            $('.loader').show();
+            $('.overlay').show();
+
+            let operatorId = $(this).data('operatorid');
+
+            DataManipulator.deleteOperator(operatorId)
+            .then(() => {
+                return DataProvider.getOperatorsRemote(0, 1111);
+            })
+            .then((data) => {
+                $('main').empty();
+                DataProvider.setOperators(data.bankEmployees);
+                let operators = [];
+                data.bankEmployees.map((bankEmployee) => {
+                    if (bankEmployee.type === 'OPERATOR') {
+                        operators.push(bankEmployee);
+                    }
+                });
+
+                Viewer.renderOperators(operators);
+
+                $('.loader').hide();
+                $('.overlay').hide();
+                alertify.success('Оператор удален');
             })
             .fail(() => {
                 $('.loader').hide();
@@ -592,7 +650,7 @@ class Eventer {
             let maxSum = $('#credit-type-maxSum').val();
             let minTerm = $('#credit-type-minTerm').val();
             let maxTerm = $('#credit-type-maxTerm').val();
-            let interest = $('#credit-type-interest').val();
+            let interest = ($('#credit-type-interest').val() / 100).toFixed(3);
             let creditCategoryId = $('#credit-type-catId').val();
 
             if (title === '' || description == '' || !Eventer.isNumeric(minSum) || !Eventer.isNumeric(maxSum) ||

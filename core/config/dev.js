@@ -30,8 +30,8 @@ module.exports = {
         }
     },
     bank: {
-        baseMoney: 100000000,
-        moneySupply: 900000000,
+        baseMoney: 100000000000,
+        moneySupply: 900000000000,
         reserveRatio: 0.1,
         credits: {
             overduePercent: 0.05
@@ -43,7 +43,7 @@ module.exports = {
         tokenExpirationTime: '6h'
     },
     cron: {
-        isEnabled: true,
+        isEnabled: false,
         times: {
             creditor: '00 00 00 1 * *',
             debtor: '00 00 00 15 * *'
@@ -51,8 +51,8 @@ module.exports = {
     },
     testcron: {
         times: {
-            creditor: '0,30 * * * * *',
-            debtor: '15,45 * * * * *'
+            creditor: '0 * * * * *',
+            debtor: '30 * * * * *'
         }
     },
     external: {

@@ -361,6 +361,8 @@ class Viewer {
             html += '<td>' + operator.numberOfApplications + '</td>';
             html += '<td>' + moment(operator.created_at).format('DD-MM-YYYY') + '</td>';
 
+            html += '<td><a data-operatorid="' + operator.id + '" class="underscore delete-operator">Удалить</a></td>';
+
             html += '</tr>';
         });
 
@@ -1269,6 +1271,55 @@ class Viewer {
 
 
         html += '</div>';
+        $('main').append(html);
+    }
+
+    static renderClientsArchives(clients) {
+        if (clients.length === 0) {
+            let html = '<span>Ничего нет</span>';
+            $('main').append(html);
+            return;
+        }
+
+        let html = '<div class="infoWrapper">' +
+            '<span class="totalCount">Всего: ' + clients.length + '</span>' +
+            '<table class="infoTable">' +
+            '<thead>' +
+            '   <tr><th>ФИО</th>' +
+            '       <th>Дата рождения</th>' +
+            '       <th>Номер телефона</th>' +
+            '       <th>Email</th>' +
+            '       <th>Номер паспорта</th>' +
+            '       <th>Личный (идентификационный) номер</th>' +
+            '       <th>Девичья фамилия матери</th>' +
+            '       <th>Коэффициент кредитной истории</th>' +
+            '       <th>Скоринговая система</th>';
+
+        html += '   </tr>' +
+        '</thead><tbody>';
+
+        clients.forEach((client) => {
+            html += '<tr>';
+
+            html += '<td class="clientId underscore" data-clientid="' + client.id + '">' + client.lastName +
+            ' ' + client.firstName + ' ' + client.patronymic  + '</td>';
+            html += '<td>' + moment(client.dateOfBirth).format('DD-MM-YYYY') + '</td>';
+
+            html += '<td>' + client.phoneNumber + '</td>';
+            html += '<td>' + client.email + '</td>';
+            html += '<td>' + client.passportNumber + '</td>';
+            html += '<td>' + client.passportIdNumber + '</td>';
+            html += '<td>' + client.mothersMaidenName + '</td>';
+            html += '<td>' + client.creditHistoryCoefficient + '</td>';
+
+            html += '<td><a target="_blank" href="' + URLS.GET_CLIENT_SCORING_SERVICE.replace('${clientLink}', client.scoringFormId) +
+            '">Ссылка</a></td>';
+
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+
         $('main').append(html);
     }
 }

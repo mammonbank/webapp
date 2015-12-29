@@ -157,4 +157,12 @@ class DataManipulator {
         })
     }
 
+    static deleteOperator(operatorId) {
+        return $.ajax({
+            url: URLS.GET_OPERATOR_BY_ID.replace('${operatorId}', operatorId),
+            method: 'DELETE',
+            headers: { 'Authorization': DataProvider.getToken() }
+        });
+    }
+
 }
