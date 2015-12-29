@@ -303,7 +303,7 @@ class Viewer {
                 '<a data-clientid="' + client.id + '" class="declineclient-button decision-button">Отклонить</a></td>';
             }
 
-            html += '<td><a target="_blank" href="' + URLS.GET_CLIENT_SCORING_SERVICE.replace('${clientLink}', client.scoringFormId) +
+            html += '<td><a target="_blank" href="' + URLS.GET_CLIENT_SCORING_SERVICE_RESULT.replace('${clientId}', client.id) +
             '">Ссылка</a></td>';
 
             html += '</tr>';
