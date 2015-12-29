@@ -98,7 +98,7 @@ provide(BEMDOM.decl('deposit-new', {
 
         // валидация
         plannedSum = parseInt(plannedSum);
-        if (plannedSum < minSum || plannedSum === NaN) {
+        if (plannedSum < minSum || isNaN(plannedSum)) {
             alertify.error('Неверное значение суммы');
             return;
         }

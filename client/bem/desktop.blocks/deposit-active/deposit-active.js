@@ -31,6 +31,7 @@ provide(BEMDOM.decl('deposit-active', {
         }
 
         $.each(data.deposits, this.addElem.bind(this));
+        setTimeout(this.init.bind(this), 5000);
     },
 
     addElem: function(i, e) {
@@ -48,8 +49,8 @@ provide(BEMDOM.decl('deposit-active', {
             t2 = new Date(),
             t3 = new Date();
         t.setTime(Date.parse(e.startDate));
-        var e2 = e.endDate ? t2.setTime(Date.parse(e.endDate)).toLocaleString() : 'бессрочно';
-        var e3 = e.lastInterestDate ? t2.setTime(Date.parse(e.lastInterestDate)).toLocaleString() : '-';
+        var e2 = e.endDate ? t2.setTime(Date.parse(e.endDate)) : 'бессрочно';
+        var e3 = e.lastInterestDate ? t2.setTime(Date.parse(e.lastInterestDate)) : '-';
 
         BEMDOM.append(this.domElem, BEMHTML.apply({
             block: 'deposit-active',
@@ -68,13 +69,13 @@ provide(BEMDOM.decl('deposit-active', {
                         },
                         {
                             elem: 'end',
-                            content: 'Дата окончания депозита: ' + e2
+                            content: 'Дата окончания депозита: ' + e2.toLocaleString()
                         }
                     ]
                 },
                 {
                     elem: 'type',
-                    content: 'Последнее пополнение: ' + e3
+                    content: 'Последнее пополнение: ' + e3.toLocaleString()
                 },
                 {
                     elem: 'sum',

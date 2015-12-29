@@ -42,33 +42,44 @@ provide(BEMDOM.decl('deposit-archive', {
             t2 = new Date(),
             t3 = new Date();
         t.setTime(Date.parse(e.startDate));
-        var e2 = e.endDate ? t2.setTime(Date.parse(e.endDate)).toLocaleString() : 'бессрочно';
-        var e3 = e.lastInterestDate ? t2.setTime(Date.parse(e.lastInterestDate)).toLocaleString() : '-';
+        t2.setTime(Date.parse(e.endDate));
+        t3.setTime(Date.parse(e.lastPaymentDate));
 
         BEMDOM.append(this.domElem, BEMHTML.apply({
-            block: 'deposit-active',
+            block: 'credit-archive',
             elem: 'item',
             content: [
                 {
-                    elem: 'date',
-                    content: [
-                        {
-                            elem: 'start',
-                            content: 'Дата создания депозита: ' + t
-                        },
-                        {
-                            elem: 'end',
-                            content: 'Дата окончания депозита: ' + e2
-                        }
-                    ]
+                    elem: 'field',
+                    content: 'Сумма: ' + e.sum + ' BYR'
                 },
                 {
-                    elem: 'type',
-                    content: 'Последнее пополнение: ' + e3
+                    elem: 'field',
+                    content: 'Дата создания кредита: ' + t.toLocaleString()
                 },
                 {
-                    elem: 'sum',
-                    content: 'На счету депозита: ' + e.sum + ' BYR'
+                    elem: 'field',
+                    content: 'Дата окончания кредита: ' + t2.toLocaleString()
+                },
+                {
+                    elem: 'field',
+                    content: 'Дата последней оплаты кредита: ' + t3.toLocaleString()
+                },
+                {
+                    elem: 'field',
+                    content: 'Кол-во платежей: ' + e.numberOfPayments
+                },
+                {
+                    elem: 'field',
+                    content: 'Название типа кредита' + data.title
+                },
+                {
+                    elem: 'field',
+                    content: 'Тип оплаты: ' + e.repaymentType === 'DIFF' ? 'Дифференцированный' : 'Аннуитетный'
+                },
+                {
+                    elem: 'field',
+                    content: 'Процентная ставка: ' + data.interest * 100 + '%'
                 }
             ]
         }));

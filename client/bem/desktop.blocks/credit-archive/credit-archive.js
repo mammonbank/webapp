@@ -42,34 +42,48 @@ provide(BEMDOM.decl('credit-archive', {
     },
 
     onGetType: function(e, data) {
+        var t = new Date(),
+            t2 = new Date(),
+            t3 = new Date();
+        t.setTime(Date.parse(e.startDate));
+        t2.setTime(Date.parse(e.endDate));
+        t3.setTime(Date.parse(e.lastPaymentDate));
+
         BEMDOM.append(this.domElem, BEMHTML.apply({
             block: 'credit-archive',
             elem: 'item',
             content: [
                 {
-                    elem: 'sum',
-                    content: e.outstandingLoan + ' / ' + e.sum
+                    elem: 'field',
+                    content: 'Сумма: ' + e.sum + ' BYR'
                 },
                 {
-                    elem: 'date',
-                    content: [
-                        {
-                            elem: 'start',
-                            content: 'Дата взятия кредита: ' + e.startDate
-                        },
-                        {
-                            elem: 'end',
-                            content: 'Дата окончания кредита: ' + e.startDate
-                        }
-                    ]
+                    elem: 'field',
+                    content: 'Дата создания кредита: ' + t.toLocaleString()
                 },
                 {
-                    elem: 'type',
-                    content: e.repaymentType
+                    elem: 'field',
+                    content: 'Дата окончания кредита: ' + t2.toLocaleString()
                 },
                 {
-                    elem: 'credit-type',
-                    content: data.title
+                    elem: 'field',
+                    content: 'Дата последней оплаты кредита: ' + t3.toLocaleString()
+                },
+                {
+                    elem: 'field',
+                    content: 'Кол-во платежей: ' + e.numberOfPayments
+                },
+                {
+                    elem: 'field',
+                    content: 'Название типа кредита' + data.title
+                },
+                {
+                    elem: 'field',
+                    content: 'Тип оплаты: ' + e.repaymentType === 'DIFF' ? 'Дифференцированный' : 'Аннуитетный'
+                },
+                {
+                    elem: 'field',
+                    content: 'Процентная ставка: ' + data.interest * 100 + '%'
                 }
             ]
         }));

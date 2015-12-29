@@ -54,7 +54,7 @@ provide(BEMDOM.decl('calculator', {
             return;
         }
 
-        if (sum > this.params.data.maxSum || sum < this.params.data.minSum || sum === undefined || sum === NaN) {
+        if (sum > this.params.data.maxSum || sum < this.params.data.minSum || sum === undefined || isNaN(sum)) {
             alertify.error('Введите корректную сумму, в диапазоне типа.')
             return;
         }

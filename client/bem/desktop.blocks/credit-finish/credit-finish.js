@@ -18,12 +18,12 @@ provide(BEMDOM.decl('credit-finish', {
     onClick: function() {
         this.sum = parseInt(this.plannedSum.getVal());
         this.term = parseInt(this.plannedTerm.getVal());
-        if (this.sum > this.params.maxSum || this.sum < this.params.minSum || this.sum === NaN) {
+        if (this.sum > this.params.maxSum || this.sum < this.params.minSum || isNaN(this.sum)) {
             alertify.error('Неверное значение суммы');
             return;
         }
 
-        if (this.term < this.params.minTerm || this.term > this.params.maxTerm || this.term === NaN) {
+        if (this.term < this.params.minTerm || this.term > this.params.maxTerm || isNaN(this.term)) {
             alertify.error('Неверное значение срока');
             return;
         }

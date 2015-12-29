@@ -1,0 +1,14 @@
+.credit-archive {
+    padding: 20px;
+    margin: 20px;
+}
+
+.credit-archive__item {
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #ccc;
+}
+
+.credit-archive__field {
+    margin: 5px 0;
+}

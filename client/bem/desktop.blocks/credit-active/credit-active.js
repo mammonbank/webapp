@@ -30,6 +30,7 @@ provide(BEMDOM.decl('credit-active', {
         }
 
         $.each(data.credits, this.addElem.bind(this));
+        setTimeout(this.init.bind(this), 5000);
     },
 
     addElem: function(i, e) {
@@ -74,7 +75,7 @@ provide(BEMDOM.decl('credit-active', {
                 },
                 {
                     elem: 'type',
-                    content: 'Тип выплат: ' + e.repaymentType
+                    content: 'Тип выплат: ' + e.repaymentType === 'DIFF' ? 'Дифференцированный' : 'Аннуитетный'
                 },
                 {
                     elem: 'sum',
