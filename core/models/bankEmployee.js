@@ -60,6 +60,52 @@ module.exports = function(sequelize, DataTypes) {
 
                     cb(null, isMatch);
                 });
+            },
+            distributeDepositApplications: function (applications) {
+                var self = this,
+                    DepositApplication = sequelize.models.DepositApplication;
+
+                BankEmployee
+                    .findAll({
+                        offset: 0,
+                        limit: 50,
+                        where: { id: { $ne: self.id } }
+                    })
+                    .then(function (employees) {
+
+                        for (var i = 0; i < applications.length; i++) {
+                            var operatorNumber = Math.floor(Math.random() * (employees.length));
+                            DepositApplication.update({
+                                bankEmployeeId: employees[operatorNumber]
+                            },
+                            {
+                                where: { id: applications[i].id }
+                            });
+                        }
+                    });
+            },
+
+            distributeCreditApplications: function (applications) {
+                var self = this,
+                    CreditApplication = sequelize.models.CreditApplication;
+
+                BankEmployee
+                    .findAll({
+                        offset: 0,
+                        limit: 50,
+                        where: { id: { $ne: self.id } }
+                    })
+                    .then(function (employees) {
+                        for (var i = 0; i < applications.length; i++) {
+                            var operatorNumber = Math.floor(Math.random() * (employees.length));
+                            CreditApplication.update({
+                                bankEmployeeId: employees[operatorNumber]
+                            },
+                            {
+                                where: { id: applications[i].id }
+                            });
+                        }
+                    });
             }
         }
     });

@@ -70,11 +70,12 @@ router.get('/:depositTypeId', function (req, res, next) {
 });
 
 router.post('/', authenticateOverseerToken, function (req, res, next) {
+    console.log(req.body);
     DepositType
         .create({
             title: req.body.title,
             description: req.body.description,
-            interest: req.body.interest,
+            interest: parseFloat(req.body.interest/100).toFixed(2),
             minSum: req.body.minSum
         })
         .then(function(depositType) {         

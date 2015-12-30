@@ -43,5 +43,5 @@ var URLS = {
     SEARCH_CLIENTS: CONFIG.BASE_API_URL + '/api/search/clients?q=${searchQuery}',
 
     GET_CLIENT_SCORING_SERVICE_RESULT: 'http://mammonwebapi.azurewebsites.net/scoringsystem/getscores?clientId=${clientId}',
-    GET_CLIENT_SCORING_SERVICE_ANSWERS: 'http://mammonwebapi.azurewebsites.net/scoringsystem/getanswers?clientId=${clientId}'
+    GET_CLIENT_SCORING_SERVICE_ANSWERS: 'http://mammonwebapi.azurewebsites.net/scoringsystem/answers?clientId=${clientId}'
 };

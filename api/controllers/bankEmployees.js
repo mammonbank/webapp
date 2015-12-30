@@ -112,19 +112,47 @@ router.patch('/:bankEmployeeId', authenticateOverseerToken,
 });
 
 router.delete('/:bankEmployeeId', authenticateOverseerToken, 
-                                  getBankEmployeeId, function(req, res, next) {
+                                  getBankEmployeeId, function (req, res, next) {
+
+    var employee;
+    var applications;
     BankEmployee
-        .destroy({
-            where: { id: req.bankEmployeeId }
-        })
-        .then(function() {
-            res.json({
-                bankEmployeeId: req.bankEmployeeId
-            });
-        })
-        .catch(function(error) {
-            next(error);
+    .findById(req.bankEmployeeId)
+    .then(function (bankEmployee) {
+        employee = bankEmployee;
+            
+        //stub!!
+        return [{ id: 4}, { id: 5 }, { id: 6 }, { id: 7 }];//bankEmployee.getDepositApplications();
+    })
+    .then(function (depositApplications) {
+        applications = depositApplications;
+        if (applications && applications.length > 0) {
+            employee.distributeDepositApplications(applications);
+        }
+
+        return applications;
+    })
+    .then(function (creditApplications) {
+        //stub!!
+        applications = [];
+        if (applications && applications.length > 0) {
+            employee.distributeCreditApplications(applications);
+        }
+    })
+    // should be uncomment
+    //.then(function() {
+    //    BankEmployee.destroy({
+    //        where: { id: req.bankEmployeeId }
+    //    });
+    //})
+    .then(function() {
+        res.json({
+            bankEmployeeId: req.bankEmployeeId
         });
+    })
+    .catch(function(error) {
+        next(error);
+    });
 });
 
 module.exports = router;
