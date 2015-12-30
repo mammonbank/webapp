@@ -599,7 +599,7 @@ class Eventer {
             e.preventDefault();
             let title = $('#deposit-type-title').val();
             let description = $('#deposit-type-description').val();
-            let interest = $('#deposit-type-interest').val();
+            let interest = ($('#deposit-type-interest').val() / 100).toFixed(3);
             let minSum = $('#deposit-type-minSum').val();
 
             if (title === '' || description == '' || !Eventer.isNumeric(interest) || !Eventer.isNumeric(minSum)) {

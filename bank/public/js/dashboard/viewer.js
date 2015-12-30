@@ -740,7 +740,7 @@ class Viewer {
             '</div>' +
             '<div class="pure-control-group">' +
             '<label for="name">Процент по вкладу</label>' +
-            '<input id="deposit-type-interest" type="text" placeholder="0.1">' +
+            '<input id="deposit-type-interest" type="text">' +
             '</div>' +
             '<div class="pure-control-group">' +
             '<label for="name">Минимальная сумма вклада</label>' +
