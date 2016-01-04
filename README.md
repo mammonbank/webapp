@@ -28,3 +28,5 @@ p.s. если вдруг что,
 login - jacoren
 
 password - waterchip
+
+p.p.s. для авторизации на клиентском сайте, надо иметь приложение Google Authenticator на телефоне.
