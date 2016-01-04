@@ -18,7 +18,6 @@ server {
 
     location /public/ {
         root /var/www/mammonbank.tk/;
-	    autoindex on;
     }
 
 }
@@ -26,7 +25,8 @@ server {
 server {
     listen 443 ssl;
 
-    server_name admin-mammonbank.tk;
+    #server_name admin-mammonbank.tk;
+    server_name 178.62.142.246;
 
     ssl_certificate /etc/letsencrypt/live/admin-mammonbank.tk/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/admin-mammonbank.tk/privkey.pem;
@@ -42,7 +42,6 @@ server {
 
     location /public/ {
         root /var/www/admin-mammonbank.tk/;
-        autoindex on;
     }
 
 }

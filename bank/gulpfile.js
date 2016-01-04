@@ -4,7 +4,7 @@ const gulp = require('gulp'),
       autoprefixer = require('gulp-autoprefixer'),
       //rename = require('gulp-rename'),
       livereload = require('gulp-livereload'),
-      //uglify = require('gulp-uglify'),
+      uglify = require('gulp-uglify'),
       babel = require('gulp-babel');
 
 
@@ -41,7 +41,7 @@ gulp.task('js-index', () => {
         .pipe(babel({
             presets: ['es2015']
         }))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(concat('index.js'))
         .pipe(gulp.dest('public/build/js'));
 });
@@ -55,7 +55,7 @@ gulp.task('js-dashboard', () => {
         .pipe(babel({
             presets: ['es2015']
         }))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(concat('dashboard.js'))
         .pipe(gulp.dest('public/build/js'));
 });

@@ -361,8 +361,6 @@ class Viewer {
             html += '<td>' + operator.numberOfApplications + '</td>';
             html += '<td>' + moment(operator.created_at).format('DD-MM-YYYY') + '</td>';
 
-            html += '<td><a data-operatorid="' + operator.id + '" class="underscore delete-operator">Удалить</a></td>';
-
             html += '</tr>';
         });
 
